@@ -1,0 +1,11 @@
+/****** inserisce utente ******/
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Utente]
+           ([username]
+           ,[password])
+     VALUES
+           ('marcoRossi', '1234')
+GO
+

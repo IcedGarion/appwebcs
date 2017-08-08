@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Linq;
 
-namespace School
+namespace appwebProgetto
 {
     public static class Extensions
     {

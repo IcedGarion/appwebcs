@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace School.Data
+namespace appwebProgetto.Data
 {
     public class DataSourceResult
     {

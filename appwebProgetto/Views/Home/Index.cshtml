@@ -1,7 +1,12 @@
+@using appwebProgetto.Models
+@using System.Collections.Generic
+
 @{
     ViewBag.Title = "HOME PAGE";
     Layout = "_LayoutEmpty";
 }
+
+@model IEnumerable<Utente>
 
 <div class="container">
     <div class="nav">
@@ -16,7 +21,24 @@
 
     <div class="main">
         <h3>Elenco top 10 ordini</h3>
-        ...
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>username</td>
+                        <td>password</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
     <div class="footer">

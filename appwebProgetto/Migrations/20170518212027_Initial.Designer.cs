@@ -11,7 +11,7 @@ namespace School.Migrations
     [Migration("20170518212027_Initial")]
     partial class Initial
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

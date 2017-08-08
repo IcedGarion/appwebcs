@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace School.GridTagHelpers
+namespace appwebProgetto.GridTagHelpers
 {
     public abstract class BaseTagHelper : TagHelper
     {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace School.Controllers
+namespace appwebProgetto.Controllers
 {
     public class HomeController : Controller
     {

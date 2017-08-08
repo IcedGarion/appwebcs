@@ -1,4 +1,4 @@
-﻿namespace School.Dto
+﻿namespace appwebProgetto.Dto
 {
     public enum Format
     {

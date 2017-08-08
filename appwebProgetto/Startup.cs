@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using School.Data;
+using appwebProgetto.Data;
 
 namespace School
 {
@@ -30,7 +30,7 @@ namespace School
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<SchoolContext>(options =>
+            services.AddDbContext<ProjectContext>(options =>
                 options.UseSqlServer(connectionString));
 
             services.AddDbContext<IdentityDbContext>(options =>
