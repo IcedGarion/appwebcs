@@ -1,0 +1,22 @@
+@using School.Model
+@using System.Collections.Generic
+
+@model IEnumerable<Utente>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<grid id="grid" controller="Utenti">
+    <column field="username" title="username" type="String" editable="false" />
+    <column field="password" title="password" type="String" editable="false" />
+</grid>
+
+
+<h1>Index</h1>
+
+@foreach (var s in Model)
+{
+    @s.Username
+    @s.Password
+}

@@ -1,0 +1,11 @@
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1>Index</h1>
+
+@Html.ActionLink("Utente","Index", "Utente")
+
+<grid id="grid" controller="UtenteController">
+    <column field="username" title="username" type="String" editable="false" />
+</grid>
