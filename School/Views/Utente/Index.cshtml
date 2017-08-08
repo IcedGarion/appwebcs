@@ -1,22 +1,51 @@
 @using School.Model
 @using System.Collections.Generic
 
+<!-- "parametro" Context.Utenti passato dalla view-->
 @model IEnumerable<Utente>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "LISTA UTENTI";
 }
 
-<grid id="grid" controller="Utenti">
-    <column field="username" title="username" type="String" editable="false" />
-    <column field="password" title="password" type="String" editable="false" />
-</grid>
+<div class="container">
+    <div class="header">
+        <h2>Lista Utenti</h2>
+    </div>
 
+    <div class="main">
+        <!--
+            RIMANE VUOTA! DA SISTEMARE
 
-<h1>Index</h1>
+        <grid id="grid" controller="Utenti">
+            <column field="username" title="username" type="String" editable="false" />
+            <column field="password" title="password" type="String" editable="false" />
+        </grid>
 
-@foreach (var s in Model)
-{
-    @s.Username
-    @s.Password
-}
+        -->
+
+        <h4>Lista Utenti: nome e pass</h4>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)   //model parametro view
+                {
+                    <tr>
+                        <td>@s.Username</td>
+                        <td>@s.Password</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>

@@ -21,6 +21,8 @@ namespace School.Controllers
 
         protected override Func<Utente, int, bool> FilterById => (e, id) => e.CdUtente == id;
 
+        //passa alla view la lista di tutte le entites del controller (Context.Utente)
+        //Utente/Index: in @Model si trova la lista
         public async Task<IActionResult> Index() => View(await Entities.ToListAsync());
 
     }

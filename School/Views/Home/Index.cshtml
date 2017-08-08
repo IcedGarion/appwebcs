@@ -1,11 +1,21 @@
 @{
     ViewBag.Title = "Index";
+    Layout = "_LayoutEmpty";
 }
 
-<h1>Index</h1>
+<div class="container">
+    <div class="header">
+        <h2>Index</h2>
+    </div>
 
-@Html.ActionLink("Utente","Index", "Utente")
+    <div class="main">
+        <ul id="menu">
+            <!-- link a UtenteController.Index() -->
+            <li>@Html.ActionLink("Lista utenti", "Index", "Utente")</li>
+        </ul>
+    </div>
 
-<grid id="grid" controller="UtenteController">
-    <column field="username" title="username" type="String" editable="false" />
-</grid>
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>
