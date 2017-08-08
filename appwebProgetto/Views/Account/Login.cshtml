@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "_LayoutEmpty";
+}
+
+<div class="box k-block k-info-colored">
+    <form method="POST">
+        <ul class="fieldlist">
+            <li>
+                <label for="email">Email</label>
+                <input type="email" class="k-textbox" id="email" name="email" style="width: 100%;">
+            </li>
+            <li>
+                <label for="password">Password</label>
+                <input type="password" class="k-textbox" id="password" name="password" style="width: 100%;">
+            </li>
+            <li>
+                <button type="submit" class="k-button k-primary">Login</button>
+            </li>
+        </ul>
+    </form>
+    <div asp-validation-summary="All" class="fieldlist text-error"></div>
+</div>
