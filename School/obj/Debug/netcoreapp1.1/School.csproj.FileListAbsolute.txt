@@ -3,7 +3,6 @@ C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\bin\Debug\netcor
 C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\bin\Debug\netcoreapp1.1\School.runtimeconfig.dev.json
 C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\bin\Debug\netcoreapp1.1\School.dll
 C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\bin\Debug\netcoreapp1.1\School.pdb
-C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\obj\Debug\netcoreapp1.1\School.csprojResolveAssemblyReference.cache
 C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\obj\Debug\netcoreapp1.1\School.AssemblyInfo.cs
 C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\obj\Debug\netcoreapp1.1\School.dll
 C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\obj\Debug\netcoreapp1.1\School.pdb
@@ -16,3 +15,4 @@ C:\Users\windpw\Desktop\scuola\app web\PROGETTO\School\obj\Debug\netcoreapp1.1\S
 C:\Users\windpw\Desktop\scuola\app web\PROGETTO\School\obj\Debug\netcoreapp1.1\School.AssemblyInfo.cs
 C:\Users\windpw\Desktop\scuola\app web\PROGETTO\School\obj\Debug\netcoreapp1.1\School.dll
 C:\Users\windpw\Desktop\scuola\app web\PROGETTO\School\obj\Debug\netcoreapp1.1\School.pdb
+C:\Users\windpw\Desktop\scuola\app web\School downloaded\School\obj\Debug\netcoreapp1.1\School.csprojResolveAssemblyReference.cache

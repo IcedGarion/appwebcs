@@ -1,6 +1,11 @@
+@using School.Model
+
 <!-- NAVBAR! USA REDIRECT da index a list -->
 
 <ul id="menu">
+    <li>
+        @Html.ActionLink("Home", "Index", "Home")
+    </li>
     <li>
         @Html.ActionLink("Prodotti", "Index", "Prodotto")
     </li>
@@ -9,6 +14,18 @@
     </li>
     <li>
         @Html.ActionLink("Utenti", "Index", "Utente")
+    </li>
+    <li>
+        <!-- Altro modo di usare form: non passa la prima volta dal controller e puo' chiamare il controller che vuole -->
+        <!-- Passa parametri alla action: Controller ha un metodo (Find) che accetta tanti parametri quanti gli input type-->
+        @using (Html.BeginForm("Find", "Prodotto", FormMethod.Post))
+        {
+            <fieldset>
+                <input type="text" name="input" id="input"/>
+
+                <input type="submit" value="Cerca fra i prodotti" />
+            </fieldset>
+        }
     </li>
 </ul>
 

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace School.Data
+﻿namespace School.Data
 {
-    public class OrdiniDataSource
+    public class OrdiniJoinDataSource
     {
         public string Username { get; set; }
 

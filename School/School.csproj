@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="Views\AdminHome\" />
+    <Folder Include="Views\Offerta\" />
   </ItemGroup>
 
 </Project>

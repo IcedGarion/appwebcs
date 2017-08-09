@@ -1,48 +1,47 @@
-@using School.Data
+@using School.Model
 @using System.Collections.Generic
+
 @{
-    ViewBag.Title = "LISTA ORDINI";
+    ViewData["Title"] = "List";
 }
 
-@model IEnumerable<OrdiniJoinDataSource>
-
+@model IEnumerable<Prodotto>
 
     <div class="container">
         <div class="header">
-            <h2>Lista Ordini</h2>
+            <h2>List</h2>
         </div>
 
         <div class="main">
-
-            <h4>Lista Prodotti</h4>
+            <h4>Lista Prodotti Scontati</h4>
 
             <table border="1">
                 <thead>
                     <tr>
-                        <th>Codice ordine</th>
-                        <th>Username</th>
                         <th>Titolo prodotto</th>
-                        <th>Totale ordine</th>
+                        <th>Descrizione</th>
+                        <th>Prezzo</th>
+                        <th>Sconto</th>
+                        <th>Disponibile</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var s in Model)
                     {
                         <tr>
-                            <td>@s.CdOrdine</td>
-                            <td>@s.Username</td>
                             <td>@s.Titolo</td>
-                            <td>@s.Totale</td>
+                            <td>@s.Descrizione</td>
+                            <td>@s.Prezzo</td>
+                            <td>@s.Sconto</td>
+                            <td>@s.Disponibile</td>
                         </tr>
                     }
-                        
-            </tbody>
+
+                </tbody>
 
             </table>
-        </div>
 
-        <div class="footer">
-            <h6>footer</h6>
+
         </div>
     </div>
-

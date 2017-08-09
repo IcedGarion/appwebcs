@@ -5,7 +5,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "_LayoutEmpty";
+    //Layout = "_LayoutEmpty";
 }
 
 <div class="container">
@@ -20,6 +20,7 @@
             <li>@Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
             <li>@Html.ActionLink("Crea Utente", "Create", "Utente")</li>
             <li>@Html.ActionLink("Catalogo Prodotti", "Index", "Prodotto")</li>
+            <li>@Html.ActionLink("Catalogo Prodotti in offerta", "List", "Offerta")</li>
             <li>@Html.ActionLink("Lista Ordini", "Index", "Ordine")</li>
         </ul>
     </div>

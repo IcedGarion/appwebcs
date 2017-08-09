@@ -21,14 +21,16 @@ namespace School.Controllers
 
         protected override Func<Utente, int, bool> FilterById => (e, id) => e.CdUtente == id;
 
-        /*
-        [HttpPost]
-        public override Task<IActionResult> Delete(int cdUtente) => base.Delete(cdUtente);
-
-        [HttpPost]
-        public override Task<IActionResult> Update(Utente usr) => base.Update(usr);
-        */
-
+        /* PATTERN MVC PER I FORM:
+         * la pagina Utente/Create crea un nuovo utente partendo da un form nella View.
+         * per prima cosa la richiesta passa per il controller, che passa alla view il Model, in modo che la view possa collegare il form ai campi giusti
+         * quando l'esecuzione passa alla view e il form viene riempito, viene richiamato lo stesso metodo Create precedente,
+         * ma viene scelto l'override che prende un Model come parametro, e accetta HTTP POST (secondo metodo qua sotto)
+         * questo metodo usa i dati ricavati dal form e mappati nell'oggetto Model (Utente) e richiama il metodo del CrudController Create
+         * che salva su db. 
+         * 
+         * Si possono fare diverse operazioni nella seconda Create, per esempio modificare o validare i dati prima di salvare
+         **/
         [HttpGet]
         public IActionResult Create()
         {

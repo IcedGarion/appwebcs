@@ -26,16 +26,12 @@ namespace School.Controllers
         {
             SchoolContext context = new SchoolContext();
 
-            //query separata dal suo controller per restituire elenco utenti (formattati nel loro datasource)
-            //perche' in View va specificato il @Model IEnumerable<UtentiDataSource>
-            //var query = from utenti in context.Utente select new UtentiDataSource { Username = utenti.Username, Password = utenti.Password };
-
-
+            //invece di restituire solo gli ordini, fa una join per aggiungere altre informazioni
             var query = from ordini in context.Ordine
                         join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente
                         join ordineProdotto in context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
                         join prodotti in context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
-                        select new OrdiniDataSource { CdOrdine = ordini.CdOrdine, Username = utenti.Username, Titolo = prodotti.Titolo, Totale = ordini.Totale };
+                        select new OrdiniJoinDataSource { CdOrdine = ordini.CdOrdine, Username = utenti.Username, Titolo = prodotti.Titolo, Totale = ordini.Totale };
 
             return View(query.ToList());
         }

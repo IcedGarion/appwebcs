@@ -11,9 +11,9 @@ using School.Model;
 
 namespace School.Controllers
 {
-    public class ProdottoController : CrudController<SchoolContext, int, Prodotto>
+    public class OffertaController : CrudController<SchoolContext, int, Prodotto>
     {
-        public ProdottoController(SchoolContext context, ILogger<ProdottoController> logger) : base(context, logger)
+        public OffertaController(SchoolContext context, ILogger<ProdottoController> logger) : base(context, logger)
         {
         }
 
@@ -22,19 +22,17 @@ namespace School.Controllers
         protected override Func<Prodotto, int, bool> FilterById => (e, id) => e.CdProdotto == id;
 
         //passa alla view la lista di tutte le entites del controller (Context.Prodotto)
-        public async Task<IActionResult> List() => View(await Entities.ToListAsync());
-
-        [HttpPost]
-        public IActionResult Find(string input)
+        public IActionResult List()
         {
-            var query = from prodotti in Context.Prodotto
-                        where prodotti.Titolo.Contains(input) || prodotti.Descrizione.Contains(input)
-                        select prodotti;
+            SchoolContext context = new SchoolContext();
+
+            var query = from prodotto in context.Prodotto
+                        where prodotto.Sconto > 0
+                        select prodotto;
 
             return View(query.ToList());
         }
 
-        public IActionResult Index() => Redirect("/Prodotto/List");
-
+        public IActionResult Index() => Redirect("/Offerta/List");
     }
 }
