@@ -7,7 +7,8 @@
     ViewBag.Title = "Index";
     //Layout = "_LayoutEmpty";
 }
-<link rel="stylesheet" type="text/css" href="~/css/StyleSheet.css"> 
+
+@model IEnumerable<Prodotto>
 
 <div class="container">
     <div class="header">
@@ -24,6 +25,39 @@
             <li>@Html.ActionLink("Catalogo Prodotti in offerta", "List", "Offerta")</li>
             <li>@Html.ActionLink("Lista Ordini", "Index", "Ordine")</li>
         </ul>
+
+
+        <h4>Lista top 10 Prodotti</h4>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Titolo prodotto</th>
+                    <th>Descrizione</th>
+                    <th>Prezzo</th>
+                    <th>Sconto</th>
+                    <th>Immagine</th>
+                    <th>Disponibile</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@s.Titolo</td>
+                        <td>@s.Descrizione</td>
+                        <td>@s.Prezzo</td>
+                        <td>@s.Sconto</td>
+                        <td>@s.Immagine</td>
+                        <td>@s.Disponibile</td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
     </div>
 
     <div class="footer">

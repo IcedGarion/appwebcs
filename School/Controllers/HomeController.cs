@@ -13,6 +13,14 @@ namespace School.Controllers
         //possibile redirect
         //public IActionResult Index() => Redirect(Url.Action("Index", "Utente"));
 
-        public IActionResult Index() => View();
+        public IActionResult Index()
+        {
+            SchoolContext context = new SchoolContext();
+
+            //query top 10?
+            var query = from prodotti in context.Prodotto select prodotti;
+
+            return View(query.ToList());
+        }
     }
 }
