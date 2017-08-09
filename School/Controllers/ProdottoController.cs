@@ -27,9 +27,9 @@ namespace School.Controllers
         [HttpPost]
         public IActionResult Find(string input)
         {
-            var query = from prodotti in Context.Prodotto
+            var query = (from prodotti in Context.Prodotto
                         where prodotti.Titolo.Contains(input) || prodotti.Descrizione.Contains(input)
-                        select prodotti;
+                        select prodotti).OrderByDescending(x => x.Prezzo);
 
             return View(query.ToList());
         }

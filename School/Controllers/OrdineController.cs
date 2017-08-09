@@ -8,6 +8,7 @@ using School.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using School.Model;
+using Microsoft.AspNetCore.Http;
 
 namespace School.Controllers
 {
@@ -48,6 +49,18 @@ namespace School.Controllers
                         select new OrdiniJoinDataSource { CdOrdine = ordini.CdOrdine, Username = utenti.Username, Titolo = prodotti.Titolo, Totale = ordini.Totale };
 
             return View(query.ToList());
+        }
+
+        public IActionResult Add(string input)
+        {
+            //aggiunge al carrello (in session) il prodotto con CdProdotto = input
+            HttpContext.Session.SetString("Cart", input);
+
+            var session = HttpContext.Session.GetString("Cart");
+
+            Console.WriteLine(session);
+
+            return Redirect("/Home/Index");
         }
 
         public IActionResult Index() => Redirect("/Ordine/List");
