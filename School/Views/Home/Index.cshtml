@@ -11,9 +11,34 @@
     <div class="main">
         <ul id="menu">
             <!-- link a UtenteController.Index() -->
-            <li>@Html.ActionLink("Lista utenti", "Index", "Utente")</li>
+            <li>@Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
+            <li>@Html.ActionLink("Lista Prodotti", "Index", "Prodotto")</li>
+            <li>@Html.ActionLink("Lista Ordini", "Index", "Ordine")</li>
         </ul>
     </div>
+
+
+
+
+    <div id="test">
+
+
+        <!-- 
+
+            QUERY?? (NEL COTROLLER?)
+            "select Utente.username, Ordine.CD_ORDINE, Ordine.totale, Prodotto.titolo from 
+	        ordine join Utente on Ordine.CD_UTENTE = Utente.CD_UTENTE
+	        join Ordine_Prodotto on Ordine.CD_ORDINE = Ordine_Prodotto.CD_ORDINE
+	        join prodotto on prodotto.CD_PRODOTTO = Ordine_Prodotto.CD_PRODOTTO"
+
+
+
+            BARRA TOP?? IN VIEWS/SHARED/_LAYOUT:5
+        -->
+
+    </div>
+
+
 
     <div class="footer">
         <h6>footer</h6>

@@ -1,8 +1,0 @@
-@using School.Models
-
-<grid id="grid" controller="Enrollments" primary-key="enrollmentID">
-    <column field="enrollmentID" title="Id" type="Number" editable="false" required="true" />
-    <column field="courseID" title="Course Id" type="Number" editable="true" required="true" values="@ViewData[nameof(Course)]" />
-    <column field="studentID" title="Student Id" type="Number" editable="true" required="true" values="@ViewData[nameof(Student)]" />
-    <column field="grade" title="Grade" type="Number" />
-</grid>

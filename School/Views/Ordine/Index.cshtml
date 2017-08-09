@@ -1,0 +1,45 @@
+@using School.Model
+@using System.Collections.Generic
+@{
+    ViewBag.Title = "Lista Ordini";
+}
+
+@model IEnumerable<Ordine>
+
+    <div class="container">
+        <div class="header">
+            <h2>Lista Ordini</h2>
+        </div>
+
+        <div class="main">
+
+            <h4>Lista Prodotti</h4>
+
+
+            <!-- DA PROVARE KENDOGRID -->
+
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Totale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model)   //model parametro view
+                    {
+                        <tr>
+                            <td>@s.DtInserimento</td>
+                            <td>@s.Totale</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <h6>footer</h6>
+        </div>
+    </div>
+

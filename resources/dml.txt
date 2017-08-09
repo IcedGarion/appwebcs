@@ -9,3 +9,111 @@ INSERT INTO [dbo].[Utente]
            ('marcoRossi', '1234')
 GO
 
+
+
+
+
+
+/***** inserisce nuovo prodotto  ******/
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Prodotto]
+           ([titolo]
+           ,[descrizione]
+           ,[prezzo]
+           ,[sconto]
+           ,[disponibile])
+     VALUES
+           ('laptop'
+           ,'notebook x'
+           ,'500'
+           ,'10'
+           ,'si')
+GO
+
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Prodotto]
+           ([titolo]
+           ,[descrizione]
+           ,[prezzo]
+           ,[sconto]
+           ,[disponibile])
+     VALUES
+           ('tv'
+           ,'schermo lcd'
+           ,1000
+           ,10
+           ,'si')
+GO
+
+
+/****** inserisce nuovo ordine ******/
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Ordine]
+           ([CD_UTENTE]
+           ,[dt_inserimento]
+           ,[totale]
+           ,[stato])
+     VALUES
+           (1
+           ,'2017-08-02'
+           ,'490'
+           ,'processed')
+GO
+
+
+
+
+
+
+
+/****** join ordine e prodotti ******/
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Ordine_Prodotto]
+           ([CD_ORDINE]
+           ,[CD_PRODOTTO]
+           ,[quantita])
+     VALUES
+           (1
+           ,1
+           ,1)
+GO
+
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Ordine_Prodotto]
+           ([CD_ORDINE]
+           ,[CD_PRODOTTO]
+           ,[quantita])
+     VALUES
+           (1
+           ,2
+           ,1)
+GO
+
+
+
+/***** una select per gli ordini ******/
+USE [Progetto]
+GO
+
+select Utente.username, Ordine.CD_ORDINE, Ordine.totale, Prodotto.titolo from 
+	ordine join Utente on Ordine.CD_UTENTE = Utente.CD_UTENTE
+	join Ordine_Prodotto on Ordine.CD_ORDINE = Ordine_Prodotto.CD_ORDINE
+	join prodotto on prodotto.CD_PRODOTTO = Ordine_Prodotto.CD_PRODOTTO
+GO
+
+
+
+
+
+
+
