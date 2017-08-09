@@ -1,3 +1,10 @@
+@using School.Controllers
+@using School.Data
+@using School.Model
+@using System.Collections.Generic
+
+@model IEnumerable<OrdiniDataSource>
+
 @{
     ViewBag.Title = "Index";
     Layout = "_LayoutEmpty";
@@ -19,9 +26,22 @@
 
 
 
+    <!-- stampa utenti da query esterna -->
+    @foreach (var s in Model)
+    {
+        @s.CdOrdine
+        <br/>
+        @s.Username
+        <br />
+        @s.Titolo
+        <br />
+        @s.Totale
+    }
+
 
     <div id="test">
 
+        
 
         <!-- 
 
