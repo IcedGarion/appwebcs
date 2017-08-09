@@ -32,8 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Ordine\" />
-    <Folder Include="Views\Prodotto\" />
+    <Folder Include="Views\AdminHome\" />
   </ItemGroup>
 
 </Project>

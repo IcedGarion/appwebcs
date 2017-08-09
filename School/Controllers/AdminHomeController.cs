@@ -8,11 +8,8 @@ using System.Linq;
 
 namespace School.Controllers
 {
-    public class HomeController : Controller
+    public class AdminHomeController : Controller
     {
-        //possibile redirect
-        //public IActionResult Index() => Redirect(Url.Action("Index", "Utente"));
-
         public IActionResult Index() => View();
     }
 }

@@ -22,7 +22,9 @@ namespace School.Controllers
         protected override Func<Prodotto, int, bool> FilterById => (e, id) => e.CdProdotto == id;
 
         //passa alla view la lista di tutte le entites del controller (Context.Prodotto)
-        public async Task<IActionResult> Index() => View(await Entities.ToListAsync());
+        public async Task<IActionResult> List() => View(await Entities.ToListAsync());
+
+        public IActionResult Index() => Redirect("/Prodotto/List");
 
     }
 }

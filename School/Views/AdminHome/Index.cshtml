@@ -1,0 +1,24 @@
+
+@{
+    ViewData["Title"] = "ADMIN HOME";
+}
+
+<div class="container">
+    <div class="header">
+        <h2>Index</h2>
+    </div>
+
+    <div class="main">
+        <h4>Menu</h4>
+        <ul id="menu">
+            <li>@Html.ActionLink("Elenco utenti", "List", "Utente")</li>
+            <li>@Html.ActionLink("Catalogo Prodotti", "List", "Prodotto")</li>
+            <li>@Html.ActionLink("Elenco Ordini", "List", "Ordine")</li>
+        </ul>
+
+    </div>
+
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>

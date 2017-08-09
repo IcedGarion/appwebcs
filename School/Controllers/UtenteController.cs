@@ -45,7 +45,9 @@ namespace School.Controllers
 
         //passa alla view la lista di tutte le entites del controller (Context.Utente)
         //Utente/Index: in @Model si trova la lista
-        public async Task<IActionResult> Index() => View(await Entities.ToListAsync());
+        public async Task<IActionResult> List() => View(await Entities.ToListAsync());
+
+        public IActionResult Index() => Redirect("/Utente/List");
 
     }
 }

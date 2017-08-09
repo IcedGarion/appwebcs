@@ -3,8 +3,6 @@
 @using School.Model
 @using System.Collections.Generic
 
-@model IEnumerable<OrdiniDataSource>
-
 @{
     ViewBag.Title = "Index";
     Layout = "_LayoutEmpty";
@@ -16,54 +14,15 @@
     </div>
 
     <div class="main">
+        <h4>Menu: riportati tutti i link attivi a pagine</h4>
         <ul id="menu">
-            <!-- link a UtenteController.Index() -->
+            <li>@Html.ActionLink("Admin Home", "Index", "AdminHome")</li>
             <li>@Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
             <li>@Html.ActionLink("Crea Utente", "Create", "Utente")</li>
-            <li>@Html.ActionLink("Lista Prodotti", "Index", "Prodotto")</li>
+            <li>@Html.ActionLink("Catalogo Prodotti", "Index", "Prodotto")</li>
             <li>@Html.ActionLink("Lista Ordini", "Index", "Ordine")</li>
         </ul>
     </div>
-
-
-   
-
-
-    
-    <!-- stampa utenti da query esterna: serve çmodel IEnumerable<OrdiniDataSource> -
-    çforeach (var s in Model)
-    {
-        <span>Codice ordine: </span>çs.CdOrdine
-        <br/>
-        <span>Username: </span>çs.Username
-        <br />
-        <span>Titolo prodotto: </spançs.Titolo
-        <br />
-        <span>Totale ordine: </span>çs.Totale
-        <br /><br />
-        }
-
-        ->
-    <div id="test">
-
-        
-
-        <!-- 
-
-            QUERY?? (NEL COTROLLER?)
-            "select Utente.username, Ordine.CD_ORDINE, Ordine.totale, Prodotto.titolo from 
-	        ordine join Utente on Ordine.CD_UTENTE = Utente.CD_UTENTE
-	        join Ordine_Prodotto on Ordine.CD_ORDINE = Ordine_Prodotto.CD_ORDINE
-	        join prodotto on prodotto.CD_PRODOTTO = Ordine_Prodotto.CD_PRODOTTO"
-
-
-
-            BARRA TOP?? IN VIEWS/SHARED/_LAYOUT:5
-        -->
-
-   
-
-
 
     <div class="footer">
         <h6>footer</h6>
