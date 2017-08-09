@@ -13,7 +13,6 @@ namespace School.Controllers
         //possibile redirect
         //public IActionResult Index() => Redirect(Url.Action("Index", "Utente"));
 
-        //passa subito alla view (Home/index)
         public IActionResult Index()
         {
             SchoolContext context = new SchoolContext();
@@ -21,6 +20,7 @@ namespace School.Controllers
             //query separata dal suo controller per restituire elenco utenti (formattati nel loro datasource)
             //perche' in View va specificato il @Model IEnumerable<UtentiDataSource>
             //var query = from utenti in context.Utente select new UtentiDataSource { Username = utenti.Username, Password = utenti.Password };
+
 
             var query = from ordini in context.Ordine
                         join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente

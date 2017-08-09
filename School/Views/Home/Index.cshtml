@@ -19,26 +19,31 @@
         <ul id="menu">
             <!-- link a UtenteController.Index() -->
             <li>@Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
+            <li>@Html.ActionLink("Crea Utente", "Create", "Utente")</li>
             <li>@Html.ActionLink("Lista Prodotti", "Index", "Prodotto")</li>
             <li>@Html.ActionLink("Lista Ordini", "Index", "Ordine")</li>
         </ul>
     </div>
 
 
+   
 
-    <!-- stampa utenti da query esterna -->
-    @foreach (var s in Model)
+
+    
+    <!-- stampa utenti da query esterna: serve çmodel IEnumerable<OrdiniDataSource> -
+    çforeach (var s in Model)
     {
-        @s.CdOrdine
+        <span>Codice ordine: </span>çs.CdOrdine
         <br/>
-        @s.Username
+        <span>Username: </span>çs.Username
         <br />
-        @s.Titolo
+        <span>Titolo prodotto: </spançs.Titolo
         <br />
-        @s.Totale
-    }
+        <span>Totale ordine: </span>çs.Totale
+        <br /><br />
+        }
 
-
+        ->
     <div id="test">
 
         
@@ -56,7 +61,7 @@
             BARRA TOP?? IN VIEWS/SHARED/_LAYOUT:5
         -->
 
-    </div>
+   
 
 
 

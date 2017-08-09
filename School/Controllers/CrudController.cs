@@ -28,7 +28,7 @@ namespace School.Controllers
         //public virtual IActionResult Index() => View();
 
         [HttpGet]
-        public virtual async Task<IActionResult> Read()
+        protected virtual async Task<IActionResult> Read()
         {
             var data = Entities;
 
@@ -40,7 +40,7 @@ namespace School.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Create(TEntity entity)
+        protected virtual async Task<IActionResult> Create(TEntity entity)
         {
             Context.Add(entity);
             await Context.SaveChangesAsync();
@@ -49,7 +49,7 @@ namespace School.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Update(TEntity entity)
+        protected virtual async Task<IActionResult> Update(TEntity entity)
         {
             Context.Update(entity);
             Context.Entry(entity).State = EntityState.Modified;
@@ -59,7 +59,7 @@ namespace School.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Delete(TId id)
+        protected virtual async Task<IActionResult> Delete(TId id)
         {
             var entity = await Entities.SingleOrDefaultAsync(s => FilterById(s, id));
             if (entity == null)

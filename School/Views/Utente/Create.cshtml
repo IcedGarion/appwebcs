@@ -1,0 +1,31 @@
+@using School.Model
+
+@{
+    ViewData["Title"] = "Nuovo Utente";
+}
+
+@model Utente
+
+<div class="container">
+    <div class="header">
+        <h2>Create</h2>
+    </div>
+
+    <div class="main">
+        @using (Html.BeginForm())
+        {
+            <fieldset>
+                @Html.LabelFor(model => model.Username)<br />
+                @Html.TextBoxFor(model => model.Username)<br />
+                @Html.LabelFor(model => model.Password)<br />
+                @Html.TextBoxFor(model => model.Password)<br />
+
+                <input type="submit" value="Crea nuovo utente" />
+            </fieldset>
+        }
+    </div>
+
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>
