@@ -21,6 +21,20 @@ namespace School.Controllers
 
         protected override Func<Ordine, int, bool> FilterById => (e, id) => e.CdOrdine == id;
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View(new Ordine());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Ordine ord)
+        {
+            await base.Create(ord);
+
+            return Redirect("/Ordine");
+        }
+
         //passa alla view la lista di tutte le entites del controller (Context.Ordine)
         public IActionResult List()
         {

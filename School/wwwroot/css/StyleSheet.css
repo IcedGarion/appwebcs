@@ -1,0 +1,25 @@
+﻿body
+{
+    background-color : azure;
+    
+}
+
+.header
+{
+    background-color: aqua;
+    border: solid;
+    border-color: blue;
+}
+
+.main
+{
+    background-color: white;
+}
+
+.footer
+{
+    background-color : aqua;
+    border : solid;
+    border-color : black;
+}
+

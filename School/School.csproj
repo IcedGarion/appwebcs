@@ -6,8 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\StyleSheet.css" />
     <Content Include="wwwroot\default.html" />
+    <Content Include="wwwroot\StyleSheet.css" />
     <Content Include="wwwroot\styles\layout.css" />
+    <Content Include="wwwroot\styles\StyleSheet.css" />
   </ItemGroup>
   
   <ItemGroup>

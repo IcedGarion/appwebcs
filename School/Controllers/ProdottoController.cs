@@ -36,5 +36,6 @@ namespace School.Controllers
 
         public IActionResult Index() => Redirect("/Prodotto/List");
 
+
     }
 }
