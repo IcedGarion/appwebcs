@@ -67,7 +67,7 @@ namespace School.Controllers
 
                 //SALVA IN SESSION DATI LOGIN
                 HttpContext.Session.SetInt32("CdUtente", loggato.CdUtente);
-                HttpContext.Session.SetString("Ruolo", loggato.Stato);
+                HttpContext.Session.SetString("Ruolo", loggato.Stato == null? "none" : loggato.Stato);
 
                 return Redirect("/Home");
             }

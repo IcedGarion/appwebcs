@@ -1,0 +1,51 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "PRIVATE HOME";
+}
+
+<div class="container">
+    <div class="header">
+        <h2>Admin Home</h2>
+    </div>
+
+    <div class="main">
+
+        <!-- Redirect? non dovrebbe servire una volta introdotta autorizzazione -->
+        @if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo") == null)
+        {
+            <h1>Non sei loggato!</h1>
+        }
+        else
+        {
+            <h4>Menu</h4>
+            
+            
+                <!-- ruolo admin -->
+                @if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo").Equals("admin"))
+                {
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Elenco utenti", "List", "Utente")</li>
+                        <li>@Html.ActionLink("Catalogo Prodotti", "List", "Prodotto")</li>
+                        <li>@Html.ActionLink("Elenco Totale Ordini", "List", "Ordine")</li>
+                    </ul>
+                }
+                else if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo").Equals("user"))
+                {
+                    <!-- ruolo user -->
+                    <ul>
+                        <li>@Html.ActionLink("Elenco Ordini", "List", "Ordine")</li>
+                    </ul>
+                }
+                else
+                {
+                    <h1>Non sei loggato!</h1>
+                }
+        }
+    </div>
+
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>

@@ -31,13 +31,18 @@
             {
                 <b>NO</b>
             }
+            
+            @if(HttpContextAccessor.HttpContext.Session.GetInt32("ErrorMsg") != null)
+            {
+                <b>@HttpContextAccessor.HttpContext.Session.GetInt32("ErrorMsg")</b>
+            }
         </h2>
 
         <h4>Menu: riportati tutti i link attivi a pagine</h4>
         <ul id="menu">
             <li>@Html.ActionLink("Login", "Login", "Utente")</li>
             <li>@Html.ActionLink("Logout", "Logout", "Utente")</li>
-            <li>@Html.ActionLink("Admin Home", "Index", "AdminHome")</li>
+            <li>@Html.ActionLink("Private Home", "Index", "PrivateHome")</li>
             <li>@Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
             <li>@Html.ActionLink("Crea Utente", "Create", "Utente")</li>
             <li>@Html.ActionLink("Catalogo Prodotti", "Index", "Prodotto")</li>
