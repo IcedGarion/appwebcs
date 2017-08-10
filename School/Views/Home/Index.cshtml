@@ -2,6 +2,9 @@
 @using School.Data
 @using School.Model
 @using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
 
 @{
     ViewBag.Title = "Index";
@@ -18,10 +21,11 @@
     <div class="main">
 
         <h2>
-            Loggato: 
-            @if (TempData["CdUtente"] != null)
+            <b>Loggato: </b><br />
+            @if (HttpContextAccessor.HttpContext.Session.GetInt32("CdUtente") != null)
             {
-                @TempData["CdUtente"];
+                <b>@HttpContextAccessor.HttpContext.Session.GetInt32("CdUtente")</b>
+                <b>Ruolo: @HttpContextAccessor.HttpContext.Session.GetString("Ruolo")</b>
             }
             else
             {
@@ -31,7 +35,8 @@
 
         <h4>Menu: riportati tutti i link attivi a pagine</h4>
         <ul id="menu">
-            <li>@Html.ActionLink("Login", "Login", "Home")</li>
+            <li>@Html.ActionLink("Login", "Login", "Utente")</li>
+            <li>@Html.ActionLink("Logout", "Logout", "Utente")</li>
             <li>@Html.ActionLink("Admin Home", "Index", "AdminHome")</li>
             <li>@Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
             <li>@Html.ActionLink("Crea Utente", "Create", "Utente")</li>

@@ -44,6 +44,9 @@ namespace School
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            //session2
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddMvc();
             //session
             services.AddDistributedMemoryCache();

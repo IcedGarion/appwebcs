@@ -10,9 +10,6 @@ namespace School.Controllers
 {
     public class HomeController : Controller
     {
-        //possibile redirect
-        //public IActionResult Index() => Redirect(Url.Action("Index", "Utente"));
-
         public IActionResult Index()
         {
             SchoolContext context = new SchoolContext();
@@ -22,7 +19,5 @@ namespace School.Controllers
 
             return View(query.ToList());
         }
-
-        public IActionResult Login() => View();
     }
 }

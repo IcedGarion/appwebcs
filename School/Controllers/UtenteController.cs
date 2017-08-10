@@ -8,6 +8,7 @@ using School.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using School.Model;
+using Microsoft.AspNetCore.Http;
 
 namespace School.Controllers
 {
@@ -46,32 +47,48 @@ namespace School.Controllers
             return Redirect("/Utente");
         }
 
+        [HttpGet]
+        public IActionResult Login() => View();
+
+
         [HttpPost]
         public IActionResult Login(string user, string pass)
         {
+            Utente loggato;
             //controlla se esiste utente con quella password
             var query = from utenti in Context.Utente
                          where utenti.Username.Equals(user) && utenti.Password.Equals(pass)
                          select utenti;
 
-            //se trova un risultato, ok
+            //se trova un risultato, salva in session codice e ruolo
             if(query.Count() == 1)
             {
-                //SALVA IN SESSION DATI LOGIN
-                TempData["CdUtente"] = query.ToList()[0].CdUtente;
+                loggato = query.ToList()[0];
 
-                var a = (TempData["CdUtente"]);
+                //SALVA IN SESSION DATI LOGIN
+                HttpContext.Session.SetInt32("CdUtente", loggato.CdUtente);
+                HttpContext.Session.SetString("Ruolo", loggato.Stato);
 
                 return Redirect("/Home");
             }
             //altrimenti rimanda alla login con messaggio
             else
             {
-                TempData["loginMsg"] = "Username o Password non corretti";
 
-                return Redirect("/Home/Login");
+                HttpContext.Session.SetString("LoginMsg", "Username o Password non corretti");
+
+                return Redirect("/Utente/Login");
             }
             
+        }
+
+        [HttpGet]
+        public IActionResult Logout(string user, string pass)
+        {
+            HttpContext.Session.Remove("CdUtente");
+            HttpContext.Session.Remove("Ruolo");
+
+            return Redirect("/Home");
         }
 
         //passa alla view la lista di tutte le entites del controller (Context.Utente)
