@@ -28,21 +28,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var s in Model)
-                    {
-                        <tr>
-                            <td>@s.CdOrdine</td>
-                            <td>@s.Username</td>
-                            <td>@s.Titolo</td>
-                            <td>@s.Quantita</td>
-                            <td>@s.DtInserimento</td>
-                            <td>@s.Totale</td>
-                        </tr>
-                    }
-                        
+
+                    
             </tbody>
 
+
             </table>
+
+            <ul>
+                @foreach (var group in Model.GroupBy(item => item.CdOrdine))
+                {
+                    <li>
+                        @group.Key
+
+                    <ul>
+                        @foreach (var s in group)
+                        {
+                            <li>@s.CdOrdine</li>
+                            <li>@s.Username</li>
+                            <li>@s.Titolo</li>
+                            <li>@s.Quantita</li>
+                            <li>@s.DtInserimento</li>
+                            <li>@s.Totale</li>
+                        }
+                    </ul>
+                    </li>
+                }
+            </ul>
+
         </div>
 
         <div class="footer">
