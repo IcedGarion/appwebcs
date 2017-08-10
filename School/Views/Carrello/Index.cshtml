@@ -1,20 +1,26 @@
-@using School.Model
+@using School.Data
 @using System.Collections.Generic
 
 @{
-    ViewData["Title"] = "PRODOTTI IN OFFERTA";
+    ViewData["Title"] = "CARRELLO";
+    double totale = 0;
 }
 
-@model IEnumerable<Prodotto>
+@model IEnumerable<CarrelloDataSource>
 
-    <div class="container">
-        <div class="header">
-            <h2>Offerte</h2>
-        </div>
+<div class="container">
+    <div class="header">
+        <h2>Carrello</h2>
+    </div>
 
-        <div class="main">
-            <h4>Lista Prodotti Scontati</h4>
+    <div class="main">
 
+        @if (Model.Count() == 0)
+        {
+            <h4>Carrello Vuoto!</h4>
+        }
+        else
+        {
             <table border="1">
                 <thead>
                     <tr>
@@ -23,26 +29,38 @@
                         <th>Prezzo</th>
                         <th>Sconto</th>
                         <th>Immagine</th>
-                        <th>Disponibile</th>
+                        <th>Quantita'</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var s in Model)
                     {
+                        totale += (s.Prezzo - s.Sconto) * s.Quantita;
+
                         <tr>
                             <td>@s.Titolo</td>
                             <td>@s.Descrizione</td>
                             <td>@s.Prezzo</td>
                             <td>@s.Sconto</td>
                             <td>@s.Immagine</td>
-                            <td>@s.Disponibile</td>
+                            <td>@s.Quantita</td>
+
+                       
+                            RIMUOVI PRODOTTO!
+
+
                         </tr>
                     }
-
                 </tbody>
-
             </table>
 
-        </div>
+            <h4>TOTALE CARRELLO: @totale</h4>
+        }
     </div>
+
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>
+

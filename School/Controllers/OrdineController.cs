@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using School.Controllers;
 using School.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using School.Model;
-using Microsoft.AspNetCore.Http;
 
 namespace School.Controllers
 {
@@ -51,36 +49,7 @@ namespace School.Controllers
             return View(query.ToList());
         }
 
-        public IActionResult Add(string prodotto, int qta)
-        {
-            List<OrdineProdotto> carrello;
-
-            Int32.TryParse(prodotto, out int cdprodotto);
-
-            //controlla se c'e' gia' qualche prodotto nel carrello in session:
-            var exCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
-            if (exCart == null)
-            {
-                //crea nuovo carrello aggiungendo il primo prodotto
-                carrello = new List<OrdineProdotto>();
-            }
-            //se invece esiste gia', accoda un nuovo prodotto alla lista
-            else
-            {
-                //aggiunge al carrello (in session) il prodotto
-                carrello = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");    
-            }
-
-            carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
-            HttpContext.Session.SetObjectAsJson("Cart", carrello);
-
-            //controllo
-            //var session = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
-
-            return Redirect("/Home/Index");//redir to cart page
-        }
-
-        public IActionResult Index() => Redirect("/Ordine/List");
+        public IActionResult Index() => Redirect("~/Ordine/List");
 
     }
 }
