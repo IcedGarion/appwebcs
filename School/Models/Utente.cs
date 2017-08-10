@@ -13,7 +13,7 @@ namespace School.Model
         public int CdUtente { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string Stato { get; set; }
+        public string Ruolo { get; set; }
 
         public virtual ICollection<Ordine> Ordine { get; set; }
     }

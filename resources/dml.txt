@@ -4,11 +4,22 @@ GO
 
 INSERT INTO [dbo].[Utente]
            ([username]
-           ,[password])
+           ,[password]
+		   ,[ruolo])
      VALUES
-           ('marcoRossi', '1234')
+           ('marcoRossi', '1234', 'user')
 GO
 
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Utente]
+           ([username]
+           ,[password]
+		   ,[ruolo])
+     VALUES
+           ('francoNeri', 'asdf', 'admin')
+GO
 
 
 
@@ -32,6 +43,8 @@ INSERT INTO [dbo].[Prodotto]
            ,'si')
 GO
 
+
+/***** inserisce nuovo prodotto  con immagine ******/
 USE [Progetto]
 GO
 
@@ -40,14 +53,23 @@ INSERT INTO [dbo].[Prodotto]
            ,[descrizione]
            ,[prezzo]
            ,[sconto]
-           ,[disponibile])
-     VALUES
-           ('tv'
+           ,[disponibile]
+		   ,[immagine])
+
+	SELECT 'tv'
            ,'schermo lcd'
            ,1000
            ,10
-           ,'si')
+           ,'si'
+		   , BulkColumn 
+		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/loading.png', Single_Blob) as image
+           
 GO
+
+
+
+
+
 
 
 /****** inserisce nuovo ordine ******/
@@ -60,7 +82,7 @@ INSERT INTO [dbo].[Ordine]
            ,[totale]
            ,[stato])
      VALUES
-           (1
+           (2
            ,'2017-08-02'
            ,'490'
            ,'processed')

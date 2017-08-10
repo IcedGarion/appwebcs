@@ -14,7 +14,7 @@ namespace School.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
             optionsBuilder.UseSqlServer(@"Server=WINDPW-PC\SQLEXPRESS; Database=Progetto; User ID=sa; Password=1234; MultipleActiveResultSets=true");
         }
 
@@ -89,9 +89,7 @@ namespace School.Data
                     .HasColumnName("disponibile")
                     .HasColumnType("varchar(10)");
 
-                entity.Property(e => e.Immagine)
-                    .HasColumnName("immagine")
-                    .HasColumnType("image");
+                entity.Property(e => e.Immagine).HasColumnName("immagine");
 
                 entity.Property(e => e.Prezzo).HasColumnName("prezzo");
 
@@ -108,6 +106,10 @@ namespace School.Data
                 entity.HasKey(e => e.CdUtente)
                     .HasName("PK_Utente");
 
+                entity.HasIndex(e => e.Username)
+                    .HasName("UQ__Utente__F3DBC57291EBE031")
+                    .IsUnique();
+
                 entity.Property(e => e.CdUtente).HasColumnName("CD_UTENTE");
 
                 entity.Property(e => e.Password)
@@ -115,8 +117,8 @@ namespace School.Data
                     .HasColumnName("password")
                     .HasColumnType("varchar(50)");
 
-                entity.Property(e => e.Stato)
-                    .HasColumnName("stato")
+                entity.Property(e => e.Ruolo)
+                    .HasColumnName("ruolo")
                     .HasColumnType("varchar(10)");
 
                 entity.Property(e => e.Username)
@@ -127,35 +129,3 @@ namespace School.Data
         }
     }
 }
-
-/*
-
-using Microsoft.EntityFrameworkCore;
-using School.Models;
-
-namespace School.Data
-{
-    public class SchoolContext : DbContext
-    {
-        public SchoolContext(DbContextOptions<SchoolContext> options) : base(options)
-        { }
-
-        public DbSet<Utente> Utenti { get; set; }
-
-        public DbSet<Ordine> Ordini { get; set; }
-
-        public DbSet<Prodotto> Prodotti { get; set; }
-
-        public DbSet<OrdineProdotto> OrdiniProdotti { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Utente>().ToTable(nameof(Utente));
-            modelBuilder.Entity<Prodotto>().ToTable(nameof(Prodotto));
-            modelBuilder.Entity<Ordine>().ToTable(nameof(Ordine));
-            modelBuilder.Entity<OrdineProdotto>().ToTable(nameof(OrdineProdotto));
-        }
-    }
-}
-
-*/

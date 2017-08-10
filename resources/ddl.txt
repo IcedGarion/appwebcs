@@ -14,9 +14,9 @@ GO
 
 CREATE TABLE [dbo].[Utente](
 	[CD_UTENTE] [int] IDENTITY(1,1) NOT NULL,
-	[username] [varchar](50) NOT NULL,
+	[username] [varchar](50) NOT NULL UNIQUE,
 	[password] [varchar](50) NOT NULL,
-	[stato] [varchar](10) NULL,
+	[ruolo] [varchar](10) NULL,
  CONSTRAINT [PK_Utente] PRIMARY KEY CLUSTERED 
 (
 	[CD_UTENTE] ASC
@@ -105,7 +105,7 @@ CREATE TABLE [dbo].[Prodotto](
 	[descrizione] [text] NOT NULL,
 	[prezzo] [float] NOT NULL,
 	[sconto] [float] NOT NULL,
-	[immagine] [image] NULL,
+	[immagine] [varbinary](max) NULL,
 	[disponibile] [varchar](10) NOT NULL,
  CONSTRAINT [PK_Prodotto] PRIMARY KEY CLUSTERED 
 (
