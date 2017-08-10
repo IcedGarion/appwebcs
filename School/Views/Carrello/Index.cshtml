@@ -34,28 +34,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var s in Model)
-                    {
-                        totale += (s.Prezzo - s.Sconto) * s.Quantita;
+                    
 
-                        <tr>
-                            <td>@s.Titolo</td>
-                            <td>@s.Descrizione</td>
-                            <td>@s.Prezzo</td>
-                            <td>@s.Sconto</td>
-                            <td>@s.Immagine</td>
-                            <td>@s.Quantita</td>
-
-                       
-                            RIMUOVI PRODOTTO!
+                    <!-- foreach andrebbe qua... -->
 
 
-                        </tr>
-                    }
                 </tbody>
             </table>
+            @foreach (var s in Model)
+            {
+                totale += (s.Prezzo - s.Sconto) * s.Quantita;
 
+                    @s.Titolo
+                    @s.Descrizione
+                    @s.Prezzo
+                    @s.Sconto
+                    @s.Immagine
+                    @s.Quantita
+
+
+                @using (Html.BeginForm("Remove", "Carrello", FormMethod.Post))
+                {
+                    <fieldset>
+                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                        <input type="submit" value="Rimuovi tutti dal carrello" />
+                    </fieldset>
+                }
+            }
             <h4>TOTALE CARRELLO: @totale</h4>
+
+            @using (Html.BeginForm("Buy", "Carrello", FormMethod.Post))
+            {
+                <fieldset>
+                    <input type="submit" value="PROCEDI ALL'ACQUISTO'" />
+                </fieldset>
+            }
         }
     </div>
 

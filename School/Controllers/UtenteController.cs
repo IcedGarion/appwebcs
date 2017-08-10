@@ -68,6 +68,7 @@ namespace School.Controllers
                 //SALVA IN SESSION DATI LOGIN
                 HttpContext.Session.SetInt32("CdUtente", loggato.CdUtente);
                 HttpContext.Session.SetString("Ruolo", loggato.Stato == null? "none" : loggato.Stato);
+                HttpContext.Session.Remove("LoginMsg");
 
                 return Redirect("/Home");
             }
@@ -87,6 +88,8 @@ namespace School.Controllers
         {
             HttpContext.Session.Remove("CdUtente");
             HttpContext.Session.Remove("Ruolo");
+            HttpContext.Session.Remove("LoginMsg");
+            HttpContext.Session.Remove("Cart");
 
             return Redirect("/Home");
         }

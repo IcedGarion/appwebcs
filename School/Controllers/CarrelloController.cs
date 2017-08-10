@@ -40,6 +40,7 @@ namespace School.Controllers
         }
 
         //aggiunge un prodotto al carrello
+        [HttpPost]
         public IActionResult Add(string prodotto, int qta)
         {
             List<OrdineProdotto> carrello;
@@ -63,13 +64,47 @@ namespace School.Controllers
             carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
             HttpContext.Session.SetObjectAsJson("Cart", carrello);
 
-            return Redirect("~/Carrello/Index");
+            return Redirect("/Carrello/Index");
         }
 
-        #warning da finire!
+        [HttpPost]
         public IActionResult Remove(string prodotto)
         {
-            return Redirect("Carrello/Index");
+            Int32.TryParse(prodotto, out int cdprodotto);
+
+            //legge il carrello
+            var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
+            
+            //rimuove il prodotto
+            SessionCart.RemoveAll(x => x.CdProdotto == cdprodotto);
+
+            //se ora il carrello e' vuoto, elimina oggetto in session
+            if (SessionCart.Count() == 0)
+            {
+                HttpContext.Session.Remove("Cart");
+            }
+            else
+            {
+                HttpContext.Session.SetObjectAsJson("Cart", SessionCart);
+            }
+
+            return Redirect("/Carrello/Index");
+        }
+
+        [HttpPost]
+        public IActionResult Buy()
+        {
+            //legge il carrello
+            var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
+            if(SessionCart == null)
+            {
+                return Redirect("/Carrello/Index");
+            }
+
+            //inserisce un nuovo ordine e un nuovo ordineprodotto
+
+
+            return Redirect("/Ordini/List");
         }
     }
 }
