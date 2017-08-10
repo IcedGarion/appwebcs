@@ -82,7 +82,8 @@
                     @using (Html.BeginForm("Add", "Ordine", FormMethod.Post))
                     {
                         <fieldset>
-                            <input type="text" name="input" id="input" value="@s.CdProdotto" hidden />
+                            <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                            <input type="number" name="qta" id="qta" min="0"/>Quantita'
                             <input type="submit" value="Aggiungi al carrello" />
                         </fieldset>
                     }
@@ -90,9 +91,6 @@
                 <br />
                 <br />
             }
-
-       
-
     </div>
 
     <div class="footer">
