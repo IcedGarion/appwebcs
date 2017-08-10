@@ -16,8 +16,22 @@
     </div>
 
     <div class="main">
+
+        <h2>
+            Loggato: 
+            @if (TempData["CdUtente"] != null)
+            {
+                @TempData["CdUtente"];
+            }
+            else
+            {
+                <b>NO</b>
+            }
+        </h2>
+
         <h4>Menu: riportati tutti i link attivi a pagine</h4>
         <ul id="menu">
+            <li>@Html.ActionLink("Login", "Login", "Home")</li>
             <li>@Html.ActionLink("Admin Home", "Index", "AdminHome")</li>
             <li>@Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
             <li>@Html.ActionLink("Crea Utente", "Create", "Utente")</li>

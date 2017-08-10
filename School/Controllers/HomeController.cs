@@ -22,5 +22,7 @@ namespace School.Controllers
 
             return View(query.ToList());
         }
+
+        public IActionResult Login() => View();
     }
 }

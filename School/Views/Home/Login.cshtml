@@ -1,0 +1,33 @@
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+    <div class="header">
+        <h2>Login</h2>
+    </div>
+
+    <div class="main">
+        <h2>MESSAGGIO SESSION: 
+        @if (TempData["LoginMsg"] != null)
+        {
+            @TempData["LoginMsg"];
+        }  
+        </h2>
+
+        @using (Html.BeginForm("Login", "Utente", FormMethod.Post))
+        {
+            <fieldset>
+                <input type="text" name="user" id="user" /> Username <br />
+                <input type="text" name="pass" id="pass" /> Password <br />
+
+                <input type="submit" value="Log in" />
+            </fieldset>
+        }
+    </div>
+
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>
