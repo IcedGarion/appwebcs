@@ -36,6 +36,9 @@
             </table>
 
             <ul>
+
+                <!-- DA DIFFERENZIARE PER ADMIN? -->
+
                 @foreach (var group in Model.GroupBy(item => item.CdOrdine))
                 {
                     <li>
@@ -45,7 +48,6 @@
                         @foreach (var s in group)
                         {
                             <li>@s.CdOrdine</li>
-                            <li>@s.Username</li>
                             <li>@s.Titolo</li>
                             <li>@s.Quantita</li>
                             <li>@s.DtInserimento</li>

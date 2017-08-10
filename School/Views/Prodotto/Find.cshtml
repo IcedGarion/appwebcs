@@ -33,7 +33,17 @@
                         <td>@s.Descrizione</td>
                         <td>@s.Prezzo</td>
                         <td>@s.Sconto</td>
-                        <td>@s.Immagine</td>
+                        <td>
+                            @if (s.Immagine != null)
+                            {
+                                <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                     width="80" height="80" />
+                            }
+                            else
+                            {
+                                <b>NO IMAGE</b>
+                            }
+                        </td>
                         <td>@s.Disponibile</td>
                     </tr>
                 }

@@ -18,13 +18,12 @@
             <table border="1">
                 <thead>
                     <tr>
-                        <th>Titolo prodotto</th>
+                        <th>Titolo</th>
                         <th>Descrizione</th>
                         <th>Prezzo</th>
                         <th>Sconto</th>
                         <th>Immagine</th>
                         <th>Disponibile</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +34,17 @@
                             <td>@s.Descrizione</td>
                             <td>@s.Prezzo</td>
                             <td>@s.Sconto</td>
-                            <td>@s.Immagine</td>
+                            <td>
+                                @if (s.Immagine != null)
+                                {
+                                    <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                         width="80" height="80" />
+                                }
+                                else
+                                {
+                                    <b>NO IMAGE</b>
+                                }
+                            </td>
                             <td>@s.Disponibile</td>
                         </tr>
                     }

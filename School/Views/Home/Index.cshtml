@@ -60,8 +60,8 @@
                     <th>Descrizione</th>
                     <th>Prezzo</th>
                     <th>Sconto</th>
-                    <th>Immagine</th>
                     <th>Disponibile</th>
+                    <th>Immagine</th>
 
                 </tr>
             </thead>
@@ -75,9 +75,17 @@
                     @s.Descrizione<br />
                     @s.Prezzo<br />
                     @s.Sconto<br />
-                    @s.Immagine<br />
                     @s.Disponibile<br />
 
+                    @if (s.Immagine != null)
+                    {
+                        <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                             width="80" height="80" />     
+                    }
+                    else
+                    {
+                        <b>NO IMAGE</b>
+                    }
 
                     @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
                     {

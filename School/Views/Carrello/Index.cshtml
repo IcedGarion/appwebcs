@@ -49,7 +49,17 @@
                     @s.Descrizione
                     @s.Prezzo
                     @s.Sconto
-                    @s.Immagine
+
+                    @if (s.Immagine != null)
+                    {
+                        <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                             width="80" height="80" />
+                    }
+                    else
+                    {
+                        <b>NO IMAGE</b>
+                    }
+
                     @s.Quantita
 
 
