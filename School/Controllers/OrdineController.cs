@@ -7,6 +7,7 @@ using School.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using School.Model;
+using Microsoft.AspNetCore.Http;
 
 namespace School.Controllers
 {
@@ -20,18 +21,60 @@ namespace School.Controllers
 
         protected override Func<Ordine, int, bool> FilterById => (e, id) => e.CdOrdine == id;
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View(new Ordine());
-        }
-
         [HttpPost]
         public async Task<IActionResult> Create(Ordine ord)
         {
-            await base.Create(ord);
+            SchoolContext context = new SchoolContext();
 
-            return Redirect("/Ordine");
+            //legge il carrello
+            var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
+            if (SessionCart == null)
+            {
+                return Redirect("/Carrello/Index");
+            }
+
+            //legge cdUtente
+#warning nullable int
+            int utente = 0;
+            if (HttpContext.Session.GetInt32("CdUtente") != null)
+                utente = (int)HttpContext.Session.GetInt32("CdUtente");
+
+            //cerca nel db tutti i prodotti da inserire, per calcolare il totale
+            var AddProductsDb = from prodotti in context.Prodotto
+                              join carrello in SessionCart on prodotti.CdProdotto equals carrello.CdProdotto
+                              select new { Prezzo = prodotti.Prezzo, Sconto = prodotti.Sconto, Quantita = carrello.Quantita };
+
+            double totale = AddProductsDb.Sum(x => (x.Prezzo - x.Sconto) * x.Quantita);
+
+            //crea elenco ordineProdotto
+            List<OrdineProdotto> ordProd = new List<OrdineProdotto>();
+
+            foreach (var prod in SessionCart)
+            {
+                ordProd.Add(new OrdineProdotto
+                {
+                    CdProdotto = prod.CdProdotto,
+                    Quantita = prod.Quantita
+                });
+            }
+
+            //crea un nuovo ordine collegato all'utente e all'elenco di prodotti sopra
+            Ordine ordine = new Ordine
+            {
+                CdUtente = utente,
+                Stato = "Sent",
+                DtInserimento = DateTime.Now,
+                Totale = totale,
+                OrdineProdotto = ordProd
+            };
+
+            //salva sul db
+            await base.Create(ordine);
+
+            //rimuove carrello in session
+            HttpContext.Session.Remove("Cart");
+
+            return Redirect("/Ordine/List");
         }
 
         //passa alla view la lista di tutte le entites del controller (Context.Ordine)
@@ -44,7 +87,14 @@ namespace School.Controllers
                         join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente
                         join ordineProdotto in context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
                         join prodotti in context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
-                        select new OrdiniJoinDataSource { CdOrdine = ordini.CdOrdine, Username = utenti.Username, Titolo = prodotti.Titolo, Totale = ordini.Totale };
+                        select new OrdiniJoinDataSource
+                        {
+                            CdOrdine = ordini.CdOrdine,
+                            Username = utenti.Username,
+                            Titolo = prodotti.Titolo,
+                            DtInserimento = ordini.DtInserimento,
+                            Quantita = ordineProdotto.Quantita,
+                            Totale = ordini.Totale };
 
             return View(query.ToList());
         }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using School.Model;
 using School.Data;
@@ -89,22 +90,6 @@ namespace School.Controllers
             }
 
             return Redirect("/Carrello/Index");
-        }
-
-        [HttpPost]
-        public IActionResult Buy()
-        {
-            //legge il carrello
-            var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
-            if(SessionCart == null)
-            {
-                return Redirect("/Carrello/Index");
-            }
-
-            //inserisce un nuovo ordine e un nuovo ordineprodotto
-
-
-            return Redirect("/Ordini/List");
         }
     }
 }
