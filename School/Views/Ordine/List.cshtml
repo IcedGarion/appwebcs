@@ -1,5 +1,8 @@
 @using School.Data
 @using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewBag.Title = "LISTA ORDINI";
 }
@@ -20,7 +23,7 @@
                 <thead>
                     <tr>
                         <th>Codice ordine</th>
-                        <th>Username</th>
+                        <th>Stato</th>
                         <th>Titolo prodotto</th>
                         <th>Quantita'</th>
                         <th>Data</th>
@@ -37,8 +40,6 @@
 
             <ul>
 
-                <!-- DA DIFFERENZIARE PER ADMIN? -->
-
                 @foreach (var group in Model.GroupBy(item => item.CdOrdine))
                 {
                     <li>
@@ -48,6 +49,7 @@
                         @foreach (var s in group)
                         {
                             <li>@s.CdOrdine</li>
+                            <li>@s.Stato</li>
                             <li>@s.Titolo</li>
                             <li>@s.Quantita</li>
                             <li>@s.DtInserimento</li>

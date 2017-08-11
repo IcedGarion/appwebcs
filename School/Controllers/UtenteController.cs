@@ -94,6 +94,33 @@ namespace School.Controllers
             return Redirect("/Home");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Update(string user, string ruolo)
+        {
+            //riceve parametri dal form
+            Int32.TryParse(user, out int CdUtente);
+            Utente ToUpdate;
+
+            //cerca nel db quell'utente
+            var query = from utenti in Context.Utente
+                        where utenti.CdUtente.Equals(CdUtente)
+                        select utenti;
+
+            //prende il primo elemento (l'unico) della query
+            ToUpdate = query.ToList()[0];
+
+            //modifica ruolo solo se diverso!
+            if(!ToUpdate.Ruolo.Equals(ruolo))
+            {
+                ToUpdate.Ruolo = ruolo;
+
+                //salva su db
+                await base.Update(ToUpdate);
+            }
+
+            return Redirect("/Utente/List");
+        }
+
         //passa alla view la lista di tutte le entites del controller (Context.Utente)
         //Utente/Index: in @Model si trova la lista
         public async Task<IActionResult> List() => View(await Entities.ToListAsync());

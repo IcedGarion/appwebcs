@@ -14,126 +14,37 @@
     </div>
 
     <div class="main">
-        
-        <!-- KENDO GRID ESPONE MA NON MODIFICA/CANCELLA
-        <grid id="grid" controller="Utente">
-            <column field="username" title="username" type="String" required="true" editable="false"/>
-            <column field="password" title="password" type="String" required="true" editable="false" />
-            <column field="stato" title="stato" type="String" required="true" editable="true" />
-        </grid>
-            -->
-
-
-        <!-- KENDO GRID NON VA 
-
-        <div id="grid">
-            <script>
-             $(document).ready(function()
-            {
-            $("#grid").kendoGrid({
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: '@(Url.Action("Read"))',
-                            type: 'get',
-                            dataType: 'json'
-                        },
-                        update: {
-                            url: '@(Url.Action("Update"))',
-                            type:'post',
-                            dataType:'json'/*,
-                            data: function (data) {
-                                data.enrollmentDate = kendo.toString(data.enrollmentDate,'yyyy-MM-dd');
-                                return data;
-                            }*/
-                        },
-                        destroy: {
-                            url:'@(Url.Action("Delete"))',
-                            type: 'post',
-                            dataType: 'json'
-                        },
-                        create: {
-                            url: '@(Url.Action("Create"))',
-                            type: 'post',
-                            dataType: 'json'/*,
-                            data: function (data) {
-                                data.enrollmentDate = kendo.toString(data.enrollmentDate, 'yyyy-MM-dd');
-                                return data;
-                            }*/
-                        }
-                    },
-                    schema: {
-                        data: 'data',
-                        model: {
-                            CdUtente: 'CdUtente',
-                            fields: {
-                                CdUtente: {
-                                    type: 'number', editable: false, validation: { required: true }
-                                },
-                                Username: {
-                                    type: 'string', editable: true, validation: { required: true }
-                                },
-                                Password: {
-                                    type: 'string', editable: true, validation: { required: true }
-                                }/*,
-                                enrollmentDate: {
-                                    type: 'date', editable: true, format: '{0:dd/MM/yyyy}', validation: { required: true }
-                                }*/
-                            }
-                        }
-                    },
-                    requestEnd: function (e) {
-                        var grid = $('#grid').data('kendoGrid');
-                        var data = grid.dataSource;
-                        if (e.type === 'create' || e.type === 'update') {
-                            if (!e.response.Errors)
-                                data.read();
-                            else
-                                console.log('I had some issues');
-                        }
-                    }
-                },
-                filterable: true,
-                sortable: true,
-                pageable: false,
-                toolbar: ['create'],
-                editable: 'inline',
-                columns: [
-                    { field: 'CdUtente', title: 'CdUtente' },
-                    { field: 'Username', title: 'Username' },
-                    { field: 'Password', title: 'Password' },
-                    /*{ field: 'enrollmentDate', title: 'Enrollment Date', format: '{0:dd/MM/yyyy}' },*/
-                    { command: ['edit', 'destroy'], title: '&nbsp;', width: '180px' }
-                ]
-            });
-    });
-            </script>
- </div>
-
-      -->
-
-        <h4>Lista Utenti: nome e pass</h4>
-
+        <h4>Lista Utenti</h4>
         <table border="1">
-            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Ruolo</th>
+            </tr>
+
+            @foreach (var s in Model)   //model parametro view
+            {
                 <tr>
-                    <th>Username</th>
-                    <th>Password</th>
+                    <td>@s.Username</td>
+                    <td>@s.Password</td>
+                    <td>@s.Ruolo</td>
+
+                    <td>
+                        @using (Html.BeginForm("Update", "Utente", FormMethod.Post))
+                        {
+                            <fieldset>
+                                <input type="text" name="user" id="user" value="@s.CdUtente" hidden />
+                                <select name="ruolo" id="ruolo">
+                                    <option value="user">user</option>
+                                    <option value="admin">admin</option>
+                                </select>
+                                <input type="submit" value="Modifica Ruolo" />
+                            </fieldset>
+                        }
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var s in Model)   //model parametro view
-                {
-                    <tr>
-                        <td>@s.Username</td>
-                        <td>@s.Password</td>
-                        
-                    </tr>
-                }
-            </tbody>
+            }
         </table>
-
-
 
     </div>
 

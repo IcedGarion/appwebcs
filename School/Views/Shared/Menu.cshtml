@@ -7,6 +7,9 @@
         @Html.ActionLink("Home", "Index", "Home")
     </li>
     <li>
+        @Html.ActionLink("Home Privata", "Index", "PrivateHome")
+    </li>
+    <li>
         @Html.ActionLink("Prodotti", "Index", "Prodotto")
     </li>
     <li>
@@ -19,22 +22,22 @@
         @Html.ActionLink("Carrello", "Index", "Carrello")
     </li>
     <li>
-        @Html.ActionLink("Login", "Login", "Utente")
-    </li>
-    <li>
-        @Html.ActionLink("Logout", "Logout", "Utente")
-    </li>
-    <li>
         <!-- Altro modo di usare form: non passa la prima volta dal controller e puo' chiamare il controller che vuole -->
         <!-- Passa parametri alla action: Controller ha un metodo (Find) che accetta tanti parametri quanti gli input type-->
         @using (Html.BeginForm("Find", "Prodotto", FormMethod.Post))
         {
             <fieldset>
-                <input type="text" name="input" id="input"/>
+                <input type="text" name="input" id="input" />
 
                 <input type="submit" value="Cerca fra i prodotti" />
             </fieldset>
         }
+    </li>
+    <li>
+        @Html.ActionLink("Login", "Login", "Utente")
+    </li>
+    <li>
+        @Html.ActionLink("Logout", "Logout", "Utente")
     </li>
 </ul>
 

@@ -8,6 +8,8 @@ namespace School.Data
 
         public int CdOrdine { get; set; }
 
+        public string Stato { get; set; }
+
         public DateTime DtInserimento { get; set; }
 
         public int Quantita { get; set; }

@@ -84,24 +84,57 @@ namespace School.Controllers
 
             //prende cdUtente da session
             var tmp = HttpContext.Session.GetInt32("CdUtente");
+            var ruolo = HttpContext.Session.GetString("Ruolo");
 
 #warning da togliere dopo autenticazione
             if (tmp == null)
             {
+                //se non sei loggato, lista vuota
                 return View(new List<OrdiniJoinDataSource>());
             }
 
             int CdUtente = (int)tmp;
 
-            //invece di restituire solo gli ordini, fa una join per aggiungere altre informazioni
+            if (ruolo.Equals("user"))
+            {
+                //invece di restituire solo gli ordini, fa una join per aggiungere altre informazioni
+                var query = from ordini in context.Ordine
+                            join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente
+                            join ordineProdotto in context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
+                            join prodotti in context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
+                            where utenti.CdUtente.Equals(CdUtente)
+                            select new OrdiniJoinDataSource
+                            {
+                                CdOrdine = ordini.CdOrdine,
+                                Username = utenti.Username,
+                                Titolo = prodotti.Titolo,
+                                DtInserimento = ordini.DtInserimento,
+                                Quantita = ordineProdotto.Quantita,
+                                Totale = ordini.Totale
+                            };
+
+                return View(query.ToList());
+            }
+            else
+            {
+                return Redirect("/Ordine/WholeList");
+            }
+        }
+
+        //espone tutti gli ordini di tutti gli utenti
+        public IActionResult WholeList()
+        {
+            SchoolContext context = new SchoolContext();
+
+            //fa una join per aggiungere altre informazioni
             var query = from ordini in context.Ordine
                         join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente
                         join ordineProdotto in context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
                         join prodotti in context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
-                        where utenti.CdUtente.Equals(CdUtente)
                         select new OrdiniJoinDataSource
                         {
                             CdOrdine = ordini.CdOrdine,
+                            Stato = ordini.Stato,
                             Username = utenti.Username,
                             Titolo = prodotti.Titolo,
                             DtInserimento = ordini.DtInserimento,
@@ -112,7 +145,7 @@ namespace School.Controllers
             return View(query.ToList());
         }
 
-        public IActionResult Index() => Redirect("~/Ordine/List");
+        public IActionResult Index() => Redirect("/Ordine/List");
 
     }
 }
