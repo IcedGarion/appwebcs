@@ -78,15 +78,39 @@ namespace School.Controllers
         }
 
         //espone tutti gli ordini di tutti gli utenti
+        [HttpGet]
         public IActionResult List()
         {
-            SchoolContext context = new SchoolContext();
-
             //fa una join per aggiungere altre informazioni
-            var query = from ordini in context.Ordine
-                        join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente
-                        join ordineProdotto in context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
-                        join prodotti in context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
+            var query = from ordini in Context.Ordine
+                        join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
+                        join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
+                        join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
+                        select new OrdiniJoinDataSource
+                        {
+                            CdOrdine = ordini.CdOrdine,
+                            Stato = ordini.Stato,
+                            Username = utenti.Username,
+                            Titolo = prodotti.Titolo,
+                            DtInserimento = ordini.DtInserimento,
+                            Quantita = ordineProdotto.Quantita,
+                            Totale = ordini.Totale
+                        };
+
+            return View(query.ToList());
+        }
+
+        [HttpPost]
+        public IActionResult List(string start, string end)
+        {
+            var Start = DateTime.Parse(start);
+            var End = DateTime.Parse(end);
+
+            var query = from ordini in Context.Ordine
+                        join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
+                        join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
+                        join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
+                        where ordini.DtInserimento >= Start && ordini.DtInserimento <= End
                         select new OrdiniJoinDataSource
                         {
                             CdOrdine = ordini.CdOrdine,

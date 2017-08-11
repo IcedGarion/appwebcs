@@ -19,6 +19,18 @@
 
         <h4>Lista Prodotti</h4>
 
+        <!-- FILTRO DATA -->
+        @using (Html.BeginForm("List", "Ordine", FormMethod.Post))
+        {
+            <fieldset>
+                <input type="text" name="start" id="start" value="@DateTime.Now" />Data inizio
+                <input type="text" name="end" id="end" value="@DateTime.Now" />Data fine
+                <input type="submit" value="Filtra Per Data" />
+            </fieldset>
+        }
+        <input type="button" value="Pulisci Filtro"
+               onclick="@("window.location.href='" + @Url.Action("List", "Ordine") + "'");" />
+
         <table border="1">
             <tr>
                 <th>Codice ordine</th>
@@ -28,9 +40,7 @@
                 <th>Totale ordine</th>
                 <th>Stato</th>
             </tr>
-            
-
-
+    
             @foreach (var group in Model.GroupBy(item => item.CdOrdine))
             {
                 <tr>
@@ -64,8 +74,7 @@
                 }
             }
         </table>
-
-    </div>
+</div>
 
     <div class="footer">
         <h6>footer</h6>
