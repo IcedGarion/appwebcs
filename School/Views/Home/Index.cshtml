@@ -21,9 +21,9 @@
     <div class="main">
 
         <h2>
-            @if(HttpContextAccessor.HttpContext.Session.GetInt32("ErrorMsg") != null)
+            @if(HttpContextAccessor.HttpContext.Session.GetString("LoginMsg") != null)
             {
-                <b>@HttpContextAccessor.HttpContext.Session.GetInt32("ErrorMsg")</b>
+                <b>@HttpContextAccessor.HttpContext.Session.GetString("LoginMsg")</b>
             }
         </h2>
 

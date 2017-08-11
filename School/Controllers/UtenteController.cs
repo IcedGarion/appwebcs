@@ -22,29 +22,31 @@ namespace School.Controllers
 
         protected override Func<Utente, int, bool> FilterById => (e, id) => e.CdUtente == id;
 
-        /* PATTERN MVC PER I FORM:
-         * la pagina Utente/Create crea un nuovo utente partendo da un form nella View.
-         * per prima cosa la richiesta passa per il controller, che passa alla view il Model, in modo che la view possa collegare il form ai campi giusti
-         * quando l'esecuzione passa alla view e il form viene riempito, viene richiamato lo stesso metodo Create precedente,
-         * ma viene scelto l'override che prende un Model come parametro, e accetta HTTP POST (secondo metodo qua sotto)
-         * questo metodo usa i dati ricavati dal form e mappati nell'oggetto Model (Utente) e richiama il metodo del CrudController Create
-         * che salva su db. 
-         * 
-         * Si possono fare diverse operazioni nella seconda Create, per esempio modificare o validare i dati prima di salvare
-         **/
+        //la view
         [HttpGet]
-        public IActionResult Create()
-        {
-            return View(new Utente());
-        }
+        public IActionResult Create() => View();
 
+        //il form per creare 
         [HttpPost]
-        public async Task<IActionResult> Create(Utente usr)
+        public async Task<IActionResult> Create(string user, string pass)
         {
-            //controlla se le password sono uguali e se non esiste gia' username
-            await base.Create(usr);
+            //assume password gia' controllate in js
+            await base.Create(new Utente { Username = user, Password = pass, Ruolo = "user" });
 
-            return Redirect("/Utente");
+            //recupera dal db il CdUtente appena inserito
+            var query = from utenti in Context.Utente
+                        where utenti.Username.Equals(user)
+                        select utenti;
+
+            //utente appena inserito:
+            Utente New = query.ToList()[0];
+
+            //SALVA IN SESSION DATI LOGIN
+            HttpContext.Session.SetInt32("CdUtente", New.CdUtente);
+            HttpContext.Session.SetString("Ruolo", New.Ruolo);
+            HttpContext.Session.SetString("LoginMsg", "Registrazione Completata!");
+
+            return Redirect("/Home/Index");
         }
 
         [HttpGet]

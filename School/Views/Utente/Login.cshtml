@@ -12,16 +12,13 @@
 
     <div class="main">
         <h2>
-            MESSAGGIO SESSION:
+            <!-- MESSAGGIO possibile login errata -->
             @if(HttpContextAccessor.HttpContext.Session.GetString("LoginMsg") != null)
             {
                 @HttpContextAccessor.HttpContext.Session.GetString("LoginMsg")
             }
-            else
-            {
-                <b>Nessuno</b>
-            }
         </h2>
+
         @using (Html.BeginForm("Login", "Utente", FormMethod.Post))
         {
             <fieldset>
@@ -31,6 +28,8 @@
                 <input type="submit" value="Log in" />
             </fieldset>
         }
+
+        <h4>@Html.ActionLink("REGISTRA NUOVO ACCOUNT", "Create", "Utente")</h4>
     </div>
 
     <div class="footer">
