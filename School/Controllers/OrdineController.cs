@@ -74,11 +74,61 @@ namespace School.Controllers
             //rimuove carrello in session
             HttpContext.Session.Remove("Cart");
 
+            return Redirect("/Ordine/Index");
+        }
+
+        //espone tutti gli ordini di tutti gli utenti
+        public IActionResult List()
+        {
+            SchoolContext context = new SchoolContext();
+
+            //fa una join per aggiungere altre informazioni
+            var query = from ordini in context.Ordine
+                        join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente
+                        join ordineProdotto in context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
+                        join prodotti in context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
+                        select new OrdiniJoinDataSource
+                        {
+                            CdOrdine = ordini.CdOrdine,
+                            Stato = ordini.Stato,
+                            Username = utenti.Username,
+                            Titolo = prodotti.Titolo,
+                            DtInserimento = ordini.DtInserimento,
+                            Quantita = ordineProdotto.Quantita,
+                            Totale = ordini.Totale
+                        };
+
+            return View(query.ToList());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(string ordine, string stato)
+        {
+            //riceve parametri dal form
+            Int32.TryParse(ordine, out int CdOrdine);
+            Ordine ToUpdate;
+
+            //cerca nel db quell'ordine
+            var query = from ordini in Context.Ordine
+                        where ordini.CdOrdine.Equals(CdOrdine)
+                        select ordini;
+
+            //prende il primo elemento (l'unico) della query
+            ToUpdate = query.ToList()[0];
+
+            //modifica stato solo se diverso!
+            if (!ToUpdate.Stato.Equals(stato))
+            {
+                ToUpdate.Stato = stato;
+
+                //salva su db
+                await base.Update(ToUpdate);
+            }
+
             return Redirect("/Ordine/List");
         }
 
-        //passa alla view la lista di tutte le entites del controller (Context.Ordine)
-        public IActionResult List()
+        public IActionResult Index()
         {
             SchoolContext context = new SchoolContext();
 
@@ -117,35 +167,9 @@ namespace School.Controllers
             }
             else
             {
-                return Redirect("/Ordine/WholeList");
+                return Redirect("/Ordine/List");
             }
         }
-
-        //espone tutti gli ordini di tutti gli utenti
-        public IActionResult WholeList()
-        {
-            SchoolContext context = new SchoolContext();
-
-            //fa una join per aggiungere altre informazioni
-            var query = from ordini in context.Ordine
-                        join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente
-                        join ordineProdotto in context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
-                        join prodotti in context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
-                        select new OrdiniJoinDataSource
-                        {
-                            CdOrdine = ordini.CdOrdine,
-                            Stato = ordini.Stato,
-                            Username = utenti.Username,
-                            Titolo = prodotti.Titolo,
-                            DtInserimento = ordini.DtInserimento,
-                            Quantita = ordineProdotto.Quantita,
-                            Totale = ordini.Totale
-                        };
-
-            return View(query.ToList());
-        }
-
-        public IActionResult Index() => Redirect("/Ordine/List");
 
     }
 }

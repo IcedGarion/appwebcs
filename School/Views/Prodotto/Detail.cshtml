@@ -1,10 +1,12 @@
 @using School.Model
+@using System.Collections.Generic
 
-@{
-    ViewData["Title"] = "CATALOGO";
-}
-
+<!-- "parametro" Context.Utenti passato dalla view-->
 @model IEnumerable<Prodotto>
+
+    @{
+        ViewBag.Title = "LISTA PRODOTTI";
+    }
 
     <div class="container">
         <div class="header">
@@ -12,8 +14,8 @@
         </div>
 
         <div class="main">
-          
-            <!-- FILTRO! -->
+
+            <h4>Dettagli prodotto</h4>
 
             <table border="1">
                 <thead>
@@ -28,7 +30,7 @@
                 </thead>
                 <tbody>
                     @foreach (var s in Model)
-                {
+                    {
                         <tr>
                             <td>@s.Titolo</td>
                             <td>@s.Descrizione</td>
@@ -36,27 +38,25 @@
                             <td>@s.Sconto</td>
                             <td>
                                 @if (s.Immagine != null)
-                            {
+                                {
                                     <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
                                          width="80" height="80" />
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                     <b>NO IMAGE</b>
-                            }
+                                }
                             </td>
                             <td>@s.Disponibile</td>
                         </tr>
-                }
+                    }
 
                 </tbody>
 
             </table>
-
         </div>
 
         <div class="footer">
             <h6>footer</h6>
         </div>
     </div>
-

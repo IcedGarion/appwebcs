@@ -6,7 +6,7 @@ namespace School.Controllers
 {
     public class OffertaController : Controller
     {
-        public IActionResult List()
+        public IActionResult Index()
         {
             SchoolContext context = new SchoolContext();
 
@@ -16,7 +16,5 @@ namespace School.Controllers
 
             return View(query.ToList());
         }
-
-        public IActionResult Index() => Redirect("/Offerta/List");
     }
 }

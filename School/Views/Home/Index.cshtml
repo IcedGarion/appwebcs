@@ -27,20 +27,6 @@
             }
         </h2>
 
- <!--
-        <h4>Menu: riportati tutti i link attivi a pagine</h4>
-        <ul id="menu">
-            <li>Html.ActionLink("Login", "Login", "Utente")</li>
-            <li>Html.ActionLink("Logout", "Logout", "Utente")</li>
-            <li>Html.ActionLink("Private Home", "Index", "PrivateHome")</li>
-            <li>Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
-            <li>Html.ActionLink("Crea Utente", "Create", "Utente")</li>
-            <li>Html.ActionLink("Catalogo Prodotti", "Index", "Prodotto")</li>
-            <li>Html.ActionLink("Catalogo Prodotti in offerta", "List", "Offerta")</li>
-            <li>Html.ActionLink("Lista Ordini", "Index", "Ordine")</li>
-        </ul>
--->
-
         <h4>Lista top 10 Prodotti</h4>
 
         <table border="1">
@@ -64,7 +50,7 @@
 
                 <!-- ascascasc -->
 
-                    @Html.ActionLink(s.Titolo, "List", "Prodotto", new { s.CdProdotto })<br />
+                    @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto })<br />
 
 
 
@@ -72,7 +58,11 @@
                     @s.Descrizione<br />
                     @s.Prezzo<br />
                     @s.Sconto<br />
-                    @s.Disponibile<br />
+
+                    @if(s.Disponibile.Equals("si"))
+                    {
+                        <b>X</b>
+                    }
 
                     @if (s.Immagine != null)
                     {
