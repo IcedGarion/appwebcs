@@ -52,17 +52,29 @@ namespace School.Controllers
             var exCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
             if (exCart == null)
             {
-                //crea nuovo carrello aggiungendo il primo prodotto
+                //se non esiste, crea nuovo carrello aggiungendo il primo prodotto
                 carrello = new List<OrdineProdotto>();
+                carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
             }
-            //se invece esiste gia', accoda un nuovo prodotto alla lista
+            //se invece esiste gia' un carrello:
             else
             {
-                //aggiunge al carrello (in session) il prodotto
                 carrello = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
+
+                //cerca se esiste gia' il prodotto nella lista
+                var prod = carrello.FirstOrDefault(p => p.CdProdotto == cdprodotto);
+                if(prod == null)
+                {
+                    carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
+                }
+                //se esiste, incrementa la quantita'
+                else
+                {
+                    carrello.Remove(prod);
+                    carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = prod.Quantita + qta });
+                }
             }
 
-            carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
             HttpContext.Session.SetObjectAsJson("Cart", carrello);
 
             return Redirect("/Carrello/Index");

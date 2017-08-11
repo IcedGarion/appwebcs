@@ -1,3 +1,62 @@
+/* Script SQL per il popolamento delle tabelle
+ * IMPORTANTE! 
+ * Inserire il path della repository: (per inserimento immagini)
+ * In tutti i prodotti con immagine
+ * Esempio:
+  
+/***** inserisce nuovo prodotto  con immagine ******/
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Prodotto]
+           ([titolo]
+           ,[descrizione]
+           ,[prezzo]
+           ,[sconto]
+           ,[disponibile]
+		   ,[immagine])
+
+	SELECT 'tv'
+           ,'schermo lcd'
+           ,1000
+           ,10
+           ,'si'
+		   , BulkColumn 
+		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/loading.png', Single_Blob) as image
+           
+GO
+
+/** altri prodotti con immagine **/
+USE [Progetto]
+GO
+
+INSERT INTO [dbo].[Prodotto]
+           ([titolo]
+           ,[descrizione]
+           ,[prezzo]
+           ,[sconto]
+           ,[disponibile]
+		   ,[immagine])
+
+	SELECT 'iphone'
+           ,'apple'
+           ,600
+           ,0
+           ,'no'
+		   , BulkColumn 
+		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/loading.png', Single_Blob) as image
+           
+GO
+
+
+
+
+
+/****** FINE IMMAGINI  ******/
+
+
+
+
 /****** inserisce utente ******/
 USE [Progetto]
 GO
@@ -42,34 +101,6 @@ INSERT INTO [dbo].[Prodotto]
            ,'10'
            ,'si')
 GO
-
-
-/***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
-           ([titolo]
-           ,[descrizione]
-           ,[prezzo]
-           ,[sconto]
-           ,[disponibile]
-		   ,[immagine])
-
-	SELECT 'tv'
-           ,'schermo lcd'
-           ,1000
-           ,10
-           ,'si'
-		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/loading.png', Single_Blob) as image
-           
-GO
-
-
-
-
-
 
 
 /****** inserisce nuovo ordine ******/

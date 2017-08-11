@@ -21,35 +21,25 @@
     <div class="main">
 
         <h2>
-            <b>Loggato: </b><br />
-            @if (HttpContextAccessor.HttpContext.Session.GetInt32("CdUtente") != null)
-            {
-                <b>@HttpContextAccessor.HttpContext.Session.GetInt32("CdUtente")</b>
-                <b>Ruolo: @HttpContextAccessor.HttpContext.Session.GetString("Ruolo")</b>
-            }
-            else
-            {
-                <b>NO</b>
-            }
-            
             @if(HttpContextAccessor.HttpContext.Session.GetInt32("ErrorMsg") != null)
             {
                 <b>@HttpContextAccessor.HttpContext.Session.GetInt32("ErrorMsg")</b>
             }
         </h2>
 
+ <!--
         <h4>Menu: riportati tutti i link attivi a pagine</h4>
         <ul id="menu">
-            <li>@Html.ActionLink("Login", "Login", "Utente")</li>
-            <li>@Html.ActionLink("Logout", "Logout", "Utente")</li>
-            <li>@Html.ActionLink("Private Home", "Index", "PrivateHome")</li>
-            <li>@Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
-            <li>@Html.ActionLink("Crea Utente", "Create", "Utente")</li>
-            <li>@Html.ActionLink("Catalogo Prodotti", "Index", "Prodotto")</li>
-            <li>@Html.ActionLink("Catalogo Prodotti in offerta", "List", "Offerta")</li>
-            <li>@Html.ActionLink("Lista Ordini", "Index", "Ordine")</li>
+            <li>Html.ActionLink("Login", "Login", "Utente")</li>
+            <li>Html.ActionLink("Logout", "Logout", "Utente")</li>
+            <li>Html.ActionLink("Private Home", "Index", "PrivateHome")</li>
+            <li>Html.ActionLink("Lista Utenti", "Index", "Utente")</li>
+            <li>Html.ActionLink("Crea Utente", "Create", "Utente")</li>
+            <li>Html.ActionLink("Catalogo Prodotti", "Index", "Prodotto")</li>
+            <li>Html.ActionLink("Catalogo Prodotti in offerta", "List", "Offerta")</li>
+            <li>Html.ActionLink("Lista Ordini", "Index", "Ordine")</li>
         </ul>
-
+-->
 
         <h4>Lista top 10 Prodotti</h4>
 
@@ -71,7 +61,14 @@
             @foreach (var s in Model)
             {
                 
-                    @s.Titolo<br />
+
+                <!-- ascascasc -->
+
+                    @Html.ActionLink(s.Titolo, "List", "Prodotto", new { s.CdProdotto })<br />
+
+
+
+
                     @s.Descrizione<br />
                     @s.Prezzo<br />
                     @s.Sconto<br />
