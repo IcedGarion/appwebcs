@@ -56,11 +56,25 @@
                                         <input type="number" name="prezzo" id="prezzo" min="0" value="@s.Prezzo"/>Prezzo
                                         <input type="number" name="sconto" id="sconto" min="0" value="@s.Sconto" />Sconto
                                         <select name="disponibile" id="disponibile">
-                                            <option value="si">si</option>
+                                        @if (s.Disponibile.Equals("si"))
+                                        {
+                                            <option value="si" selected="selected">si</option>
                                             <option value="no">no</option>
-                                        </select>
-                                        <input type="submit" value="Modifica Prodotto" />
-                                    </fieldset>
+                                        }
+                                        else
+                                        {
+                                            <option value="si">si</option>
+                                            <option value="no" selected="selected">no</option>
+                                        }
+
+
+
+
+                                            </select>
+    
+                                            <input type="submit" value="Modifica Prodotto" if
+    
+                                        </fieldset>
                                 }
                             </td>
                         </tr>
