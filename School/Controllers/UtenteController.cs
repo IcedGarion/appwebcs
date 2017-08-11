@@ -63,6 +63,7 @@ namespace School.Controllers
             //se trova un risultato, salva in session codice e ruolo
             if(query.Count() == 1)
             {
+                //unico elemento della lista: l'utente con CdUtente
                 loggato = query.ToList()[0];
 
                 //SALVA IN SESSION DATI LOGIN

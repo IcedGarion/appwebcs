@@ -18,7 +18,6 @@
             <h4>Dettagli prodotto</h4>
 
             <table border="1">
-                <thead>
                     <tr>
                         <th>Titolo</th>
                         <th>Descrizione</th>
@@ -27,8 +26,8 @@
                         <th>Immagine</th>
                         <th>Disponibile</th>
                     </tr>
-                </thead>
-                <tbody>
+
+
                     @foreach (var s in Model)
                     {
                         <tr>
@@ -48,10 +47,25 @@
                                 }
                             </td>
                             <td>@s.Disponibile</td>
+
+                            <td>
+                                @using (Html.BeginForm("Update", "Prodotto", FormMethod.Post))
+                                {
+                                    <fieldset>
+                                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                        <input type="number" name="prezzo" id="prezzo" min="0" value="@s.Prezzo"/>Prezzo
+                                        <input type="number" name="sconto" id="sconto" min="0" value="@s.Sconto" />Sconto
+                                        <select name="disponibile" id="disponibile">
+                                            <option value="si">si</option>
+                                            <option value="no">no</option>
+                                        </select>
+                                        <input type="submit" value="Modifica Prodotto" />
+                                    </fieldset>
+                                }
+                            </td>
                         </tr>
                     }
 
-                </tbody>
 
             </table>
         </div>
