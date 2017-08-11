@@ -44,7 +44,7 @@ namespace School.Controllers
         [HttpPost]
         public IActionResult Add(string prodotto, int qta)
         {
-            List<OrdineProdotto> carrello;
+            List<OrdineProdotto> newCart;
 
             Int32.TryParse(prodotto, out int cdprodotto);
 
@@ -53,29 +53,29 @@ namespace School.Controllers
             if (exCart == null)
             {
                 //se non esiste, crea nuovo carrello aggiungendo il primo prodotto
-                carrello = new List<OrdineProdotto>();
-                carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
+                newCart = new List<OrdineProdotto>();
+                newCart.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
             }
             //se invece esiste gia' un carrello:
             else
             {
-                carrello = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
+                newCart = exCart;
 
                 //cerca se esiste gia' il prodotto nella lista
-                var prod = carrello.FirstOrDefault(p => p.CdProdotto == cdprodotto);
-                if(prod == null)
+                var prod = newCart.FirstOrDefault(p => p.CdProdotto == cdprodotto);
+                if (prod == null)
                 {
-                    carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
+                    newCart.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
                 }
                 //se esiste, incrementa la quantita'
                 else
                 {
-                    carrello.Remove(prod);
-                    carrello.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = prod.Quantita + qta });
+                    newCart.Remove(prod);
+                    newCart.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = prod.Quantita + qta });
                 }
             }
 
-            HttpContext.Session.SetObjectAsJson("Cart", carrello);
+            HttpContext.Session.SetObjectAsJson("Cart", newCart);
 
             return Redirect("/Carrello/Index");
         }
@@ -87,7 +87,7 @@ namespace School.Controllers
 
             //legge il carrello
             var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
-            
+
             //rimuove il prodotto
             SessionCart.RemoveAll(x => x.CdProdotto == cdprodotto);
 
@@ -99,6 +99,53 @@ namespace School.Controllers
             else
             {
                 HttpContext.Session.SetObjectAsJson("Cart", SessionCart);
+            }
+
+            return Redirect("/Carrello/Index");
+        }
+
+        [HttpGet]
+        public IActionResult Empty()
+        {
+            HttpContext.Session.Remove("Cart");
+
+            return Redirect("/Carrello/Index");
+        }
+
+        [HttpPost]
+        public IActionResult Update(string prodotto, int qta)
+        {
+            Int32.TryParse(prodotto, out int cdprodotto);
+
+            //prende il carrello in session:
+            var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
+            if (SessionCart != null)
+            {
+                //cerca il prodotto nella lista
+                var prod = SessionCart.FirstOrDefault(p => p.CdProdotto == cdprodotto);
+                if (prod != null)
+                //modifica la quantita'
+                {
+                    SessionCart.Remove(prod);
+
+                    if (qta != 0)
+                    {
+                        SessionCart.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
+                    }
+                    //se quantita == 0 non reinserisce il prodotto
+                    else
+                    {
+                        //se ora il carrello e' vuoto, elimina oggetto in session
+                        if (SessionCart.Count() == 0)
+                        {
+                            HttpContext.Session.Remove("Cart");
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetObjectAsJson("Cart", SessionCart);
+                        }
+                    }
+                }
             }
 
             return Redirect("/Carrello/Index");

@@ -90,6 +90,15 @@
                     @s.Quantita
 
 
+                @using (Html.BeginForm("Update", "Carrello", FormMethod.Post))
+                    {
+                    <fieldset>
+                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                        <input type="number" name="qta" id="qta" min="0" value="1" />Quantita'
+                        <input type="submit" value="Modifica quantita'" />
+                    </fieldset>
+                }
+
                 @using (Html.BeginForm("Remove", "Carrello", FormMethod.Post))
                 {
                     <fieldset>
@@ -104,6 +113,13 @@
             {
                 <fieldset>
                     <input type="submit" value="PROCEDI ALL'ACQUISTO" />
+                </fieldset>
+            }
+
+            @using (Html.BeginForm("Empty", "Carrello", FormMethod.Get))
+                {
+                <fieldset>
+                    <input type="submit" value="SVUOTA CARRELLO" />
                 </fieldset>
             }
         }
