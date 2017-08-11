@@ -131,6 +131,7 @@ namespace School.Controllers
                     if (qta != 0)
                     {
                         SessionCart.Add(new OrdineProdotto { CdProdotto = cdprodotto, Quantita = qta });
+                        HttpContext.Session.SetObjectAsJson("Cart", SessionCart);
                     }
                     //se quantita == 0 non reinserisce il prodotto
                     else

@@ -30,62 +30,58 @@
         <h4>Lista top 10 Prodotti</h4>
 
         <table border="1">
-            <thead>
-                <tr>
-                    <th>Titolo prodotto</th>
-                    <th>Descrizione</th>
-                    <th>Prezzo</th>
-                    <th>Sconto</th>
-                    <th>Disponibile</th>
-                    <th>Immagine</th>
+            <tr>
+                <th>Titolo prodotto</th>
+                <th>Descrizione</th>
+                <th>Prezzo</th>
+                <th>Sconto</th>
+                <th>Disponibile</th>
+                <th>Immagine</th>
 
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+            </tr>
 
             @foreach (var s in Model)
             {
-                
+                <tr>
+                    <td>@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto })</td>
+                    <td>@s.Descrizione</td>
+                    <td>@s.Prezzo</td>
+                    <td>@s.Sconto</td>
 
-                <!-- ascascasc -->
-
-                    @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto })<br />
-
-
-
-
-                    @s.Descrizione<br />
-                    @s.Prezzo<br />
-                    @s.Sconto<br />
-
-                    @if(s.Disponibile.Equals("si"))
+                    @if (s.Disponibile.Equals("si"))
                     {
-                        <b>X</b>
+                        <td><b>X</b></td>
+                    }
+                    else
+                    {
+                        <td></td>
                     }
 
                     @if (s.Immagine != null)
                     {
-                        <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
-                             width="80" height="80" />     
+                        <td>
+                            <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                 width="80" height="80" />
+                        </td>
                     }
                     else
                     {
-                        <b>NO IMAGE</b>
+                        <td><b>NO IMAGE</b></td>
                     }
 
                     @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
                     {
-                        <fieldset>
-                            <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                            <input type="number" name="qta" id="qta" min="1" value="1"/>Quantita'
-                            <input type="submit" value="Aggiungi al carrello" />
-                        </fieldset>
+                        <td>
+                            <fieldset>
+                                <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                <input type="number" name="qta" id="qta" min="1" value="1" />Quantita'
+                                <input type="submit" value="Aggiungi al carrello" />
+                            </fieldset>
+                        </td>
                     }
-
-                <br />
-                <br />
+                </tr>
             }
+        </table>
     </div>
 
     <div class="footer">
