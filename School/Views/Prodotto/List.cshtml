@@ -1,84 +1,92 @@
 @using School.Model
 @using System.Collections.Generic
-
-<!-- "parametro" Context.Utenti passato dalla view-->
+@{
+    ViewData["Title"] = "CATALOGO";
+}
 @model IEnumerable<Prodotto>
+<div class="container">
+    <div class="main">
+        <h1>Catalogo Prodotti</h1>
 
-    @{
-    ViewBag.Title = "LISTA PRODOTTI";
-    }
+        @foreach (var s in Model)
+            {
+            <table>
+                <tr>
+                    <td colspan="3">
+                        @if (s.Immagine != null)
+                        {
+                            <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                 width="200" height="200" />
+                        }
+                        else
+                        {
+                            <img src="~/img/noimage.jpg" alt="NO IMAGE" width="200" height="200" />
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        @s.Descrizione
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @s.Prezzo &euro;
+                    </td>
+                    <td>
+                        @s.Sconto &euro;
+                    </td>
+                    <td>
+                        @if (s.Disponibile.Equals("si"))
+                        {
+                            <b>&#x2714;</b>
+                        }
+                        else
+                        {
+                            <b>&#x2718;</b>
+                        }
 
-    <div class="container">
-        <div class="header">
-            <h2>Lista Prodotti</h2>
-        </div>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="3">
+                        @using (Html.BeginForm("Update", "Prodotto", FormMethod.Post))
+                        {
+                            <fieldset>
+                                
+                                <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                <input type="number" name="prezzo" id="prezzo" min="0" value="@s.Prezzo" />Prezzo<br />
+                                <input type="number" name="sconto" id="sconto" min="0" value="@s.Sconto" />Sconto<br />
+                                <select name="disponibile" id="disponibile">
+                                    @if (s.Disponibile.Equals("si"))
+                                    {
+                                        <option value="si" selected="selected">Disponibile</option>
+                                        <option value="no">no</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="si">si</option>
+                                        <option value="no" selected="selected">NON Disponibile</option>
+                                    }
+                                </select>
+                                <input type="submit" value="Modifica Prodotto" />
+                            </fieldset>
+                        }
+                    </td>
 
-        <div class="main">
-
-            <h4>Dettagli prodotto</h4>
-
-            <table border="1">
-                    <tr>
-                        <th>Titolo</th>
-                        <th>Descrizione</th>
-                        <th>Prezzo</th>
-                        <th>Sconto</th>
-                        <th>Immagine</th>
-                        <th>Disponibile</th>
-                    </tr>
-
-
-                    @foreach (var s in Model)
-                    {
-                        <tr>
-                            <td>@s.Titolo</td>
-                            <td>@s.Descrizione</td>
-                            <td>@s.Prezzo</td>
-                            <td>@s.Sconto</td>
-                            <td>
-                                @if (s.Immagine != null)
-                                {
-                                    <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
-                                         width="80" height="80" />
-                                }
-                                else
-                                {
-                                    <b>NO IMAGE</b>
-                                }
-                            </td>
-                            <td>@s.Disponibile</td>
-
-                            <td>
-                                @using (Html.BeginForm("Update", "Prodotto", FormMethod.Post))
-                                {
-                                    <fieldset>
-                                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                                        <input type="number" name="prezzo" id="prezzo" min="0" value="@s.Prezzo"/>Prezzo
-                                        <input type="number" name="sconto" id="sconto" min="0" value="@s.Sconto" />Sconto
-                                        <select name="disponibile" id="disponibile">
-                                        @if (s.Disponibile.Equals("si"))
-                                        {
-                                            <option value="si" selected="selected">si</option>
-                                            <option value="no">no</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="si">si</option>
-                                            <option value="no" selected="selected">no</option>
-                                        }
-                                        </select>
-                                        <input type="submit" value="Modifica Prodotto" />
-                                    </fieldset>
-                                }
-                            </td>
-                        </tr>
-                    }
-
-
+                </tr>
             </table>
-        </div>
+        }
 
-        <div class="footer">
-            <h6>footer</h6>
-        </div>
     </div>
+
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>

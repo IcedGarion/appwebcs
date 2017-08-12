@@ -1,49 +1,91 @@
 @using School.Model
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 
-<!-- NAVBAR! USA REDIRECT da index a list -->
+@{ 
+    var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
+}
 
 <ul id="menu">
     <li>
         @Html.ActionLink("Home", "Index", "Home")
     </li>
     <li>
-        @Html.ActionLink("Home Privata", "Index", "PrivateHome")
-    </li>
-    <li>
-
-        <!-- Check ruolo admin per mandare su lista prodotti + MODIFICA? -->
-
-        @Html.ActionLink("Catalogo", "Index", "Prodotto")
-    </li>
-    <li>
         @Html.ActionLink("Offerte", "Index", "Offerta")
     </li>
     <li>
+        @Html.ActionLink("Prodotti", "Index", "Prodotto")
+    </li>
 
-        <!-- Check ruolo per mandare admin su List di tutti gli ordini + MODIFICA? -->
+    <!--  CARRELLO  -->
+    @if (ruolo == null)
+    {
+        <li>
+            @Html.ActionLink("Carrello", "Index", "Carrello")
+        </li>
+    }
+    else if (ruolo.Equals("user"))
+    {
+        <li>
+            @Html.ActionLink("Carrello", "Index", "Carrello")
+        </li>
 
-        @Html.ActionLink("Ordini", "Index", "Ordine")
+    }
+
+    <!-- MENU' A TENDINA AREA PRIVATA  -->
+    @if (ruolo != null)
+    {
+        <li>
+            @if (ruolo.Equals("admin"))
+                {
+                @Html.ActionLink("DA SISTEMARE", "Index", "PrivateHome")
+                <ul id="menu">
+                    <li>@Html.ActionLink("Gestione Utenti", "List", "Utente")</li>
+                    <li>@Html.ActionLink("Gestione Prodotti", "List", "Prodotto")</li>
+                    <li>@Html.ActionLink("Gestione Ordini", "List", "Ordine")</li>
+                </ul>
+            }
+            else if (ruolo.Equals("user"))
+            {
+                <!-- ruolo user -->
+                @Html.ActionLink("DA SISTEMARE", "Index", "PrivateHome")
+                <ul>
+                    <li>@Html.ActionLink("Elenco Ordini", "Index", "Ordine")</li>
+                </ul>
+            }
+        </li>
+    }
+
+
+    <li>
+        @if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo") == null)
+        {
+            @Html.ActionLink("Registrati!", "Create", "Utente")
+        }
+    </li>
+
+    <li>
+        @if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo") == null)
+        {
+            @Html.ActionLink("Accedi", "Login", "Utente")
+        }
     </li>
     <li>
-        @Html.ActionLink("Carrello", "Index", "Carrello")
+        @if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo") != null)
+        {
+            @Html.ActionLink("Esci", "Logout", "Utente")
+        }
     </li>
     <li>
         <!-- Altro modo di usare form: non passa la prima volta dal controller e puo' chiamare il controller che vuole -->
         <!-- Passa parametri alla action: Controller ha un metodo (Find) che accetta tanti parametri quanti gli input type-->
         @using (Html.BeginForm("Find", "Prodotto", FormMethod.Post))
-        {
+            {
             <fieldset>
                 <input type="text" name="input" id="input" />
-
                 <input type="submit" value="Cerca fra i prodotti" />
             </fieldset>
         }
-    </li>
-    <li>
-        @Html.ActionLink("Login", "Login", "Utente")
-    </li>
-    <li>
-        @Html.ActionLink("Logout", "Logout", "Utente")
     </li>
 </ul>
 

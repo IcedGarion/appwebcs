@@ -30,3 +30,17 @@
 .text-error {
     color: red;
 }
+
+#menu {
+    position: center;
+    padding-top: 10px;
+    text-align: center;
+    margin-top: -32px;
+    margin-left: 30%;
+    float: left;
+}
+
+.menuhead {
+    padding: 50px;
+    background-color: darkgrey;
+}

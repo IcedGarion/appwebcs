@@ -20,9 +20,7 @@
         else
         {
             <h4>Menu</h4>
-            
-            
-                <!-- ruolo admin -->
+                   <!-- ruolo admin -->
                 @if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo").Equals("admin"))
                 {
                     <ul id="menu">

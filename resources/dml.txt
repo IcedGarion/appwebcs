@@ -3,7 +3,7 @@
  * Inserire il path della repository: (per inserimento immagini)
  * In tutti i prodotti con immagine
  * Esempio:
-  
+  */
 /***** inserisce nuovo prodotto  con immagine ******/
 USE [Progetto]
 GO

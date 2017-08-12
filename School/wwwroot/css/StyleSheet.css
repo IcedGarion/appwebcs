@@ -1,25 +1,92 @@
-﻿body
-{
-    background-color : azure;
-    
+﻿body {
+    background-color: lightgrey;
 }
 
-.header
-{
-    background-color: aqua;
-    border: solid;
-    border-color: blue;
+.header {
+    margin-top: 20px;
+    height: 50px;
+    background-color: none;
 }
 
-.main
-{
+.main {
     background-color: white;
 }
 
-.footer
-{
-    background-color : aqua;
-    border : solid;
-    border-color : black;
+.footer {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 10px;
+    height: 40px;
+    color: whitesmoke;
+    background-color: #404040;
+    width: 99%;
 }
 
+ul > li > ul a {
+    color: white;
+    text-align: left;
+}
+
+table {
+    border: 1px solid black;
+    width: 400px;
+    float: left;
+    margin-left: 20px;
+    background-color: white;
+}
+
+h1 {
+    text-align: center;
+}
+
+tr:nth-child(1) {
+    text-align: center;
+}
+
+tr:nth-child(2) {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: x-large;
+    text-align: center;
+}
+
+tr:nth-child(3) {
+    font-weight: 500;
+    text-transform: capitalize;
+    color: #404040;
+    text-align: left;
+}
+
+tr:nth-child(4) {
+    text-align: center;
+}
+
+    tr:nth-child(4) > td:nth-child(1) {
+        width: 133px;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: large;
+        color: #0c1649;
+    }
+
+    tr:nth-child(4) > td:nth-child(2) {
+        width: 133px;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: large;
+        color: #920808;
+    }
+
+    tr:nth-child(4) > td:nth-child(3) {
+        width: 133px;
+        text-transform: capitalize;
+        font-weight: 500;
+        font-size: large;
+    }
+
+tr:nth-child(6) {
+    padding-top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+}

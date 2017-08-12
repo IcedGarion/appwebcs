@@ -1,62 +1,80 @@
 @using School.Model
-
+@using System.Collections.Generic
 @{
     ViewData["Title"] = "CATALOGO";
 }
-
 @model IEnumerable<Prodotto>
+<div class="container">
+    <div class="main">
+        <h1>Catalogo Prodotti</h1>
 
-    <div class="container">
-        <div class="header">
-            <h2>Lista Prodotti</h2>
-        </div>
+        @foreach (var s in Model)
+            {
+            <table>
+                <tr>
+                    <td colspan="3">
+                        @if (s.Immagine != null)
+                        {
+                            <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                 width="200" height="200" />
+                        }
+                        else
+                        {
+                            <img src="~/img/noimage.jpg" alt="NO IMAGE" width="200" height="200" />
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        @s.Descrizione
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @s.Prezzo &euro;
+                    </td>
+                    <td>
+                        @s.Sconto &euro;
+                    </td>
+                    <td>
+                        @if (s.Disponibile.Equals("si"))
+                        {
+                            <b>&#x2714;</b>
+                        }
+                        else
+                        {
+                            <b>&#x2718;</b>
+                        }
 
-        <div class="main">
-          
-            <!-- FILTRO! -->
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="3">
 
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Titolo</th>
-                        <th>Descrizione</th>
-                        <th>Prezzo</th>
-                        <th>Sconto</th>
-                        <th>Immagine</th>
-                        <th>Disponibile</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var s in Model)
-                {
-                        <tr>
-                            <td>@s.Titolo</td>
-                            <td>@s.Descrizione</td>
-                            <td>@s.Prezzo</td>
-                            <td>@s.Sconto</td>
-                            <td>
-                                @if (s.Immagine != null)
-                            {
-                                    <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
-                                         width="80" height="80" />
-                            }
-                            else
-                            {
-                                    <b>NO IMAGE</b>
-                            }
-                            </td>
-                            <td>@s.Disponibile</td>
-                        </tr>
-                }
+                        @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
+                        {
+                            <fieldset>
+                                <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                <input type="number" name="qta" id="qta" min="0" value="1" />
+                                <input type="submit" value="Aggiungi al carrello" />
+                            </fieldset>
+                        }
 
-                </tbody>
+                    </td>
 
+                </tr>
             </table>
+        }
 
-        </div>
-
-        <div class="footer">
-            <h6>footer</h6>
-        </div>
     </div>
 
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>

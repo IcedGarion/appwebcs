@@ -1,61 +1,85 @@
 @using School.Model
-
 @{
     ViewData["Title"] = "Find";
 }
-
 @model IEnumerable<Prodotto>
-
 <div class="container">
-    <div class="header">
-        <h2>Risultati ricerca</h2>
-    </div>
-
     <div class="main">
-        <h4>Lista Prodotti</h4>
+        <h1>Risultato della ricerca</h1>
 
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Titolo</th>
-                    <th>Descrizione</th>
-                    <th>Prezzo</th>
-                    <th>Sconto</th>
-                    <th>Immagine</th>
-                    <th>Disponibile</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var s in Model)
-                {
+        @if (Model.Count() == 0)
+        {
+            <h1>Non è stato trovato nessun prodotto</h1>
+        }
+        else
+        {
+            @foreach (var s in Model)
+            {
+                <table>
                     <tr>
-                        <td>@s.Titolo</td>
-                        <td>@s.Descrizione</td>
-                        <td>@s.Prezzo</td>
-                        <td>@s.Sconto</td>
-                        <td>
+                        <td colspan="3">
                             @if (s.Immagine != null)
                             {
                                 <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
-                                     width="80" height="80" />
+                                     width="200" height="200" />
                             }
                             else
                             {
-                                <b>NO IMAGE</b>
+                                <img src="~/img/noimage.jpg" alt="NO IMAGE" width="200" height="200" />
                             }
                         </td>
-                        <td>@s.Disponibile</td>
                     </tr>
-                }
+                    <tr>
+                        <td colspan="3">
+                            @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            @s.Descrizione
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @s.Prezzo &euro;
+                        </td>
+                        <td>
+                            @s.Sconto
+                            %
+                        </td>
+                        <td>
+                            @if (s.Disponibile.Equals("si"))
+                            {
+                                <b>&#x2714;</b>
+                            }
+                            else
+                            {
+                                <b>&#x2718;</b>
+                            }
 
-            </tbody>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td colspan="3">
 
-        </table>
+                            @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
+                            {
+                                <fieldset>
+                                    <input type="text" name="input" id="input" value="@s.CdProdotto" hidden />
+                                    <input type="number" name="qta" id="qta" min="0" value="1" />
+                                    <input type="submit" value="Aggiungi al carrello" />
+                                </fieldset>
+                            }
 
-    </div>
+                        </td>
 
-    <div class="footer">
-        <h6>footer</h6>
+                    </tr>
+                </table>
+            }
+        }
     </div>
 </div>
-
+<div class="footer">
+    <h6>footer</h6>
+</div>

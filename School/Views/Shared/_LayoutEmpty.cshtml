@@ -9,7 +9,7 @@
     <link href="~/styles/kendo.common.min.css" rel="stylesheet" />
 
     <!-- Default Kendo UI theme CSS for web widgets and widgets for data visualization. -->
-    <link href="~/styles/kendo.material.min.css" rel="stylesheet" />
+    <link href="~/styles/kendo.black.min.css" rel="stylesheet" />
 
     <!-- jQuery JavaScript -->
     <script src="~/js/jquery.min.js"></script>
@@ -18,8 +18,9 @@
     <script src="~/js/kendo.all.min.js"></script>
 </head>
 <body>
-    @RenderSection("Top", required: false)
-
+    <div class="menuhead">
+        @RenderSection("Top", required: false)
+    </div>
     @RenderBody()
 </body>
 </html>
