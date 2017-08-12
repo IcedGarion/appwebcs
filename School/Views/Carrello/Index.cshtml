@@ -20,46 +20,48 @@
         }
         else
         {
-            <table border="1">
-                <thead>
+            <table id="carrello" >
                     <tr>
-                        <th>Titolo prodotto</th>
-                        <th>Descrizione</th>
+                        <th></th>
+                        <th>Dati</th>
                         <th>Prezzo</th>
-                        <th>Sconto</th>
-                        <th>Immagine</th>
                         <th>Quantita'</th>
 
                     </tr>
-                </thead>
-                <tbody>
+               
+                    @foreach (var s in Model)
+                    {
+                        
+                        <tr>
+                            <td>
+                                @if (s.Immagine != null)
+                    {
+                                    <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                         width="80" height="80" />
+                                }
+                                else
+                                {
+                                    <b>NO IMAGE</b>
+                                }
+                            </td>
+                            <td>
+                                <b id="tit">@s.Titolo</b>
+                            </td>
+                            <td>
+                                @if (s.Sconto > 0)
+                                {
+                                    <b>@(s.Prezzo - s.Sconto) &euro;</b>
+                                }
+                            </td>
+                            <td>
+                                    @s.Quantita
+                            </td>
+                        </tr>
+                        totale += (s.Prezzo - s.Sconto) * s.Quantita;
+
                     
 
-                    <!-- foreach andrebbe qua... -->
-
-
-                </tbody>
-            </table>
-            @foreach (var s in Model)
-            {
-                totale += (s.Prezzo - s.Sconto) * s.Quantita;
-
-                    @s.Titolo
-                    @s.Descrizione
-                    @s.Prezzo
-                    @s.Sconto
-
-                    @if (s.Immagine != null)
-                    {
-                        <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
-                             width="80" height="80" />
-                    }
-                    else
-                    {
-                        <b>NO IMAGE</b>
-                    }
-
-                    @s.Quantita
+                    
 
 
                 @using (Html.BeginForm("Update", "Carrello", FormMethod.Post))
@@ -79,6 +81,7 @@
                     </fieldset>
                 }
             }
+                </table>
             <h4>TOTALE CARRELLO: @totale</h4>
 
             <input type="button" value="ACQUISTO"

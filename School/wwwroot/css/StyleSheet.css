@@ -1,5 +1,6 @@
 ﻿body {
     background-color: lightgrey;
+    font-family:Constantia;
 }
 
 .header {
@@ -49,12 +50,20 @@ tr:nth-child(2) {
     font-size: x-large;
     text-align: center;
 }
+.linkprod:link 
+{
+    color:black;
+}
+.linkprod:visited 
+{
+    color: #404040;
+}
 
 tr:nth-child(3) {
     font-weight: 500;
     text-transform: capitalize;
     color: #404040;
-    text-align: left;
+    text-align: center;
 }
 
 tr:nth-child(4) {
@@ -62,7 +71,7 @@ tr:nth-child(4) {
 }
 
     tr:nth-child(4) > td:nth-child(1) {
-        width: 133px;
+        width: 100px;
         text-transform: uppercase;
         font-weight: 700;
         font-size: large;
@@ -70,7 +79,7 @@ tr:nth-child(4) {
     }
 
     tr:nth-child(4) > td:nth-child(2) {
-        width: 133px;
+        width: 100px;
         text-transform: uppercase;
         font-weight: 500;
         font-size: large;
@@ -78,8 +87,12 @@ tr:nth-child(4) {
     }
 
     tr:nth-child(4) > td:nth-child(3) {
-        width: 133px;
-        text-transform: capitalize;
+        width: 100px;
+        font-weight: 500;
+        font-size: large;
+    }
+    tr:nth-child(4) > td:nth-child(4) {
+        width: 100px;
         font-weight: 500;
         font-size: large;
     }
@@ -90,3 +103,44 @@ tr:nth-child(6) {
     white-space: nowrap;
     text-align: center;
 }
+
+input[type=submit]
+{
+    background-color:black;
+    color:white;
+    width:140px;
+    height:45px;
+    border-radius:5px;
+    border:none;
+}
+
+#find 
+{
+    background-color: darkgrey;
+    color: white;
+    width: 140px;
+    height:15px;
+    border: 1px solid black;
+}
+#tit {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: x-large;
+    text-align: center;
+}
+#carrello 
+{
+    border: 1px solid black;
+    width: 800px;
+    margin-left: 20px;
+    background-color: white;
+}
+    #carrello >tr:nth-child(1) {
+        text-align: center;
+    }
+
+#carrello > tr:nth-child(2) 
+{
+    font-size: small;
+    text-align: center;
+} 
