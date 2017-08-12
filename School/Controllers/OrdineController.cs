@@ -21,8 +21,8 @@ namespace School.Controllers
 
         protected override Func<Ordine, int, bool> FilterById => (e, id) => e.CdOrdine == id;
 
-        [HttpPost]
-        public async Task<IActionResult> Create(Ordine ord)
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
             SchoolContext context = new SchoolContext();
 
@@ -77,9 +77,11 @@ namespace School.Controllers
             return Redirect("/Ordine/Index");
         }
 
-        //espone tutti gli ordini di tutti gli utenti
+        /***
+         * GET senza parametri: lista normale; GET con parametro: ordina secondo il parametro
+         ***/
         [HttpGet]
-        public IActionResult List()
+        public IActionResult List(string orderby)
         {
             //fa una join per aggiungere altre informazioni
             var query = from ordini in Context.Ordine
@@ -97,7 +99,7 @@ namespace School.Controllers
                             Totale = ordini.Totale
                         };
 
-            return View(query.ToList());
+            return View(Order(query, orderby));
         }
 
         [HttpPost]
@@ -123,6 +125,49 @@ namespace School.Controllers
                         };
 
             return View(query.ToList());
+        }
+
+#warning da mettere in EXTENSION
+        private IEnumerable<OrdiniJoinDataSource> Order(IQueryable<OrdiniJoinDataSource> query, string orderby)
+        {
+            switch (orderby)
+            {
+                case "CdOrdine":
+                    {
+                        query = query.OrderByDescending(o => o.CdOrdine);
+                        break;
+                    }
+                case "Titolo":
+                    {
+                        query = query.OrderBy(o => o.Titolo);
+                        break;
+                    }
+                case "Quantita":
+                    {
+                        query = query.OrderByDescending(o => o.Quantita);
+                        break;
+                    }
+                case "DtInserimento":
+                    {
+                        query = query.OrderByDescending(o => o.DtInserimento);
+                        break;
+                    }
+                case "Totale":
+                    {
+                        query = query.OrderByDescending(o => o.Totale);
+                        break;
+                    }
+                case "Stato":
+                    {
+                        query = query.OrderBy(o => o.Stato);
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+
+            return (query.ToList());
         }
 
         [HttpPost]

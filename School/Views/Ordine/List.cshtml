@@ -31,23 +31,22 @@
         <input type="button" value="Pulisci Filtro"
                onclick="@("window.location.href='" + @Url.Action("List", "Ordine") + "'");" />
 
+
+
         <table border="1">
             <tr>
-                <th>Codice ordine</th>
-                <th>Titolo prodotto</th>
-                <th>Quantita'</th>
-                <th>Data</th>
-                <th>Totale ordine</th>
-                <th>Stato</th>
+
+                <th>@Html.ActionLink("Codice ordine", "List", "Ordine", new { orderby = "CdOrdine" }, null)</th>
+                <th>@Html.ActionLink("Titolo prodotto", "List", "Ordine", new { orderby = "Titolo" }, null)</th>
+                <th>@Html.ActionLink("Quantita'", "List", "Ordine", new { orderby = "Quantita" }, null)</th>
+                <th>@Html.ActionLink("Data", "List", "Ordine", new { orderby = "DtInserimento" }, null)</th>
+                <th>@Html.ActionLink("Totale Ordine", "List", "Ordine", new { orderby = "Totale" }, null)</th>
+                <th>@Html.ActionLink("Stato", "List", "Ordine", new { orderby = "Stato" }, null)</th>
             </tr>
     
-            @foreach (var group in Model.GroupBy(item => item.CdOrdine))
-            {
-                <tr>
-                    @group.Key
-                </tr>
-
-                @foreach (var s in group)
+            <!-- foreach (var group in Model.GroupBy(item => item.CdOrdine))
+            { -->
+                @foreach (var s in Model)
                 {
                     <tr>
                         <td>@s.CdOrdine</td>

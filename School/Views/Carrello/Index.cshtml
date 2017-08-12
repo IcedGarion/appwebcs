@@ -81,19 +81,11 @@
             }
             <h4>TOTALE CARRELLO: @totale</h4>
 
-            @using (Html.BeginForm("Create", "Ordine", FormMethod.Post))
-            {
-                <fieldset>
-                    <input type="submit" value="PROCEDI ALL'ACQUISTO" />
-                </fieldset>
-            }
+            <input type="button" value="ACQUISTO"
+                   onclick="@("window.location.href='" + @Url.Action("Create", "Ordine") + "'");" />
 
-            @using (Html.BeginForm("Empty", "Carrello", FormMethod.Get))
-                {
-                <fieldset>
-                    <input type="submit" value="SVUOTA CARRELLO" />
-                </fieldset>
-            }
+             <input type="button" value="SVUOTA CARRELLO"
+                    onclick="@("window.location.href='" + @Url.Action("Empty", "Carrello") + "'");" />
         }
     </div>
 
