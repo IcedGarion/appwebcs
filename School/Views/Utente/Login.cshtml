@@ -6,11 +6,10 @@
 }
 
 <div class="container">
-    <div class="header">
-        <h2>Login</h2>
-    </div>
-
     <div class="main">
+
+        <h1>Login</h1>
+
         <h2>
             <!-- MESSAGGIO possibile login errata -->
             @if(HttpContextAccessor.HttpContext.Session.GetString("LoginMsg") != null)
@@ -19,17 +18,39 @@
             }
         </h2>
 
-        @using (Html.BeginForm("Login", "Utente", FormMethod.Post))
-        {
-            <fieldset>
-                <input type="text" name="user" id="user" /> Username <br />
-                <input type="password" name="pass" id="pass" /> Password <br />
+        <div class="form">
+            @using (Html.BeginForm("Login", "Utente", FormMethod.Post))
+            {
+                <fieldset>
+                    Username
+                    <br />
+                    <input type="text" name="user" id="user"/>
+                    <br />
+                    <br />
+                    Password
+                    <br />
+                    <input type="password" name="pass" id="pass"/>
+                    <br />
+                    <br />
+                    <br />
+                    <input type="submit" value="Log in" />
 
-                <input type="submit" value="Log in" />
-            </fieldset>
-        }
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    Oppure
+                    <br />
+                    <br />
+                    <br />
+                    <input type="button" value="REGISTRATI"
+                           onclick="@("window.location.href='" + @Url.Action("Create", "Utente") + "'");" />
 
-        <h4>@Html.ActionLink("REGISTRA NUOVO ACCOUNT", "Create", "Utente")</h4>
+                </fieldset>
+            }
+
+            
+        </div>
     </div>
 
     <div class="footer">
