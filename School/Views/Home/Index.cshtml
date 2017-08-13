@@ -24,7 +24,7 @@
 
         @foreach (var s in Model)
             {
-            <table>
+            <table class="big">
                 <tr>
                     <td colspan="4">
                         @if (s.Immagine != null)
@@ -105,7 +105,8 @@
                 <tr></tr>
                 <tr>
                     <td colspan="4">
-
+                        @if (s.Disponibile.Equals("si"))
+                        {
                         @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
                         {
                             <fieldset>
@@ -114,7 +115,12 @@
                                 <input type="submit" value="Aggiungi al carrello" />
                             </fieldset>
                         }
+                        }
+                        else
+                        {
+                            <b>Il prodotto non &eacute; disponibile!!!</b>
 
+                        }
                     </td>
 
                 </tr>

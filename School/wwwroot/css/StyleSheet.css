@@ -28,8 +28,8 @@ ul > li > ul a {
     text-align: left;
 }
 
-table {
-    border: 1px solid black;
+.big {
+    border: solid 3px;
     width: 400px;
     float: left;
     margin-left: 20px;
@@ -41,11 +41,11 @@ h1 {
     background-color: white;
 }
 
-tr:nth-child(1) {
+.big tr:nth-child(1) {
     text-align: center;
 }
 
-tr:nth-child(2) {
+.big tr:nth-child(2) {
     font-weight: 700;
     text-transform: uppercase;
     font-size: x-large;
@@ -60,18 +60,18 @@ tr:nth-child(2) {
     color: #404040;
 }
 
-tr:nth-child(3) {
+.big tr:nth-child(3) {
     font-weight: 500;
     text-transform: capitalize;
     color: #404040;
     text-align: center;
 }
 
-tr:nth-child(4) {
+.big tr:nth-child(4) {
     text-align: center;
 }
 
-    tr:nth-child(4) > td:nth-child(1) {
+    .big tr:nth-child(4) > td:nth-child(1) {
         width: 100px;
         text-transform: uppercase;
         font-weight: 700;
@@ -79,7 +79,7 @@ tr:nth-child(4) {
         color: #0c1649;
     }
 
-    tr:nth-child(4) > td:nth-child(2) {
+    .big tr:nth-child(4) > td:nth-child(2) {
         width: 100px;
         text-transform: uppercase;
         font-weight: 500;
@@ -87,18 +87,18 @@ tr:nth-child(4) {
         color: #920808;
     }
 
-    tr:nth-child(4) > td:nth-child(3) {
+    .big tr:nth-child(4) > td:nth-child(3) {
         width: 100px;
         font-weight: 500;
         font-size: large;
     }
-    tr:nth-child(4) > td:nth-child(4) {
+    .big tr:nth-child(4) > td:nth-child(4) {
         width: 100px;
         font-weight: 500;
         font-size: large;
     }
 
-tr:nth-child(6) {
+.big tr:nth-child(6) {
     padding-top: 10px;
     overflow: hidden;
     white-space: nowrap;
@@ -139,23 +139,44 @@ input[type=submit]:active, input[type=button]:active
     font-size: x-large;
     text-align: center;
 }
-#carrello 
-{
-    border: 1px solid black;
-    width: 800px;
+.carrello {
+    width: 70%;
+    float: left;
+    margin-left: auto;
+    border: solid 3px;
     margin-left: 20px;
     background-color: white;
 }
-    #carrello >tr:nth-child(1) {
+    .carrello tr:nth-child(1) {
+        text-align: center;
+        font-size: large;
+    }
+
+.carrello tr:not(:first-child)
+{
+    font-size: medium;
+    text-align: center;
+
+}
+    .carrello td:not(:first-child) {
+        font-size: medium;
         text-align: center;
     }
 
-#carrello > tr:nth-child(2) 
+    .carrello td:nth-child(1) {
+        width: 100px;
+    }
+    .carrello td:nth-child(2) {
+        width: 400px;
+    }
+    .carrello td
+    {
+        width:200px;
+    }
+.carrello td:nth-child(5)
 {
-    font-size: small;
-    text-align: center;
+    width:600px;
 }
-
 .form
 {
     text-align: center;
@@ -164,4 +185,12 @@ input[type=submit]:active, input[type=button]:active
     width: 20%;
     font-size: large;
     margin-left: 40%;
+}
+.totale{
+    float:left;
+    margin-left:40px;
+}
+fieldset
+{
+    border:none;
 }

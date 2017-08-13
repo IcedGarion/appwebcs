@@ -18,7 +18,7 @@
         }
         else
         {
-            <table id="carrello" >
+            <table class="carrello" >
                     <tr>
                         <th></th>
                         <th>Dati</th>
@@ -29,17 +29,17 @@
                
                     @foreach (var s in Model)
                     {
-                        
+
                         <tr>
                             <td>
                                 @if (s.Immagine != null)
-                    {
+                                {
                                     <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
                                          width="80" height="80" />
                                 }
                                 else
                                 {
-                                    <b>NO IMAGE</b>
+                                    <img src="~/img/noimage.jpg" alt="NO IMAGE" width="80" height="80" />
                                 }
                             </td>
                             <td>
@@ -54,39 +54,41 @@
                             <td>
                                     @s.Quantita
                             </td>
+                            <td>
+                            @using (Html.BeginForm("Update", "Carrello", FormMethod.Post))
+                            {
+                                <fieldset>
+                                    <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                    <input type="number" name="qta" id="qta" min="0" value="1" />
+                                    <input type="submit" value="Modifica quantita'" />
+                                </fieldset>
+                            }
+                               </td>
+                            <td>
+                            @using (Html.BeginForm("Remove", "Carrello", FormMethod.Post))
+                            {
+                                <fieldset>
+                                    <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                    <input type="submit" value="Rimuovi dal carrello" />
+                                </fieldset>
+                            }
+                            
+                            </td>
                         </tr>
                         totale += (s.Prezzo - s.Sconto) * s.Quantita;
 
-                    
+                    }
 
-                    
-
-
-                @using (Html.BeginForm("Update", "Carrello", FormMethod.Post))
-                    {
-                    <fieldset>
-                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                        <input type="number" name="qta" id="qta" min="0" value="1" />Quantita'
-                        <input type="submit" value="Modifica quantita'" />
-                    </fieldset>
-                }
-
-                @using (Html.BeginForm("Remove", "Carrello", FormMethod.Post))
-                {
-                    <fieldset>
-                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                        <input type="submit" value="Rimuovi tutti dal carrello" />
-                    </fieldset>
-                }
-            }
                 </table>
-            <h4>TOTALE CARRELLO: @totale</h4>
+                <div class="totale">
+                    <h3>TOTALE CARRELLO: @totale</h3>
 
-            <input type="button" value="ACQUISTO"
-                   onclick="@("window.location.href='" + @Url.Action("Create", "Ordine") + "'");" />
+                    <input type="button" value="ACQUISTO"
+                           onclick="@("window.location.href='" + @Url.Action("Create", "Ordine") + "'");" />
 
-             <input type="button" value="SVUOTA CARRELLO"
-                    onclick="@("window.location.href='" + @Url.Action("Empty", "Carrello") + "'");" />
+                    <input type="button" value="SVUOTA CARRELLO"
+                           onclick="@("window.location.href='" + @Url.Action("Empty", "Carrello") + "'");" />
+                </div>
         }
     </div>
 
