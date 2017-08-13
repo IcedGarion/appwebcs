@@ -1,6 +1,10 @@
 @using School.Model
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewData["Title"] = "Find";
+    var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
 }
 @model IEnumerable<Prodotto>
 <div class="container">
@@ -92,21 +96,23 @@
                         </td>
                     </tr>
                     <tr></tr>
-                    <tr>
-                        <td colspan="4">
+                    
+                    @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
+                    {
+                        <tr>
+                            <td colspan="4">
+                                @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
+                                {
+                                    <fieldset>
+                                        <input type="text" name="input" id="input" value="@s.CdProdotto" hidden />
+                                        <input type="number" name="qta" id="qta" min="0" value="1" />
+                                        <input type="submit" value="Aggiungi al carrello" />
+                                    </fieldset>
+                                }
 
-                            @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
-                            {
-                                <fieldset>
-                                    <input type="text" name="input" id="input" value="@s.CdProdotto" hidden />
-                                    <input type="number" name="qta" id="qta" min="0" value="1" />
-                                    <input type="submit" value="Aggiungi al carrello" />
-                                </fieldset>
-                            }
-
-                        </td>
-
-                    </tr>
+                            </td>
+                        </tr>
+                    }
                 </table>
             }
         }

@@ -9,13 +9,10 @@
 }
 
 <div class="container">
-    <div class="header">
-        <h2>Lista Utenti</h2>
-    </div>
-
     <div class="main">
-        <h4>Lista Utenti</h4>
-        <table border="1">
+        <h1>Lista Utenti</h1>
+
+        <table border="1" id="utenti">
             <tr>
                 <th>Username</th>
                 <th>Password</th>
@@ -33,11 +30,13 @@
                         @using (Html.BeginForm("Update", "Utente", FormMethod.Post))
                         {
                             <fieldset>
-                                <input type="text" name="user" id="user" value="@s.CdUtente" hidden />
+                                <input type="text" name="user" id="user" value="@s.CdUtente" hidden/>
                                 <select name="ruolo" id="ruolo">
                                     <option value="user">user</option>
                                     <option value="admin">admin</option>
                                 </select>
+                                <br />
+                                <br />
                                 <input type="submit" value="Modifica Ruolo" />
                             </fieldset>
                         }

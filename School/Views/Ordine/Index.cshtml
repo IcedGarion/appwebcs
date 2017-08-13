@@ -15,48 +15,57 @@
 
             <h1>Lista Ordini</h1>
 
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Codice ordine</th>
-                        <th>Stato</th>
-                        <th>Titolo prodotto</th>
-                        <th>Quantita'</th>
-                        <th>Data</th>
-                        <th>Totale ordine</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-                    
-            </tbody>
-
-
-            </table>
-
-            <ul>
-
-                @foreach (var group in Model.GroupBy(item => item.CdOrdine))
-                {
-                    var Ordine = group.First();
-
-                    <li>
-                        Ordine numero: @group.Key del @Ordine.DtInserimento.Day/@Ordine.DtInserimento.Month/@Ordine.DtInserimento.Year: <b>@Ordine.Stato</b>
-
-                        <ul>
-                            @foreach (var s in group)
-                            {
-                                <li><b>PRODOTTO</b></li>
-                                <li>@s.Titolo</li>
-                                <li>@s.Quantita</li>
-                                <li>@s.Totale</li>
-                                <li></li>
-                            }
-                        </ul>
-                    </li>
+            @if (Model.Count() == 0)
+            {
+                <div id="desc">
+                    <h2>Nessun Ordine!</h2>
+                </div>
+            }
+            else
+            {
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Codice ordine</th>
+                            <th>Stato</th>
+                            <th>Titolo prodotto</th>
+                            <th>Quantita'</th>
+                            <th>Data</th>
+                            <th>Totale ordine</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    
+                        
+                </tbody>
+    
+    
+                </table>
+    
+                <ul>
+    
+                    @foreach (var group in Model.GroupBy(item => item.CdOrdine))
+                    {
+                        var Ordine = group.First();
+    
+                        <li>
+                            Ordine numero @group.Key del @Ordine.DtInserimento.Day/@Ordine.DtInserimento.Month/@Ordine.DtInserimento.Year: <b>@Ordine.Stato</b>
+    
+                            <ul>
+                                @foreach (var s in group)
+                                {
+                                    <li><b>PRODOTTO</b></li>
+                                    <li>@s.Titolo</li>
+                                    <li>@s.Quantita</li>
+                                    <li>@s.Totale</li>
+                                    <li></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
                 }
-            </ul>
-
         </div>
 
         <div class="footer">

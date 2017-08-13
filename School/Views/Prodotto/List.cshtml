@@ -1,7 +1,11 @@
 @using School.Model
 @using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewData["Title"] = "CATALOGO";
+    var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
 }
 @model IEnumerable<Prodotto>
 <div class="container">
@@ -87,16 +91,19 @@
                     </td>
                 </tr>
                 <tr></tr>
-                <tr>
-                    <td colspan="4">
-                        @using (Html.BeginForm("Update", "Prodotto", FormMethod.Post))
-                        {
-                            <fieldset>
-                                
-                                <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                                <input type="number" name="prezzo" id="prezzo" min="0" value="@s.Prezzo" />Prezzo<br />
-                                <input type="number" name="sconto" id="sconto" min="0" value="@s.Sconto" />Sconto<br />
-                                <select name="disponibile" id="disponibile">
+                @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
+                {
+                    <tr>
+                        <td colspan="4">
+                            @using (Html.BeginForm("Update", "Prodotto", FormMethod.Post))
+                            {
+                                <fieldset>
+                                    
+                                    <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                    <input type="number" name="prezzo" id="prezzo" min="0" value="@s.Prezzo" />Prezzo<br />
+                                    <input type="number" name="sconto" id="sconto" min="0" value="@s.Sconto" />Sconto<br />
+                                    <select name="disponibile" id="disponibile">
+
                                     @if (s.Disponibile.Equals("si"))
                                     {
                                         <option value="si" selected="selected">Disponibile</option>
@@ -107,13 +114,15 @@
                                         <option value="si">si</option>
                                         <option value="no" selected="selected">NON Disponibile</option>
                                     }
-                                </select>
-                                <input type="submit" value="Modifica Prodotto" />
-                            </fieldset>
-                        }
-                    </td>
-
-                </tr>
+                                    </select>
+                                    <br />
+                                    <br />
+                                    <input type="submit" value="Modifica Prodotto" />
+                                </fieldset>
+                            }
+                        </td>
+                    </tr>
+                }
             </table>
         }
 

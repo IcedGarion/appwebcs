@@ -16,6 +16,9 @@
         <h1>Lista Ordini</h1>
 
         <!-- FILTRO DATA -->
+        <input type="button" value="Pulisci Filtro"
+               onclick="@("window.location.href='" + @Url.Action("List", "Ordine") + "'");" />
+        
         @using (Html.BeginForm("List", "Ordine", FormMethod.Post))
         {
             <fieldset>
@@ -24,11 +27,7 @@
                 <input type="submit" value="Filtra Per Data" />
             </fieldset>
         }
-        <input type="button" value="Pulisci Filtro"
-               onclick="@("window.location.href='" + @Url.Action("List", "Ordine") + "'");" />
-
-
-
+        
         <table border="1">
             <tr>
 
@@ -48,7 +47,7 @@
                         <td>@s.CdOrdine</td>
                         <td>@s.Titolo</td>
                         <td>@s.Quantita</td>
-                        <td>@s.DtInserimento</td>
+                        <td>@s.DtInserimento.Day/@s.DtInserimento.Month/@s.DtInserimento.Year</td>
                         <td>@s.Totale</td>
                         <td>@s.Stato</td>
 

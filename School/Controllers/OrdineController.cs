@@ -26,6 +26,12 @@ namespace School.Controllers
         {
             SchoolContext context = new SchoolContext();
 
+            //Se non si e' loggati redirige alla login, quando si tenta di acquistare
+            if(HttpContext.Session.GetInt32("CdUtente") == null)
+            {
+                return Redirect("/Utente/Login");
+            }
+
             //legge il carrello
             var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
             if (SessionCart == null)
@@ -78,7 +84,7 @@ namespace School.Controllers
         }
 
         /***
-         * GET senza parametri: lista normale; GET con parametro: ordina secondo il parametro
+         * GET senza parametri: lista normale (orderby null non ordina); GET con parametro: ordina secondo il parametro
          ***/
         [HttpGet]
         public IActionResult List(string orderby)

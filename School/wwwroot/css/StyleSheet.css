@@ -201,3 +201,50 @@ fieldset
     margin-left:100px;
     margin-top:100px;
 }
+
+#acquista
+{
+    background-color:white;
+    color: black;
+}
+
+#acquista:hover
+{
+    background-color: #7e7d7d;
+}
+
+#acquista:active
+{
+    background-color: #4e4c4c;
+}
+
+#utenti
+{
+    width: 60%;
+    float: left;
+    border: solid 3px;
+    margin-left: 18%;
+    background-color: white;
+    text-align: center;
+    font-size: medium;
+}
+
+#utenti td:not(:nth-child(4))
+{
+    width: 30%;  
+}
+
+#utenti tr:nth-child(1) 
+{
+    font-size: large;
+}
+
+#utenti td:nth-child(3) 
+{
+    width: 60%;
+}
+
+select option
+{
+    width: 115px;
+}
