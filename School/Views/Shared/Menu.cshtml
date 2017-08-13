@@ -4,6 +4,7 @@
 
 @{ 
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
+    var username = HttpContextAccessor.HttpContext.Session.GetString("Username");
 }
 
 <ul id="menu">
@@ -37,8 +38,9 @@
     {
         <li>
             @if (ruolo.Equals("admin"))
-                {
-                @Html.ActionLink("DA SISTEMARE", "Index", "PrivateHome")
+            {
+                @Html.ActionLink(username, "Index", "PrivateHome")
+
                 <ul id="menu">
                     <li>@Html.ActionLink("Gestione Utenti", "List", "Utente")</li>
                     <li>@Html.ActionLink("Gestione Prodotti", "List", "Prodotto")</li>
@@ -47,8 +49,9 @@
             }
             else if (ruolo.Equals("user"))
             {
+                @Html.ActionLink(username, "Index", "Ordine")
+
                 <!-- ruolo user -->
-                @Html.ActionLink("DA SISTEMARE", "Index", "PrivateHome")
                 <ul>
                     <li>@Html.ActionLink("Elenco Ordini", "Index", "Ordine")</li>
                 </ul>

@@ -70,6 +70,7 @@ namespace School.Controllers
 
                 //SALVA IN SESSION DATI LOGIN
                 HttpContext.Session.SetInt32("CdUtente", loggato.CdUtente);
+                HttpContext.Session.SetString("Username", loggato.Username);
                 HttpContext.Session.SetString("Ruolo", loggato.Ruolo == null? "none" : loggato.Ruolo);
                 HttpContext.Session.Remove("LoginMsg");
 

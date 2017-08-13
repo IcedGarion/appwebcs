@@ -225,6 +225,7 @@ namespace School.Controllers
                             select new OrdiniJoinDataSource
                             {
                                 CdOrdine = ordini.CdOrdine,
+                                Stato = ordini.Stato,
                                 Username = utenti.Username,
                                 Titolo = prodotti.Titolo,
                                 DtInserimento = ordini.DtInserimento,

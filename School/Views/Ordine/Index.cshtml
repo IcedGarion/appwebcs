@@ -38,9 +38,10 @@
 
                 @foreach (var group in Model.GroupBy(item => item.CdOrdine))
                 {
-                    <li>
-                        Ordine numero: @group.Key del .... (DATA), stato:
+                    var Ordine = group.First();
 
+                    <li>
+                        Ordine numero: @group.Key del @Ordine.DtInserimento.Day/@Ordine.DtInserimento.Month/@Ordine.DtInserimento.Year: <b>@Ordine.Stato</b>
 
                         <ul>
                             @foreach (var s in group)
@@ -49,6 +50,7 @@
                                 <li>@s.Titolo</li>
                                 <li>@s.Quantita</li>
                                 <li>@s.Totale</li>
+                                <li></li>
                             }
                         </ul>
                     </li>
