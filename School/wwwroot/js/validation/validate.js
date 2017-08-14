@@ -1,17 +1,18 @@
 ﻿function validatePass()
 {
-    var color = "#92fc71";
-    var ret = true;
-    var nome = document.forms["form"]["nome"].value;
-    var cognome = document.forms["form"]["cognome"].value;
+    var color = "#d82b2b";
+    var pass = document.forms["form1"]["pass"].value;
+    var pass2 = document.forms["form1"]["pass2"].value;
 
-    if (nome != cognome)
+    if (pass != pass2)
     {
         document.getElementById("pass").style.backgroundColor = color;
         document.getElementById("pass2").style.backgroundColor = color;
 
-        ret = false;
+        return false;
     }
-
-    return ret;
+    else
+    {
+        form1.submit();
+    }   
 }

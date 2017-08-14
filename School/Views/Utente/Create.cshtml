@@ -5,6 +5,8 @@
     ViewData["Title"] = "Nuovo Utente";
 }
 
+<script type="text/javascript" src="~/js/validation/validate.js"></script>
+
 <div class="container">
     <div class="main">
 
@@ -17,7 +19,7 @@
         </h1>
 
         <div class="form">
-            @using (Html.BeginForm("Create", "Utente", FormMethod.Post))
+            @using (Html.BeginForm("Create", "Utente", FormMethod.Post, new { @id = "form1" }))
             {
                 <fieldset>
                     Username
@@ -27,16 +29,16 @@
                     <br />
                     Password
                     <br />
-                    <input type="text" name="pass" id="pass" required/>
+                    <input type="password" name="pass" id="pass" required/>
                     <br />
                     <br />
                     Conferma Password
                     <br />
-                    <input type="text" name="pass2" id="pass2" required/>
+                    <input type="password" name="pass2" id="pass2" required/>
                     <br />
                     <br />
                     <br />  
-                    <input type="submit" value="Registra" onclick="return validatePass()"/>
+                    <input type="submit" onclick="return validatePass();" value="Registra"/>
                 </fieldset>
             }
         </div>

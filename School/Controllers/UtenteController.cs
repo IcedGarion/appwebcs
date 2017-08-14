@@ -57,6 +57,7 @@ namespace School.Controllers
 
             //SALVA IN SESSION DATI LOGIN
             HttpContext.Session.SetInt32("CdUtente", New.CdUtente);
+            HttpContext.Session.SetString("Username", New.Username);
             HttpContext.Session.SetString("Ruolo", New.Ruolo);
             TempData["LoginMsg"] = "Registrazione Completata!";
 
