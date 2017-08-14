@@ -19,7 +19,7 @@
         <input type="button" value="Pulisci Filtro"
                onclick="@("window.location.href='" + @Url.Action("List", "Ordine") + "'");" />
         
-        @using (Html.BeginForm("List", "Ordine", FormMethod.Post))
+        @using (Html.BeginForm("List", "Ordine", FormMethod.Get))
         {
             <fieldset>
                 <input type="text" name="start" id="start" value="@DateTime.Now" />Data inizio

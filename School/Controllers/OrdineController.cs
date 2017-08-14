@@ -87,8 +87,18 @@ namespace School.Controllers
          * GET senza parametri: lista normale (orderby null non ordina); GET con parametro: ordina secondo il parametro
          ***/
         [HttpGet]
-        public IActionResult List(string orderby)
+        public IActionResult List(string orderby, string start, string end)
         {
+            bool date = false;
+            DateTime Start = default(DateTime), End = default(DateTime);
+
+            if (start != null && end != null)
+            {
+                Start = DateTime.Parse(start);
+                End = DateTime.Parse(end);
+                date = true;
+            }
+
             //fa una join per aggiungere altre informazioni
             var query = from ordini in Context.Ordine
                         join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
@@ -105,9 +115,16 @@ namespace School.Controllers
                             Totale = ordini.Totale
                         };
 
+            //se c'e' parametro DATA, aggiunge predicato Filtro Data
+            if(date)
+            {
+                query = query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
+            }
+
             return View(Order(query, orderby));
         }
 
+        /*
         [HttpPost]
         public IActionResult List(string start, string end)
         {
@@ -132,6 +149,7 @@ namespace School.Controllers
 
             return View(query.ToList());
         }
+        */
 
 #warning da mettere in EXTENSION
         private IEnumerable<OrdiniJoinDataSource> Order(IQueryable<OrdiniJoinDataSource> query, string orderby)

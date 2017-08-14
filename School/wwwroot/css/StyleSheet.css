@@ -202,6 +202,13 @@ fieldset
     margin-top:100px;
 }
 
+#links
+{
+    font-size: large;
+    margin: 30px;
+    padding: 45px;
+}
+
 #acquista
 {
     background-color:white;
