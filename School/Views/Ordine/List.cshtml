@@ -17,7 +17,7 @@
 
         <!-- FILTRO DATA -->
         <input type="button" value="Pulisci Filtro"
-               onclick="@("window.location.href='" + @Url.Action("List", "Ordine") + "'");" />
+               onclick="@("window.location.href='" + @Url.Action("List", "Ordine", new { clear = "clear" }) + "'");" />
         
         @using (Html.BeginForm("List", "Ordine", FormMethod.Get))
         {

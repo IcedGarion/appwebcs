@@ -87,11 +87,12 @@ namespace School.Controllers
          * GET senza parametri: lista normale (orderby null non ordina); GET con parametro: ordina secondo il parametro
          ***/
         [HttpGet]
-        public IActionResult List(string orderby, string start, string end)
+        public IActionResult List(string clear, string orderby, string start, string end)//, altri parametri da filtrare: stato, totale...
         {
             bool date = false;
             DateTime Start = default(DateTime), End = default(DateTime);
 
+            //parsifica filtri
             if (start != null && end != null)
             {
                 Start = DateTime.Parse(start);
@@ -99,8 +100,32 @@ namespace School.Controllers
                 date = true;
             }
 
-            //fa una join per aggiungere altre informazioni
-            var query = from ordini in Context.Ordine
+            //Cerca la query in session
+            var Query = HttpContext.Session.GetObjectFromJson<IEnumerable<OrdiniJoinDataSource>>("OrdiniQuery");
+            if(Query == null)
+            {
+                Query = DefaultQuery().ToList();
+                HttpContext.Session.SetObjectAsJson("OrdiniQuery", Query);
+            }
+            
+            //Applica Filtri
+            if(date)
+            {
+                Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
+            }
+            else if(clear != null)
+            {
+                Query = DefaultQuery().ToList();
+            }
+
+            HttpContext.Session.SetObjectAsJson("OrdiniQuery", Query);
+
+            return View(Order(Query, orderby));
+        }
+
+        private IQueryable<OrdiniJoinDataSource> DefaultQuery()
+        {
+            var q = from ordini in Context.Ordine
                         join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
                         join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
                         join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
@@ -115,13 +140,7 @@ namespace School.Controllers
                             Totale = ordini.Totale
                         };
 
-            //se c'e' parametro DATA, aggiunge predicato Filtro Data
-            if(date)
-            {
-                query = query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
-            }
-
-            return View(Order(query, orderby));
+            return q;
         }
 
         /*
@@ -152,7 +171,7 @@ namespace School.Controllers
         */
 
 #warning da mettere in EXTENSION
-        private IEnumerable<OrdiniJoinDataSource> Order(IQueryable<OrdiniJoinDataSource> query, string orderby)
+        private IEnumerable<OrdiniJoinDataSource> Order(IEnumerable<OrdiniJoinDataSource> query, string orderby)
         {
             switch (orderby)
             {
@@ -190,8 +209,7 @@ namespace School.Controllers
                     break;
             }
 
-
-            return (query.ToList());
+            return (query);
         }
 
         [HttpPost]
