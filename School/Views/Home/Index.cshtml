@@ -15,10 +15,9 @@
 
     <div class="main">
         <h2>
-            @if (HttpContextAccessor.HttpContext.Session.GetInt32("ErrorMsg") != null)
-            {
-                <b>@HttpContextAccessor.HttpContext.Session.GetInt32("ErrorMsg")</b>
-            }
+
+            <!-- Messaggio registrazione completata -->
+            @TempData["LoginMsg"]
         </h2>
         <h1>Top 10 dei prodotti pi&#249; venduti</h1>
 

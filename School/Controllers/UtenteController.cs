@@ -30,11 +30,25 @@ namespace School.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(string user, string pass)
         {
+            //controlla se non esiste gia' lo stesso username
+            var query = from utenti in Context.Utente
+                        where utenti.Username.Equals(user)
+                        select utenti;
+
+            //username gia' esistente!
+            if(query.Count() != 0)
+            {
+                TempData["LoginMsg"] = "Username inserito esiste gia'! Prova con un altro username";
+
+                return View();
+            }
+
+
             //assume password gia' controllate in js
             await base.Create(new Utente { Username = user, Password = pass, Ruolo = "user" });
 
             //recupera dal db il CdUtente appena inserito
-            var query = from utenti in Context.Utente
+            query = from utenti in Context.Utente
                         where utenti.Username.Equals(user)
                         select utenti;
 
@@ -44,7 +58,7 @@ namespace School.Controllers
             //SALVA IN SESSION DATI LOGIN
             HttpContext.Session.SetInt32("CdUtente", New.CdUtente);
             HttpContext.Session.SetString("Ruolo", New.Ruolo);
-            HttpContext.Session.SetString("LoginMsg", "Registrazione Completata!");
+            TempData["LoginMsg"] = "Registrazione Completata!";
 
             return Redirect("/Home/Index");
         }
@@ -72,7 +86,6 @@ namespace School.Controllers
                 HttpContext.Session.SetInt32("CdUtente", loggato.CdUtente);
                 HttpContext.Session.SetString("Username", loggato.Username);
                 HttpContext.Session.SetString("Ruolo", loggato.Ruolo == null? "none" : loggato.Ruolo);
-                HttpContext.Session.Remove("LoginMsg");
 
                 return Redirect("/Home");
             }
@@ -80,7 +93,7 @@ namespace School.Controllers
             else
             {
 
-                HttpContext.Session.SetString("LoginMsg", "Username o Password non corretti");
+                TempData["LoginMsg"] = "Username o Password non corretti";
 
                 return Redirect("/Utente/Login");
             }

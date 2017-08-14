@@ -10,13 +10,11 @@
 
         <h1>Login</h1>
 
-        <h2>
+        <h1>
             <!-- MESSAGGIO possibile login errata -->
-            @if(HttpContextAccessor.HttpContext.Session.GetString("LoginMsg") != null)
-            {
-                @HttpContextAccessor.HttpContext.Session.GetString("LoginMsg")
-            }
-        </h2>
+            @TempData["LoginMsg"]
+
+        </h1>
 
         <div class="form">
             @using (Html.BeginForm("Login", "Utente", FormMethod.Post))
@@ -24,12 +22,12 @@
                 <fieldset>
                     Username
                     <br />
-                    <input type="text" name="user" id="user"/>
+                    <input type="text" name="user" id="user" required/>
                     <br />
                     <br />
                     Password
                     <br />
-                    <input type="password" name="pass" id="pass"/>
+                    <input type="password" name="pass" id="pass" required/>
                     <br />
                     <br />
                     <br />
