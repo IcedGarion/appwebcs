@@ -2,12 +2,19 @@
 @using System.Collections.Generic
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<OrdiniJoinDataSource>
 
 @{
     ViewBag.Title = "LISTA ORDINI";
+    string date = "";
+
+    if(Model.Count() != 0)
+    {
+        date = Model.First().DtInserimento.ToString();
+    }
 }
 
-@model IEnumerable<OrdiniJoinDataSource>
+
 
 
 <div class="container">
@@ -15,22 +22,62 @@
 
         <h1>Lista Ordini</h1>
 
-        <!-- FILTRO DATA -->
+        <!-- FILTRI -->
         <input type="button" value="Pulisci Filtro"
                onclick="@("window.location.href='" + @Url.Action("List", "Ordine", new { clear = "clear" }) + "'");" />
         
         @using (Html.BeginForm("List", "Ordine", FormMethod.Get))
         {
             <fieldset>
-                <input type="text" name="start" id="start" value="@DateTime.Now" />Data inizio
-                <input type="text" name="end" id="end" value="@DateTime.Now" />Data fine
-                <input type="submit" value="Filtra Per Data" />
+                <!-- Titolo-->
+                <b>Titolo</b>
+                <input type="text" name="titolo"/>
+
+                <!-- Quantita' -->
+                <b>Quantit&aacute;</b>
+                <select name="qtaoperator">
+                    <option value=""></option>
+                    <option value="<"><</option>
+                    <option value="<="><=</option>
+                    <option value=">">></option>
+                    <option value=">=">>=</option>
+                    <option value="=">=</option>
+                </select>
+                <input type="number" name="qta" id="qta" />
+
+                <!-- Data -->
+                <b>Data</b>
+                <input type="text" name="start" id="start" value="@date" />Data inizio
+                <input type="text" name="end" id="end" value="@date" />Data fine
+
+                <!-- Totale -->
+                <b>Totale</b>
+                <select name="totoperator">
+                    <option value=""></option>
+                    <option value="<"><</option>
+                    <option value="<="><=</option>
+                    <option value=">">></option>
+                    <option value=">=">>=</option>
+                    <option value="=">=</option>
+                </select>
+                <input type="number" name="tot" id="tot" />
+
+                <!-- Stato-->
+                <b>Stato</b>
+                <select name="stato">
+                    <option value=""></option>
+                    <option value="sent">sent</option>
+                    <option value="processed">processed</option>
+                </select>
+
+
+                <input type="submit" value="Applica Filtro"/>
             </fieldset>
         }
         
         <table border="1">
             <tr>
-
+                <!-- ORDER BY -->
                 <th>@Html.ActionLink("Codice ordine", "List", "Ordine", new { orderby = "CdOrdine" }, null)</th>
                 <th>@Html.ActionLink("Titolo prodotto", "List", "Ordine", new { orderby = "Titolo" }, null)</th>
                 <th>@Html.ActionLink("Quantita'", "List", "Ordine", new { orderby = "Quantita" }, null)</th>
@@ -38,9 +85,7 @@
                 <th>@Html.ActionLink("Totale Ordine", "List", "Ordine", new { orderby = "Totale" }, null)</th>
                 <th>@Html.ActionLink("Stato", "List", "Ordine", new { orderby = "Stato" }, null)</th>
             </tr>
-    
-            <!-- foreach (var group in Model.GroupBy(item => item.CdOrdine))
-            { -->
+
                 @foreach (var s in Model)
                 {
                     <tr>
@@ -66,7 +111,6 @@
                         </td>
                     </tr>
                 }
-            }
         </table>
 </div>
 

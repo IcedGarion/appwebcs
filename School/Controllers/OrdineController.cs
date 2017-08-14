@@ -87,37 +87,99 @@ namespace School.Controllers
          * GET senza parametri: lista normale (orderby null non ordina); GET con parametro: ordina secondo il parametro
          ***/
         [HttpGet]
-        public IActionResult List(string clear, string orderby, string start, string end)//, altri parametri da filtrare: stato, totale...
+        public IActionResult List(string clear, string orderby, string start, string end,
+            string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
-            bool date = false;
             DateTime Start = default(DateTime), End = default(DateTime);
 
-            //parsifica filtri
-            if (start != null && end != null)
-            {
-                Start = DateTime.Parse(start);
-                End = DateTime.Parse(end);
-                date = true;
-            }
-
             //Cerca la query in session
-            var Query = HttpContext.Session.GetObjectFromJson<IEnumerable<OrdiniJoinDataSource>>("OrdiniQuery");
-            if(Query == null)
-            {
-                Query = DefaultQuery().ToList();
-                HttpContext.Session.SetObjectAsJson("OrdiniQuery", Query);
-            }
+            var Query = DefaultQuery();
             
-            //Applica Filtri
-            if(date)
+            //parsifica filtri
+            if (clear != null)
             {
-                Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
+                Query = DefaultQuery();
             }
-            else if(clear != null)
+            else
             {
-                Query = DefaultQuery().ToList();
+                if (start != null && end != null)
+                {
+                    Start = DateTime.Parse(start);
+                    End = DateTime.Parse(end);
+                    Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
+                }
+
+                if(titolo != null && !titolo.Equals(""))
+                {
+                    Query = Query.Where(ordine => ordine.Titolo.Contains(titolo));
+                }
+
+                if(qtaoperator != null && qta != null)
+                {
+                    double.TryParse(qta, out double Qta);
+
+                    switch(qtaoperator)
+                    {
+                        case "<":
+                            Query = Query.Where(ordine => ordine.Quantita < Qta);
+                            break;
+                        case "<=":
+                            Query = Query.Where(ordine => ordine.Quantita <= Qta);
+                            break;
+                        case ">":
+                            Query = Query.Where(ordine => ordine.Quantita > Qta);
+                            break;
+                        case ">=":
+                            Query = Query.Where(ordine => ordine.Quantita >= Qta);
+                            break;
+                        case "=":
+                            Query = Query.Where(ordine => ordine.Quantita == Qta);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (totoperator != null && tot != null)
+                {
+                    double.TryParse(tot, out double Tot);
+
+                    switch (totoperator)
+                    {
+                        case "<":
+                            Query = Query.Where(ordine => ordine.Totale < Tot);
+                            break;
+                        case "<=":
+                            Query = Query.Where(ordine => ordine.Totale <= Tot);
+                            break;
+                        case ">":
+                            Query = Query.Where(ordine => ordine.Totale > Tot);
+                            break;
+                        case ">=":
+                            Query = Query.Where(ordine => ordine.Totale >= Tot);
+                            break;
+                        case "=":
+                            Query = Query.Where(ordine => ordine.Totale == Tot);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if(stato != null && !stato.Equals(""))
+                {
+                    Query = Query.Where(ordine => ordine.Stato.Equals(stato));
+                }
             }
 
+            if(orderby != null)
+            {
+                //se c'e' orderby, salva in session per poterli cambiare piuu' volte
+                //pero' se la query cambia deve resettare
+                //OPPURE NIENTE ORDERBY!!!!
+#warning Query = HttpContext.Session.GetObjectFromJson<IEnumerable<OrdiniJoinDataSource>>("OrdiniQuery");
+
+            }
             HttpContext.Session.SetObjectAsJson("OrdiniQuery", Query);
 
             return View(Order(Query, orderby));
