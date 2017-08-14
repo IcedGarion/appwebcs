@@ -33,6 +33,7 @@ namespace School
             services.AddDbContext<SchoolContext>(options =>
                 options.UseSqlServer(connectionString));
 
+            /*
             services.AddDbContext<IdentityDbContext>(options =>
                options.UseSqlServer(
                    connectionString,
@@ -43,6 +44,8 @@ namespace School
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
+
+            */
 
             //session2
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -65,7 +68,7 @@ namespace School
 
             //session
             app.UseSession();
-            app.UseIdentity();
+            //app.UseIdentity();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
 
