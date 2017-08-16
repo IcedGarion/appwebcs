@@ -1,10 +1,8 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
-
 @{
     ViewData["Title"] = "PRIVATE HOME";
 }
-
 <div class="container">
     <div class="main">
         <h1>Area Amministrazione</h1>
@@ -15,9 +13,8 @@
         }
         else
         {
-            <div id="desc">
-                <h2>Men&uacute;</h2>
-                
+            <div id="greybar"><br /><br /></div>
+            <div class="ph">
                 <div id="links">
                     @Html.ActionLink("Gestione Utenti", "List", "Utente", null, new { @class = "linkprod" })
                     <br /><br /><br />
@@ -28,7 +25,6 @@
             </div>
         }
     </div>
-
     <div class="footer">
         <h6>footer</h6>
     </div>

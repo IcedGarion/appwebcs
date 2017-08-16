@@ -1,13 +1,25 @@
 @using School.Model
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
-
-@{ 
+@{
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
     var username = HttpContextAccessor.HttpContext.Session.GetString("Username");
 }
-
 <ul id="menu">
+    <!--  CARRELLO  -->
+    @if (ruolo == null)
+    {
+        <li>
+            <a href="@Url.Action("Index","Carrello")"><img src="~/img/cart.png" , alt="Carrello" height="25" width="30" /></a>
+        </li>
+    }
+    else if (ruolo.Equals("user"))
+    {
+        <li>
+            <a href="@Url.Action("Index","Carrello")"><img src="~/img/cart.png" , alt="Carrello" height="25" width="30" /></a>
+        </li>
+
+    }
     <li>
         @Html.ActionLink("Home", "Index", "Home")
     </li>
@@ -17,31 +29,16 @@
     <li>
         @Html.ActionLink("Prodotti", "Index", "Prodotto")
     </li>
-
-    <!--  CARRELLO  -->
-    @if (ruolo == null)
-    {
-        <li>
-            @Html.ActionLink("Carrello", "Index", "Carrello")
-        </li>
-    }
-    else if (ruolo.Equals("user"))
-    {
-        <li>
-            @Html.ActionLink("Carrello", "Index", "Carrello")
-        </li>
-
-    }
-
+    
     <!-- MENU' A TENDINA AREA PRIVATA  -->
     @if (ruolo != null)
     {
-        <li>
+        <li class="dropdown">
             @if (ruolo.Equals("admin"))
             {
-                @Html.ActionLink(username, "Index", "PrivateHome")
+                @Html.ActionLink(username, "Index", "PrivateHome", new { @class = "dropbtn" })
 
-                <ul id="menu">
+                <ul class="dropdown-content">
                     <li>@Html.ActionLink("Gestione Utenti", "List", "Utente")</li>
                     <li>@Html.ActionLink("Gestione Prodotti", "List", "Prodotto")</li>
                     <li>@Html.ActionLink("Gestione Ordini", "List", "Ordine")</li>
@@ -49,16 +46,15 @@
             }
             else if (ruolo.Equals("user"))
             {
-                @Html.ActionLink(username, "Index", "Ordine")
+                @Html.ActionLink(username, "Index", "Ordine", new { @class = "dropbtn" })
 
                 <!-- ruolo user -->
-                <ul>
+                <ul class="dropdown-content">
                     <li>@Html.ActionLink("Elenco Ordini", "Index", "Ordine")</li>
                 </ul>
             }
         </li>
     }
-
 
     <li>
         @if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo") == null)
@@ -66,7 +62,6 @@
             @Html.ActionLink("Registrati!", "Create", "Utente")
         }
     </li>
-
     <li>
         @if (HttpContextAccessor.HttpContext.Session.GetString("Ruolo") == null)
         {
@@ -80,8 +75,7 @@
         }
     </li>
     <li>
-        <!-- Altro modo di usare form: non passa la prima volta dal controller e puo' chiamare il controller che vuole -->
-        <!-- Passa parametri alla action: Controller ha un metodo (Find) che accetta tanti parametri quanti gli input type-->
+ 
         @using (Html.BeginForm("Find", "Prodotto", FormMethod.Post))
             {
             <fieldset>
@@ -90,8 +84,11 @@
             </fieldset>
         }
     </li>
-</ul>
+    <li>
+        @Html.ActionLink("Ricerca Avanzata", "Advanced", "Prodotto")
+    </li>
 
-<script>
+</ul>
+<!--<script>
     $("#menu").kendoMenu();
-</script>
+</script>-->

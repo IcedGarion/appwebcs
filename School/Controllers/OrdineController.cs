@@ -83,108 +83,6 @@ namespace School.Controllers
             return Redirect("/Ordine/Index");
         }
 
-        /***
-         * GET senza parametri: lista normale (orderby null non ordina); GET con parametro: ordina secondo il parametro
-         ***/
-        [HttpGet]
-        public IActionResult List(string clear, string orderby, string start, string end,
-            string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
-        {
-            DateTime Start = default(DateTime), End = default(DateTime);
-
-            //Cerca la query in session
-            var Query = DefaultQuery();
-            
-            //parsifica filtri
-            if (clear != null)
-            {
-                Query = DefaultQuery();
-            }
-            else
-            {
-                if (start != null && end != null)
-                {
-                    Start = DateTime.Parse(start);
-                    End = DateTime.Parse(end);
-                    Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
-                }
-
-                if(titolo != null && !titolo.Equals(""))
-                {
-                    Query = Query.Where(ordine => ordine.Titolo.Contains(titolo));
-                }
-
-                if(qtaoperator != null && qta != null)
-                {
-                    double.TryParse(qta, out double Qta);
-
-                    switch(qtaoperator)
-                    {
-                        case "<":
-                            Query = Query.Where(ordine => ordine.Quantita < Qta);
-                            break;
-                        case "<=":
-                            Query = Query.Where(ordine => ordine.Quantita <= Qta);
-                            break;
-                        case ">":
-                            Query = Query.Where(ordine => ordine.Quantita > Qta);
-                            break;
-                        case ">=":
-                            Query = Query.Where(ordine => ordine.Quantita >= Qta);
-                            break;
-                        case "=":
-                            Query = Query.Where(ordine => ordine.Quantita == Qta);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                if (totoperator != null && tot != null)
-                {
-                    double.TryParse(tot, out double Tot);
-
-                    switch (totoperator)
-                    {
-                        case "<":
-                            Query = Query.Where(ordine => ordine.Totale < Tot);
-                            break;
-                        case "<=":
-                            Query = Query.Where(ordine => ordine.Totale <= Tot);
-                            break;
-                        case ">":
-                            Query = Query.Where(ordine => ordine.Totale > Tot);
-                            break;
-                        case ">=":
-                            Query = Query.Where(ordine => ordine.Totale >= Tot);
-                            break;
-                        case "=":
-                            Query = Query.Where(ordine => ordine.Totale == Tot);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                if(stato != null && !stato.Equals(""))
-                {
-                    Query = Query.Where(ordine => ordine.Stato.Equals(stato));
-                }
-            }
-
-            if(orderby != null)
-            {
-                //se c'e' orderby, salva in session per poterli cambiare piuu' volte
-                //pero' se la query cambia deve resettare
-                //OPPURE NIENTE ORDERBY!!!!
-#warning Query = HttpContext.Session.GetObjectFromJson<IEnumerable<OrdiniJoinDataSource>>("OrdiniQuery");
-
-            }
-            HttpContext.Session.SetObjectAsJson("OrdiniQuery", Query);
-
-            return View(Order(Query, orderby));
-        }
-
         private IQueryable<OrdiniJoinDataSource> DefaultQuery()
         {
             var q = from ordini in Context.Ordine
@@ -202,6 +100,27 @@ namespace School.Controllers
                             Totale = ordini.Totale
                         };
 
+            return q;
+        }
+
+        private IQueryable<OrdiniJoinDataSource> UserQuery(int CdUtente)
+        {
+            //invece di restituire solo gli ordini, fa una join per aggiungere altre informazioni
+            var q = from ordini in Context.Ordine
+                        join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
+                        join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
+                        join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
+                        where utenti.CdUtente.Equals(CdUtente)
+                        select new OrdiniJoinDataSource
+                        {
+                            CdOrdine = ordini.CdOrdine,
+                            Stato = ordini.Stato,
+                            Username = utenti.Username,
+                            Titolo = prodotti.Titolo,
+                            DtInserimento = ordini.DtInserimento,
+                            Quantita = ordineProdotto.Quantita,
+                            Totale = ordini.Totale
+                        };
             return q;
         }
 
@@ -232,48 +151,6 @@ namespace School.Controllers
         }
         */
 
-#warning da mettere in EXTENSION
-        private IEnumerable<OrdiniJoinDataSource> Order(IEnumerable<OrdiniJoinDataSource> query, string orderby)
-        {
-            switch (orderby)
-            {
-                case "CdOrdine":
-                    {
-                        query = query.OrderByDescending(o => o.CdOrdine);
-                        break;
-                    }
-                case "Titolo":
-                    {
-                        query = query.OrderBy(o => o.Titolo);
-                        break;
-                    }
-                case "Quantita":
-                    {
-                        query = query.OrderByDescending(o => o.Quantita);
-                        break;
-                    }
-                case "DtInserimento":
-                    {
-                        query = query.OrderByDescending(o => o.DtInserimento);
-                        break;
-                    }
-                case "Totale":
-                    {
-                        query = query.OrderByDescending(o => o.Totale);
-                        break;
-                    }
-                case "Stato":
-                    {
-                        query = query.OrderBy(o => o.Stato);
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            return (query);
-        }
-
         [HttpPost]
         public async Task<IActionResult> Update(string ordine, string stato)
         {
@@ -301,13 +178,13 @@ namespace School.Controllers
             return Redirect("/Ordine/List");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string clear, string start, string end,
+            string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
-            SchoolContext context = new SchoolContext();
-
             //prende cdUtente da session
             var tmp = HttpContext.Session.GetInt32("CdUtente");
             var ruolo = HttpContext.Session.GetString("Ruolo");
+            bool filtered = false;
 
 #warning da togliere dopo autenticazione
             if (tmp == null)
@@ -320,29 +197,191 @@ namespace School.Controllers
 
             if (ruolo.Equals("user"))
             {
-                //invece di restituire solo gli ordini, fa una join per aggiungere altre informazioni
-                var query = from ordini in context.Ordine
-                            join utenti in context.Utente on ordini.CdUtente equals utenti.CdUtente
-                            join ordineProdotto in context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
-                            join prodotti in context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
-                            where utenti.CdUtente.Equals(CdUtente)
-                            select new OrdiniJoinDataSource
-                            {
-                                CdOrdine = ordini.CdOrdine,
-                                Stato = ordini.Stato,
-                                Username = utenti.Username,
-                                Titolo = prodotti.Titolo,
-                                DtInserimento = ordini.DtInserimento,
-                                Quantita = ordineProdotto.Quantita,
-                                Totale = ordini.Totale
-                            };
+                var Query = UserQuery(CdUtente);
+                DateTime Start = default(DateTime), End = default(DateTime);
 
-                return View(query.ToList());
+                //Filtri
+                if (clear == null)
+                {
+                    if (start != null && end != null)
+                    {
+                        Start = DateTime.Parse(start);
+                        End = DateTime.Parse(end);
+                        Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
+                        filtered = true;
+                    }
+
+                    if (titolo != null && !titolo.Equals(""))
+                    {
+                        Query = Query.Where(ordine => ordine.Titolo.Contains(titolo));
+                        filtered = true;
+                    }
+
+                    if (qtaoperator != null && qta != null)
+                    {
+                        double.TryParse(qta, out double Qta);
+
+                        switch (qtaoperator)
+                        {
+                            case "<":
+                                Query = Query.Where(ordine => ordine.Quantita < Qta);
+                                break;
+                            case "<=":
+                                Query = Query.Where(ordine => ordine.Quantita <= Qta);
+                                break;
+                            case ">":
+                                Query = Query.Where(ordine => ordine.Quantita > Qta);
+                                break;
+                            case ">=":
+                                Query = Query.Where(ordine => ordine.Quantita >= Qta);
+                                break;
+                            case "=":
+                                Query = Query.Where(ordine => ordine.Quantita == Qta);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        filtered = true;
+                    }
+
+                    if (totoperator != null && tot != null)
+                    {
+                        double.TryParse(tot, out double Tot);
+
+                        switch (totoperator)
+                        {
+                            case "<":
+                                Query = Query.Where(ordine => ordine.Totale < Tot);
+                                break;
+                            case "<=":
+                                Query = Query.Where(ordine => ordine.Totale <= Tot);
+                                break;
+                            case ">":
+                                Query = Query.Where(ordine => ordine.Totale > Tot);
+                                break;
+                            case ">=":
+                                Query = Query.Where(ordine => ordine.Totale >= Tot);
+                                break;
+                            case "=":
+                                Query = Query.Where(ordine => ordine.Totale == Tot);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        filtered = true;
+                    }
+
+                    if (stato != null && !stato.Equals(""))
+                    {
+                        Query = Query.Where(ordine => ordine.Stato.Equals(stato));
+                        filtered = true;
+                    }
+                }
+
+                TempData["OrdineFilter"] = filtered.ToString();
+
+                return View(Query.ToList());
             }
             else
             {
                 return Redirect("/Ordine/List");
             }
+        }
+
+        /***
+         * GET senza parametri: lista normale (orderby null non ordina); GET con parametro: ordina secondo il parametro
+         ***/
+        [HttpGet]
+        public IActionResult List(string clear, string start, string end,
+            string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
+        {
+            DateTime Start = default(DateTime), End = default(DateTime);
+            var Query = DefaultQuery();
+            bool filtered = false;
+
+            //se c'e' clear, non fa niente
+            if (clear == null)
+            {
+                if (start != null && end != null)
+                {
+                    Start = DateTime.Parse(start);
+                    End = DateTime.Parse(end);
+                    Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
+                    filtered = true;
+                }
+
+                if (titolo != null && !titolo.Equals(""))
+                {
+                    Query = Query.Where(ordine => ordine.Titolo.Contains(titolo));
+                    filtered = true;
+                }
+
+                if (qtaoperator != null && qta != null)
+                {
+                    double.TryParse(qta, out double Qta);
+
+                    switch (qtaoperator)
+                    {
+                        case "<":
+                            Query = Query.Where(ordine => ordine.Quantita < Qta);
+                            break;
+                        case "<=":
+                            Query = Query.Where(ordine => ordine.Quantita <= Qta);
+                            break;
+                        case ">":
+                            Query = Query.Where(ordine => ordine.Quantita > Qta);
+                            break;
+                        case ">=":
+                            Query = Query.Where(ordine => ordine.Quantita >= Qta);
+                            break;
+                        case "=":
+                            Query = Query.Where(ordine => ordine.Quantita == Qta);
+                            break;
+                        default:
+                            break;
+                    }
+                    filtered = true;
+                }
+
+                if (totoperator != null && tot != null)
+                {
+                    double.TryParse(tot, out double Tot);
+
+                    switch (totoperator)
+                    {
+                        case "<":
+                            Query = Query.Where(ordine => ordine.Totale < Tot);
+                            break;
+                        case "<=":
+                            Query = Query.Where(ordine => ordine.Totale <= Tot);
+                            break;
+                        case ">":
+                            Query = Query.Where(ordine => ordine.Totale > Tot);
+                            break;
+                        case ">=":
+                            Query = Query.Where(ordine => ordine.Totale >= Tot);
+                            break;
+                        case "=":
+                            Query = Query.Where(ordine => ordine.Totale == Tot);
+                            break;
+                        default:
+                            break;
+                    }
+                    filtered = true;
+                }
+
+                if (stato != null && !stato.Equals(""))
+                {
+                    Query = Query.Where(ordine => ordine.Stato.Equals(stato));
+                    filtered = true;
+                }
+            }
+
+            TempData["OrdineFilter"] = filtered.ToString();
+
+            return View(Query);
         }
 
     }

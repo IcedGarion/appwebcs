@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: 'Segoe UI';
+    font-family: Constantia;
     font-size: small;
 }
 
@@ -32,18 +32,17 @@
 }
 
 #menu {
-    position: center;
     padding-top: 10px;
     text-align: center;
-    margin-top: -32px;
-    margin-left: 15%;
-    margin-right: 15%;
-    float: left;
+    margin-left: 11%;
+    margin-right: 11%;
     overflow: hidden;
     white-space: nowrap;
+    height: 50px;
 }
 
 .menuhead {
-    padding: 50px;
+    height: 5%;
+    padding: 30px;
     background-color: darkgrey;
 }

@@ -141,7 +141,32 @@ namespace School.Controllers
 
         //passa alla view la lista di tutte le entites del controller (Context.Utente)
         //Utente/Index: in @Model si trova la lista
-        public async Task<IActionResult> List() => View(await Entities.ToListAsync());
+        public IActionResult List(string clear, string username, string ruolo)
+        {
+            var Query = from utenti in Context.Utente
+                        select utenti;
+
+            bool filtered = false;
+
+            //FILTRI
+            if (clear == null)
+            {
+                if(username != null && !username.Equals(""))
+                {
+                    Query = Query.Where(u => u.Username.Contains(username));
+                    filtered = true;
+                }
+
+                if(ruolo != null && !ruolo.Equals(""))
+                {
+                    Query = Query.Where(u => u.Ruolo.Equals(ruolo));
+                    filtered = true;
+                }
+            }
+
+           TempData["UtenteFilter"] = filtered.ToString();
+            return View(Query.ToList());
+        }
 
         public IActionResult Index() => Redirect("/Utente/List");
 
