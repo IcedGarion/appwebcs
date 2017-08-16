@@ -1,10 +1,8 @@
-@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
-
 @{
     ViewData["Title"] = "PRIVATE HOME";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
 }
+
 <div class="container">
     <div class="main">
         <h1>Area Amministrazione</h1>

@@ -83,7 +83,7 @@ namespace School.Controllers
             return Redirect("/Ordine/Index");
         }
 
-        private IQueryable<OrdiniJoinDataSource> DefaultQuery()
+        private IQueryable<OrdiniJoinDataSource> AdminQuery()
         {
             var q = from ordini in Context.Ordine
                         join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
@@ -298,7 +298,7 @@ namespace School.Controllers
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
             DateTime Start = default(DateTime), End = default(DateTime);
-            var Query = DefaultQuery();
+            var Query = AdminQuery();
             bool filtered = false;
 
             //se c'e' clear, non fa niente

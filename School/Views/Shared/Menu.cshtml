@@ -1,10 +1,8 @@
-@using School.Model
-@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
 @{
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
     var username = HttpContextAccessor.HttpContext.Session.GetString("Username");
 }
+
 <ul id="menu">
     <!--  CARRELLO  -->
     @if (ruolo == null)

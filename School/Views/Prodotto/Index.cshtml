@@ -1,13 +1,10 @@
-@using School.Model
-@using System.Collections.Generic
-@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<Prodotto>
 
 @{
     ViewData["Title"] = "CATALOGO";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
 }
-@model IEnumerable<Prodotto>
+
 <div class="container">
     <div class="main">
         <h1>Catalogo Prodotti</h1>

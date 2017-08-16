@@ -1,16 +1,10 @@
-@using School.Controllers
-@using School.Data
-@using School.Model
-@using System.Collections.Generic
-@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<Prodotto>
 
 @{
     ViewBag.Title = "Index";
     //Layout = "_LayoutEmpty";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
 }
-@model IEnumerable<Prodotto>
 
 <div class="container">
 

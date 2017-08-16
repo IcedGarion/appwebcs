@@ -1,6 +1,3 @@
-@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
-
 @{
     ViewData["Title"] = "Login";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
@@ -9,59 +6,45 @@
 <div class="container">
     <div class="main">
 
-        @if (ruolo == null)
-        {
-            <h1>
-                Non sei loggato!<br /><br />
-                @Html.ActionLink("Login", "Login", "Utente")
-            </h1>
-        }
-        else if (ruolo.Equals("user"))
-        {
-            <h1>Area riservata agli amministratori!</h1>
-        }
-        else
-        {
-            <h1>Login</h1>
+        <h1>Login</h1>
 
-            <h1>
-                <!-- MESSAGGIO possibile login errata -->
-                @TempData["LoginMsg"]
+        <h1>
+            <!-- MESSAGGIO possibile login errata -->
+            @TempData["LoginMsg"]
 
-            </h1>
+        </h1>
 
-            <div class="form">
-                @using (Html.BeginForm("Login", "Utente", FormMethod.Post))
-                {
-                    <fieldset>
-                        Username
-                        <br />
-                        <input type="text" name="user" id="user" required />
-                        <br />
-                        <br />
-                        Password
-                        <br />
-                        <input type="password" name="pass" id="pass" required />
-                        <br />
-                        <br />
-                        <br />
-                        <input type="submit" value="Log in" />
+        <div class="form">
+            @using (Html.BeginForm("Login", "Utente", FormMethod.Post))
+            {
+                <fieldset>
+                    Username
+                    <br />
+                    <input type="text" name="user" id="user" required />
+                    <br />
+                    <br />
+                    Password
+                    <br />
+                    <input type="password" name="pass" id="pass" required />
+                    <br />
+                    <br />
+                    <br />
+                    <input type="submit" value="Log in" />
 
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        Oppure
-                        <br />
-                        <br />
-                        <input type="button" value="REGISTRATI"
-                               onclick="@("window.location.href='" + @Url.Action("Create", "Utente") + "'");" />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    Oppure
+                    <br />
+                    <br />
+                    <input type="button" value="REGISTRATI"
+                           onclick="@("window.location.href='" + @Url.Action("Create", "Utente") + "'");" />
 
-                    </fieldset>
-                }
-            </div>
-        }
+                </fieldset>
+            }
+        </div>
     </div>
 
     <div class="footer">
