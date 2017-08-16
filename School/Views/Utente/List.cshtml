@@ -1,9 +1,12 @@
 @using School.Model
 @using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
 @model IEnumerable<Utente>
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewBag.Title = "LISTA UTENTI";
+    var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
     bool count = false;
     var isFiltered = TempData["UtenteFilter"];
 
@@ -13,9 +16,23 @@
     }
 }
 
-        <div class="container">
-            <div class="main">
-                <h1>Lista Utenti</h1>
+<div class="container">
+    <div class="main">
+
+        @if (ruolo == null)
+        {
+            <h1>
+                Non sei loggato!<br /><br />
+                @Html.ActionLink("Login", "Login", "Utente")
+            </h1>
+        }
+        else if (ruolo.Equals("user"))
+        {
+            <h1>Area riservata agli amministratori!</h1>
+        }
+        else
+        {
+            <h1>Lista Utenti</h1>
 
             @if (!count)
             {
@@ -24,12 +41,12 @@
                 </div>
                 @if (isFiltered.Equals("True"))
                 {
-                    <!-- FILTRI -->
+            <!-- FILTRI -->
                     <div id="right">
                         <h2><b>Filtra per...</b></h2><br /><br />
 
                         @using (Html.BeginForm("List", "Utente", FormMethod.Get))
-                    {
+                        {
                             <fieldset>
                                 <table>
                                     <!-- Username -->
@@ -42,7 +59,6 @@
                                         <td><b>Username</b></td>
                                         <td><input type="text" name="username" /></td>
                                     </tr>
-
                                     <!-- Ruolo -->
                                     <tr>
                                         <td><b>Ruolo</b></td>
@@ -86,7 +102,7 @@
                                 @using (Html.BeginForm("Update", "Utente", FormMethod.Post))
                                 {
                                     <fieldset>
-                                        <input type="text" name="user" id="user" value="@s.CdUtente" hidden/>
+                                        <input type="text" name="user" id="user" value="@s.CdUtente" hidden />
                                         <select name="ruolo" id="ruolo">
                                             <option value="user">user</option>
                                             <option value="admin">admin</option>
@@ -102,9 +118,9 @@
                 </table>
             }
 
-            @if(count)
+            @if (count)
             {
-                <!-- FILTRI -->
+            <!-- FILTRI -->
                 <div id="right">
                     <h2><b>Filtra per...</b></h2><br /><br />
 
@@ -122,7 +138,7 @@
                                     <td><b>Username</b></td>
                                     <td><input type="text" name="username" /></td>
                                 </tr>
-                                
+
                                 <!-- Ruolo -->
                                 <tr>
                                     <td><b>Ruolo</b></td>
@@ -144,7 +160,7 @@
                     }
                 </div>
             }
-
+        }
     </div>
 
     <div class="footer">

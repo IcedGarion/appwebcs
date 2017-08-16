@@ -1,9 +1,12 @@
 @using School.Data
 @using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 @model IEnumerable<OrdiniJoinDataSource>
 
 @{
     ViewBag.Title = "LISTA ORDINI";
+    var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
     string date = "";
     bool count = false;
     var isFiltered = TempData["OrdineFilter"];
@@ -18,15 +21,146 @@
 <div class="container">
     <div class="main">
 
-        <h1>Lista Ordini</h1>
-
-        @if (!count)
+        @if (ruolo == null)
         {
-            <div id="desc">
-                <h2>Nessun Ordine!</h2>
-            </div>
-            @if (isFiltered.Equals("True"))
+            <h1>
+                Non sei loggato!<br /><br />
+                @Html.ActionLink("Login", "Login", "Utente")
+            </h1>
+        }
+        else if (ruolo.Equals("user"))
+        {
+            <h1>Area riservata agli amministratori!</h1>
+        }
+        else
+        {
+            <h1>Lista Ordini</h1>
+
+            @if (!count)
             {
+                <div id="desc">
+                    <h2>Nessun Ordine!</h2>
+                </div>
+                @if (isFiltered.Equals("True"))
+                {
+                    <div id="right">
+                        <h2><b>Filtra per...</b></h2><br /><br />
+                        @using (Html.BeginForm("List", "Ordine", FormMethod.Get))
+                        {
+                            <fieldset>
+                                <table>
+                                    <!-- Titolo-->
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Titolo</b></td>
+                                        <td><input type="text" name="titolo" /></td>
+                                    </tr>
+                                    <!-- Quantita' -->
+                                    <tr>
+                                        <td><b>Quantit&aacute;</b></td>
+                                        <td>
+                                            <select name="qtaoperator">
+                                                <option value=""></option>
+                                                <option value="<"><</option>
+                                                <option value="<="><=</option>
+                                                <option value=">">></option>
+                                                <option value=">=">>=</option>
+                                                <option value="=">=</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="qta" id="qta" min="1" />
+                                        </td>
+                                    </tr>
+                                    <!-- Data -->
+                                    <tr>
+                                        <td><b>Data</b></td>
+                                        <td><input type="text" name="start" id="start" value="@date" />Data inizio</td>
+                                        <td><input type="text" name="end" id="end" value="@date" />Data fine</td>
+                                    </tr>
+                                    <!-- Totale -->
+                                    <tr>
+                                        <td><b>Totale</b></td>
+                                        <td>
+                                            <select name="totoperator">
+                                                <option value=""></option>
+                                                <option value="<"><</option>
+                                                <option value="<="><=</option>
+                                                <option value=">">></option>
+                                                <option value=">=">>=</option>
+                                                <option value="=">=</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="tot" id="tot" min="0" /></td>
+                                    </tr>
+                                    <!-- Stato-->
+                                    <tr>
+                                        <td><b>Stato</b></td>
+                                        <td>
+                                            <select name="stato">
+                                                <option value=""></option>
+                                                <option value="sent">sent</option>
+                                                <option value="processed">processed</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                <br /><br /><br />
+                                <input type="submit" value="Applica Filtro" id="acquista" />
+                                <input type="button" value="Pulisci Filtro"
+                                       onclick="@("window.location.href='" + @Url.Action("List", "Ordine", new { clear = "clear" }) + "'");" />
+                            </fieldset>
+                        }
+
+                    </div>
+                }
+            }
+            else
+            {
+                <table class="order">
+                    <tr>
+                        <th>Codice Ordine</th>
+                        <th>Titolo Prodotto</th>
+                        <th>Quantita'</th>
+                        <th>Data</th>
+                        <th>Totale Ordine</th>
+                        <th>Stato</th>
+                    </tr>
+    
+    
+                    @foreach (var s in Model)
+                    {
+                        <tr>
+                            <td>@s.CdOrdine</td>
+                            <td>@s.Titolo</td>
+                            <td>@s.Quantita</td>
+                            <td>@s.DtInserimento.Day/@s.DtInserimento.Month/@s.DtInserimento.Year</td>
+                            <td>@s.Totale</td>
+                            <td>@s.Stato</td>
+                            <td>
+                                @using (Html.BeginForm("Update", "Ordine", FormMethod.Post))
+                                {
+                                    <fieldset>
+                                        <input type="text" name="ordine" id="ordine" value="@s.CdOrdine" hidden />
+                                        <select name="stato" id="stato">
+                                            <option value="sent">sent</option>
+                                            <option value="processed">processed</option>
+                                        </select>
+                                        <input type="submit" value="Modifica Stato Ordine" />
+                                    </fieldset>
+                                }
+                            </td>
+                        </tr>
+                    }
+    
+                    </table>
+
+                <!-- FILTRI -->
                 <div id="right">
                     <h2><b>Filtra per...</b></h2><br /><br />
                     @using (Html.BeginForm("List", "Ordine", FormMethod.Get))
@@ -92,7 +226,7 @@
                                         </select>
                                     </td>
                                 </tr>
-
+                        
                             </table>
                             <br /><br /><br />
                             <input type="submit" value="Applica Filtro" id="acquista" />
@@ -102,126 +236,9 @@
                     }
 
                 </div>
+
             }
         }
-        else
-        {
-            <table class="order">
-                <tr>
-                    <th>Codice Ordine</th>
-                    <th>Titolo Prodotto</th>
-                    <th>Quantita'</th>
-                    <th>Data</th>
-                    <th>Totale Ordine</th>
-                    <th>Stato</th>
-                </tr>
-    
-    
-                @foreach (var s in Model)
-                {
-                    <tr>
-                        <td>@s.CdOrdine</td>
-                        <td>@s.Titolo</td>
-                        <td>@s.Quantita</td>
-                        <td>@s.DtInserimento.Day/@s.DtInserimento.Month/@s.DtInserimento.Year</td>
-                        <td>@s.Totale</td>
-                        <td>@s.Stato</td>
-                        <td>
-                            @using (Html.BeginForm("Update", "Ordine", FormMethod.Post))
-                            {
-                                <fieldset>
-                                    <input type="text" name="ordine" id="ordine" value="@s.CdOrdine" hidden />
-                                    <select name="stato" id="stato">
-                                        <option value="sent">sent</option>
-                                        <option value="processed">processed</option>
-                                    </select>
-                                    <input type="submit" value="Modifica Stato Ordine" />
-                                </fieldset>
-                            }
-                        </td>
-                    </tr>
-                }
-    
-                </table>
-
-            <!-- FILTRI -->
-            <div id="right">
-                <h2><b>Filtra per...</b></h2><br /><br />
-                @using (Html.BeginForm("List", "Ordine", FormMethod.Get))
-                {
-                    <fieldset>
-                        <table>
-                            <!-- Titolo-->
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <td><b>Titolo</b></td>
-                                <td><input type="text" name="titolo" /></td>
-                            </tr>
-                            <!-- Quantita' -->
-                            <tr>
-                                <td><b>Quantit&aacute;</b></td>
-                                <td>
-                                    <select name="qtaoperator">
-                                        <option value=""></option>
-                                        <option value="<"><</option>
-                                        <option value="<="><=</option>
-                                        <option value=">">></option>
-                                        <option value=">=">>=</option>
-                                        <option value="=">=</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="number" name="qta" id="qta" min="1" />
-                                </td>
-                            </tr>
-                            <!-- Data -->
-                            <tr>
-                                <td><b>Data</b></td>
-                                <td><input type="text" name="start" id="start" value="@date" />Data inizio</td>
-                                <td><input type="text" name="end" id="end" value="@date" />Data fine</td>
-                            </tr>
-                            <!-- Totale -->
-                            <tr>
-                                <td><b>Totale</b></td>
-                                <td>
-                                    <select name="totoperator">
-                                        <option value=""></option>
-                                        <option value="<"><</option>
-                                        <option value="<="><=</option>
-                                        <option value=">">></option>
-                                        <option value=">=">>=</option>
-                                        <option value="=">=</option>
-                                    </select>
-                                </td>
-                                <td><input type="number" name="tot" id="tot" min="0" /></td>
-                            </tr>
-                            <!-- Stato-->
-                            <tr>
-                                <td><b>Stato</b></td>
-                                <td>
-                                    <select name="stato">
-                                        <option value=""></option>
-                                        <option value="sent">sent</option>
-                                        <option value="processed">processed</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        
-                        </table>
-                        <br /><br /><br />
-                        <input type="submit" value="Applica Filtro" id="acquista" />
-                        <input type="button" value="Pulisci Filtro"
-                               onclick="@("window.location.href='" + @Url.Action("List", "Ordine", new { clear = "clear" }) + "'");" />
-                    </fieldset>
-                }
-
-            </div>
-                
-            }
     </div>
 
     <div class="footer">
