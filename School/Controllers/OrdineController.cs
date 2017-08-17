@@ -124,33 +124,6 @@ namespace School.Controllers
             return q;
         }
 
-        /*
-        [HttpPost]
-        public IActionResult List(string start, string end)
-        {
-            var Start = DateTime.Parse(start);
-            var End = DateTime.Parse(end);
-
-            var query = from ordini in Context.Ordine
-                        join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
-                        join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
-                        join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
-                        where ordini.DtInserimento >= Start && ordini.DtInserimento <= End
-                        select new OrdiniJoinDataSource
-                        {
-                            CdOrdine = ordini.CdOrdine,
-                            Stato = ordini.Stato,
-                            Username = utenti.Username,
-                            Titolo = prodotti.Titolo,
-                            DtInserimento = ordini.DtInserimento,
-                            Quantita = ordineProdotto.Quantita,
-                            Totale = ordini.Totale
-                        };
-
-            return View(query.ToList());
-        }
-        */
-
         [HttpPost]
         public async Task<IActionResult> Update(string ordine, string stato)
         {
@@ -178,127 +151,46 @@ namespace School.Controllers
             return Redirect("/Ordine/List");
         }
 
+
+        //FILTRA
         public IActionResult Index(string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
             //prende cdUtente da session
             var tmp = HttpContext.Session.GetInt32("CdUtente");
             var ruolo = HttpContext.Session.GetString("Ruolo");
+            int CdUtente = (int)tmp;
+            var Query = UserQuery(CdUtente);
             bool filtered = false;
 
-#warning da togliere dopo autenticazione
-            if (tmp == null)
-            {
-                //se non sei loggato, lista vuota
-                return View(new List<OrdiniJoinDataSource>());
-            }
+            filtered = Filter(ref Query, clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
 
-            int CdUtente = (int)tmp;
+            TempData["OrdineFilter"] = filtered.ToString();
 
-            if (ruolo.Equals("user"))
-            {
-                var Query = UserQuery(CdUtente);
-                DateTime Start = default(DateTime), End = default(DateTime);
-
-                //Filtri
-                if (clear == null)
-                {
-                    if (start != null && end != null)
-                    {
-                        Start = DateTime.Parse(start);
-                        End = DateTime.Parse(end);
-                        Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
-                        filtered = true;
-                    }
-
-                    if (titolo != null && !titolo.Equals(""))
-                    {
-                        Query = Query.Where(ordine => ordine.Titolo.Contains(titolo));
-                        filtered = true;
-                    }
-
-                    if (qtaoperator != null && qta != null)
-                    {
-                        double.TryParse(qta, out double Qta);
-
-                        switch (qtaoperator)
-                        {
-                            case "<":
-                                Query = Query.Where(ordine => ordine.Quantita < Qta);
-                                break;
-                            case "<=":
-                                Query = Query.Where(ordine => ordine.Quantita <= Qta);
-                                break;
-                            case ">":
-                                Query = Query.Where(ordine => ordine.Quantita > Qta);
-                                break;
-                            case ">=":
-                                Query = Query.Where(ordine => ordine.Quantita >= Qta);
-                                break;
-                            case "=":
-                                Query = Query.Where(ordine => ordine.Quantita == Qta);
-                                break;
-                            default:
-                                break;
-                        }
-
-                        filtered = true;
-                    }
-
-                    if (totoperator != null && tot != null)
-                    {
-                        double.TryParse(tot, out double Tot);
-
-                        switch (totoperator)
-                        {
-                            case "<":
-                                Query = Query.Where(ordine => ordine.Totale < Tot);
-                                break;
-                            case "<=":
-                                Query = Query.Where(ordine => ordine.Totale <= Tot);
-                                break;
-                            case ">":
-                                Query = Query.Where(ordine => ordine.Totale > Tot);
-                                break;
-                            case ">=":
-                                Query = Query.Where(ordine => ordine.Totale >= Tot);
-                                break;
-                            case "=":
-                                Query = Query.Where(ordine => ordine.Totale == Tot);
-                                break;
-                            default:
-                                break;
-                        }
-
-                        filtered = true;
-                    }
-
-                    if (stato != null && !stato.Equals(""))
-                    {
-                        Query = Query.Where(ordine => ordine.Stato.Equals(stato));
-                        filtered = true;
-                    }
-                }
-
-                TempData["OrdineFilter"] = filtered.ToString();
-
-                return View(Query.ToList());
-            }
-            else
-            {
-                return Redirect("/Ordine/List");
-            }
+            return View(Query.ToList());
         }
 
         /***
-         * GET senza parametri: lista normale (orderby null non ordina); GET con parametro: ordina secondo il parametro
+         * GET senza parametri: lista normale; GET con parametro: filtra secondo i parametri
          ***/
         [HttpGet]
         public IActionResult List(string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
-            DateTime Start = default(DateTime), End = default(DateTime);
             var Query = AdminQuery();
+            bool filtered = false;
+
+            filtered = Filter(ref Query, clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
+
+            TempData["OrdineFilter"] = filtered.ToString();
+
+            return View(Query);
+        }
+
+        private bool Filter(ref IQueryable<OrdiniJoinDataSource> Query, string clear, string start, string end,
+            string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
+        {
+            DateTime Start = default(DateTime), End = default(DateTime);
             bool filtered = false;
 
             //se c'e' clear, non fa niente
@@ -378,10 +270,7 @@ namespace School.Controllers
                     filtered = true;
                 }
             }
-
-            TempData["OrdineFilter"] = filtered.ToString();
-
-            return View(Query);
+            return filtered;
         }
 
     }
