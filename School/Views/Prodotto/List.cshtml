@@ -1,7 +1,7 @@
 @model IEnumerable<Prodotto>
 
 @{
-    ViewData["Title"] = "GESTIONE PRODOTTI";
+    ViewData["Title"] = "Upo e-Commerce - GESTIONE PRODOTTI";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
 }
 
@@ -21,7 +21,7 @@
         }
         else
         {
-            <h1>Gestione Prodotti</h1>
+            <h1>Lista Prodotti</h1>
 
             @foreach (var s in Model)
                 {

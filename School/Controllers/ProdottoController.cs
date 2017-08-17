@@ -54,32 +54,33 @@ namespace School.Controllers
             return Redirect("/Prodotto/List");
         }
 
-        //solo per admin
+        //solo per admin: pagina con elenco di tutti i prodotti ma solo ADMIN: pulsanti MODIFICA PRODOTTO
         public async Task<IActionResult> List() => View(await Entities.ToListAsync());
 
+        //pagina con elenco di tutti i prodotti: pulsante aggiungi per USER, no pulsanti per ADMIN
+        public async Task<IActionResult> Index() => View(await Entities.ToListAsync());
 
-        public IActionResult Detail(int cdprodotto)
+
+        public async Task<IActionResult> Detail(int cdprodotto)
         {
             var query = from prodotti in Context.Prodotto
                         where prodotti.CdProdotto.Equals(cdprodotto)
                         select prodotti;
 
-            return View(query.ToList());
+            return View(await query.ToListAsync());
         }
 
         [HttpPost]
-        public IActionResult Find(string input)
+        public async Task<IActionResult> Find(string input)
         {
             var query = (from prodotti in Context.Prodotto
                         where prodotti.Titolo.Contains(input) || prodotti.Descrizione.Contains(input)
                         select prodotti).OrderByDescending(x => x.Prezzo);
 
-            return View(query.ToList());
+            return View(await query.ToListAsync());
         }
 
-        public async Task<IActionResult> Index() => View(await Entities.ToListAsync());
-
-        public IActionResult Advanced(string apply, string clear, string titolo, string prezzooperator, string prezzo,
+        public async Task<IActionResult> Advanced(string apply, string clear, string titolo, string prezzooperator, string prezzo,
             string sconto, string disp)
         {
             var Query = from prodotti in Context.Prodotto
@@ -152,7 +153,7 @@ namespace School.Controllers
             
             TempData["AdvancedFilter"] = filtered.ToString();
 
-            return View(Query.ToList());
+            return View(await Query.ToListAsync());
         }
     }
 }

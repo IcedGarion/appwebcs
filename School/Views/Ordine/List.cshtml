@@ -1,17 +1,11 @@
 @model IEnumerable<OrdiniJoinDataSource>
 
 @{
-    ViewBag.Title = "LISTA ORDINI";
+    ViewBag.Title = "Upo e-Commerce - GESTIONE ORDINI";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
-    string date = "";
-    bool count = false;
+    bool count = Model.Count() != 0;
     var isFiltered = TempData["OrdineFilter"];
 
-    if (Model.Count() != 0)
-    {
-        date = Model.First().DtInserimento.ToString();
-        count = true;
-    }
 }
 
 <div class="container">
@@ -75,8 +69,8 @@
                                     <!-- Data -->
                                     <tr>
                                         <td><b>Data</b></td>
-                                        <td><input type="text" name="start" id="start" value="@date" />Data inizio</td>
-                                        <td><input type="text" name="end" id="end" value="@date" />Data fine</td>
+                                        <td><input type="text" name="start" id="start" />Data inizio</td>
+                                        <td><input type="text" name="end" id="end" />Data fine</td>
                                     </tr>
                                     <!-- Totale -->
                                     <tr>
@@ -193,8 +187,8 @@
                                 <!-- Data -->
                                 <tr>
                                     <td><b>Data</b></td>
-                                    <td><input type="text" name="start" id="start" value="@date" />Data inizio</td>
-                                    <td><input type="text" name="end" id="end" value="@date" />Data fine</td>
+                                    <td><input type="text" name="start" id="start" />Data inizio</td>
+                                    <td><input type="text" name="end" id="end" />Data fine</td>
                                 </tr>
                                 <!-- Totale -->
                                 <tr>

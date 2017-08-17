@@ -13,7 +13,7 @@ namespace School.Controllers
     public class CarrelloController : Controller
     {
         //mostra lo stato del carrello
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             SchoolContext context = new SchoolContext();
 
@@ -37,7 +37,7 @@ namespace School.Controllers
                             Quantita = carrello.Quantita
                         };
 
-            return View(query.ToList());
+            return View(await query.ToListAsync());
         }
 
         //aggiunge un prodotto al carrello

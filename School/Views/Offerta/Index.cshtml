@@ -1,7 +1,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewData["Title"] = "PRODOTTI IN OFFERTA";
+    ViewData["Title"] = "Upo e-Commerce - PRODOTTI IN OFFERTA";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
 }
 @model IEnumerable<Prodotto>

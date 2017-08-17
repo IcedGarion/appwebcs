@@ -9,6 +9,7 @@
     <Content Include="wwwroot\css\StyleSheet.css" />
     <Content Include="wwwroot\default.html" />
     <Content Include="wwwroot\img\cart.png" />
+    <Content Include="wwwroot\img\favicon.ico" />
     <Content Include="wwwroot\img\noimage.jpg" />
     <Content Include="wwwroot\js\validation\validate.js" />
     <Content Include="wwwroot\styles\layout.css" />

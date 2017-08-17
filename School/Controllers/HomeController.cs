@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using School.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace School.Controllers
 {
@@ -10,7 +12,7 @@ namespace School.Controllers
     {
         private static readonly int MIN_ORDERS = 5;
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             SchoolContext context = new SchoolContext();
 
@@ -35,7 +37,7 @@ namespace School.Controllers
                         .GroupBy(p => p.CdProdotto).Select(g => g.First());
             }
 
-            return View(query.ToList());
+            return View(await query.ToListAsync());
         }
     }
 }

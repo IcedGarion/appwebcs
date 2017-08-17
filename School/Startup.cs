@@ -74,7 +74,14 @@ namespace School
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Global Catcher");
+                await context.Response
+                .WriteAsync("<html>\n" +
+                                "<head>\n<title>NOT FOUND</title>\n" +
+                                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"./css/StyleSheet.css\">\n" +
+                                    "<link href=\"./styles/layout.css?v=1\" rel=\"stylesheet\"/>\n" +
+                                "</head>\n" + 
+                                "<body>\n<div class=\"container\">\n<div class=\"main\">\n<h1>404 NOT FOUND</h1>\n</div>\n</div>\n</body>\n" +
+                            "</html>");
             });
         }
     }

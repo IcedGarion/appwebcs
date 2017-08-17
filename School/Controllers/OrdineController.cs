@@ -83,47 +83,6 @@ namespace School.Controllers
             return Redirect("/Ordine/Index");
         }
 
-        private IQueryable<OrdiniJoinDataSource> AdminQuery()
-        {
-            var q = from ordini in Context.Ordine
-                        join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
-                        join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
-                        join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
-                        select new OrdiniJoinDataSource
-                        {
-                            CdOrdine = ordini.CdOrdine,
-                            Stato = ordini.Stato,
-                            Username = utenti.Username,
-                            Titolo = prodotti.Titolo,
-                            DtInserimento = ordini.DtInserimento,
-                            Quantita = ordineProdotto.Quantita,
-                            Totale = ordini.Totale
-                        };
-
-            return q;
-        }
-
-        private IQueryable<OrdiniJoinDataSource> UserQuery(int CdUtente)
-        {
-            //invece di restituire solo gli ordini, fa una join per aggiungere altre informazioni
-            var q = from ordini in Context.Ordine
-                        join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
-                        join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
-                        join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
-                        where utenti.CdUtente.Equals(CdUtente)
-                        select new OrdiniJoinDataSource
-                        {
-                            CdOrdine = ordini.CdOrdine,
-                            Stato = ordini.Stato,
-                            Username = utenti.Username,
-                            Titolo = prodotti.Titolo,
-                            DtInserimento = ordini.DtInserimento,
-                            Quantita = ordineProdotto.Quantita,
-                            Totale = ordini.Totale
-                        };
-            return q;
-        }
-
         [HttpPost]
         public async Task<IActionResult> Update(string ordine, string stato)
         {
@@ -153,7 +112,7 @@ namespace School.Controllers
 
 
         //FILTRA
-        public IActionResult Index(string clear, string start, string end,
+        public async Task<IActionResult> Index(string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
             //prende cdUtente da session
@@ -167,14 +126,14 @@ namespace School.Controllers
 
             TempData["OrdineFilter"] = filtered.ToString();
 
-            return View(Query.ToList());
+            return View(await Query.ToListAsync());
         }
 
         /***
          * GET senza parametri: lista normale; GET con parametro: filtra secondo i parametri
          ***/
         [HttpGet]
-        public IActionResult List(string clear, string start, string end,
+        public async Task<IActionResult> List(string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
             var Query = AdminQuery();
@@ -184,13 +143,14 @@ namespace School.Controllers
 
             TempData["OrdineFilter"] = filtered.ToString();
 
-            return View(Query);
+            return View(await Query.ToListAsync());
         }
 
         private bool Filter(ref IQueryable<OrdiniJoinDataSource> Query, string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
-            DateTime Start = default(DateTime), End = default(DateTime);
+            DateTime.TryParse("1/1/1754", out DateTime MIN);
+            DateTime.TryParse("12/31/9998", out DateTime MAX);
             bool filtered = false;
 
             //se c'e' clear, non fa niente
@@ -198,9 +158,20 @@ namespace School.Controllers
             {
                 if (start != null && end != null)
                 {
-                    Start = DateTime.Parse(start);
-                    End = DateTime.Parse(end);
-                    Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
+                    try
+                    {
+                        DateTime Start = DateTime.Parse(start);
+                        DateTime End = DateTime.Parse(end);
+       
+                        if((Start.CompareTo(MIN) > 0 && Start.CompareTo(MAX) < 0)
+                            && (End.CompareTo(MIN) > 0 && End.CompareTo(MAX) < 0))
+                        {
+                            Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
+                        }
+                    }
+                    catch(Exception)
+                    { }
+
                     filtered = true;
                 }
 
@@ -270,7 +241,49 @@ namespace School.Controllers
                     filtered = true;
                 }
             }
+
             return filtered;
+        }
+
+        private IQueryable<OrdiniJoinDataSource> AdminQuery()
+        {
+            var q = from ordini in Context.Ordine
+                    join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
+                    join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
+                    join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
+                    select new OrdiniJoinDataSource
+                    {
+                        CdOrdine = ordini.CdOrdine,
+                        Stato = ordini.Stato,
+                        Username = utenti.Username,
+                        Titolo = prodotti.Titolo,
+                        DtInserimento = ordini.DtInserimento,
+                        Quantita = ordineProdotto.Quantita,
+                        Totale = ordini.Totale
+                    };
+
+            return q;
+        }
+
+        private IQueryable<OrdiniJoinDataSource> UserQuery(int CdUtente)
+        {
+            //invece di restituire solo gli ordini, fa una join per aggiungere altre informazioni
+            var q = from ordini in Context.Ordine
+                    join utenti in Context.Utente on ordini.CdUtente equals utenti.CdUtente
+                    join ordineProdotto in Context.OrdineProdotto on ordini.CdOrdine equals ordineProdotto.CdOrdine
+                    join prodotti in Context.Prodotto on ordineProdotto.CdProdotto equals prodotti.CdProdotto
+                    where utenti.CdUtente.Equals(CdUtente)
+                    select new OrdiniJoinDataSource
+                    {
+                        CdOrdine = ordini.CdOrdine,
+                        Stato = ordini.Stato,
+                        Username = utenti.Username,
+                        Titolo = prodotti.Titolo,
+                        DtInserimento = ordini.DtInserimento,
+                        Quantita = ordineProdotto.Quantita,
+                        Totale = ordini.Totale
+                    };
+            return q;
         }
 
     }

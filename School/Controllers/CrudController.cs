@@ -25,7 +25,6 @@ namespace School.Controllers
             Logger = logger;
         }
 
-        //public virtual IActionResult Index() => View();
 
         [HttpGet]
         protected virtual async Task<IActionResult> Read()
