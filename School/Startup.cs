@@ -11,7 +11,7 @@ namespace Upo
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { get; }
+        public static IConfigurationRoot Configuration { get; set; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -27,12 +27,23 @@ namespace Upo
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            /*
+             * AddDbContext NON CHIAMA IL COSTRUTTORE di UPOECOMMERCECONTEXT:
+             * Aggiunge Context ma non imposta la connessione.
+             * ConnectionString impostata nel UpoECommerceContext
+             */
+
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<UpoECommerceContext>(options =>
                 options.UseSqlServer(connectionString));
+            
+
 
             /*
+             * AUTORIZZAZIONI settate nelle pagine stesse, controllando i ruoli in SESSION
+             * NO AspNetAuthotization
+             * 
             services.AddDbContext<IdentityDbContext>(options =>
                options.UseSqlServer(
                    connectionString,
@@ -46,7 +57,7 @@ namespace Upo
 
             */
 
-            //session2
+            //Per iniettare HttpContextAccessor nelle Views
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMvc();

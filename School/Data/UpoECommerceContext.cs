@@ -1,21 +1,36 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
+using System.Reflection;
 using Upo.Model;
 
 namespace Upo.Data
 {
     public partial class UpoECommerceContext : DbContext
     {
+        //Setup connection string dovrebbe avvenire qua (Startup.ConfigureServices: AddDbContext chiama questo)
+        //ma questo costruttore non viene mai chiamato. Connessione risolta in OnConfiguring, piu' in basso
+        public UpoECommerceContext(DbContextOptions<UpoECommerceContext> options) : base(options)
+        {
+        }
+
+        public UpoECommerceContext() { }
+
         public virtual DbSet<Ordine> Ordine { get; set; }
         public virtual DbSet<OrdineProdotto> OrdineProdotto { get; set; }
         public virtual DbSet<Prodotto> Prodotto { get; set; }
         public virtual DbSet<Utente> Utente { get; set; }
 
+        //Connection string viene settata qua: usa le configurations create in Startup (public e static)
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Server=WINDPW-PC\SQLEXPRESS; Database=Progetto; User ID=sa; Password=1234; MultipleActiveResultSets=true");
+            var connectionString = Startup.Configuration.GetConnectionString("DefaultConnection");
+ 
+            optionsBuilder.UseSqlServer(connectionString);
         }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,5 +1,7 @@
 @model IEnumerable<Prodotto>
 
+<script type="text/javascript" src="~/js/dropdown.js"></script>
+
 @{
     ViewData["Title"] = "Upo e-Commerce - RICERA AVANZATA";
     bool count = false;
@@ -12,197 +14,189 @@
     }
 }
     <div class="container">
-        <div class="main">
-            <h1>Ricerca avazata</h1>
-
+    <div class="main">
+        <h1>Ricerca avazata</h1>
         @if (!count)
         {
             @if (isFiltered.Equals("False"))
             {
-            <div id="desc">
-                <h2>Nessun Ordine!</h2>
-            </div>
+                <div id="desc">
+                    <h2>Nessun Ordine!</h2>
+                </div>
             }
         }
         else
         {
-            <div class="tables">
-            @if (isFiltered.Equals("True"))
-            {
-                @foreach (var s in Model)
+            <input type="button" name="filter" value="Fitra" onclick="showDiv()" style="float:left;" />
+            <input type="button" name="filter" value="Chiudi" onClick="hide()" style="float:left;display:none;" id="topbarbtn" />
+            <div id="topbar" style="display:none;">
+
+
+                @using (Html.BeginForm("Advanced", "Prodotto", FormMethod.Get))
                 {
-                    <div class="first">
-                        <table class="big">
+                    <fieldset>
+                        <table>
+                            <!-- Titolo -->
                             <tr>
-                                <td colspan="4">
-                                    @if (s.Immagine != null)
-                                    {
-                                        <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
-                                             width="200" height="200" />
-                                    }
-                                    else
-                                    {
-                                        <img src="~/img/noimage.jpg" alt="NO IMAGE" width="200" height="200" />
-                                    }
-                                </td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                             </tr>
                             <tr>
-                                <td colspan="4">
-                                    @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
-                                </td>
+                                <td><b>Titolo</b></td>
+                                <td><input type="text" name="titolo" /></td>
                             </tr>
+
+                            <!-- Prezzo -->
                             <tr>
+                                <td><b>Prezzo</b></td>
                                 <td>
-                                    Prezzo
+                                    <select name="prezzooperator">
+                                        <option value=""></option>
+                                        <option value="<"><</option>
+                                        <option value="<="><=</option>
+                                        <option value=">">></option>
+                                        <option value=">=">>=</option>
+                                        <option value="=">=</option>
+                                    </select>
                                 </td>
-                                <td></td>
-                                <td>
-                                    @if (s.Sconto > 0)
-                                    {
-                                        <p>Sconto</p>
-                                    }
-                                </td>
-                                <td>
-                                    Disponibile
-                                </td>
+                                <td><input type="number" name="prezzo" id="prezzo" min="0" /></td>
                             </tr>
+                            <!-- Disponibile -->
                             <tr>
+                                <td><b>Disponibile</b></td>
                                 <td>
-                                    @if (s.Sconto > 0)
-                                    {
-                                        <p style="text-decoration:line-through; text-decoration-color:red;">@s.Prezzo &euro;</p>
-
-                                    }
-                                    else
-                                    {
-                                        <p>@s.Prezzo &euro;</p>
-
-                                    }
-
-                                </td>
-
-                                <td>
-                                    @if (s.Sconto > 0)
-                                    {
-                                        <b>@(s.Prezzo - s.Sconto) &euro;</b>
-                                    }
-                                </td>
-                                <td>
-                                    @if (s.Sconto > 0)
-                                    {
-                                        <i>@s.Sconto &euro;</i>
-
-                                    }
-
-                                </td>
-                                <td>
-                                    @if (s.Disponibile.Equals("si"))
-                                    {
-                                        <b>&#x2714;</b>
-                                    }
-                                    else
-                                    {
-                                        <b>&#x2718;</b>
-                                    }
-
-
+                                    <select name="disp">
+                                        <option value=""></option>
+                                        <option value="si">si</option>
+                                        <option value="no">no</option>
+                                    </select>
                                 </td>
                             </tr>
-                            <tr></tr>
-                            @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
-                            {
+                            <!-- Sconto -->
+                            <tr>
+                                <td><b>Sconto</b></td>
+                                <td>
+                                    <select name="sconto">
+                                        <option value=""></option>
+                                        <option value="si">si</option>
+                                        <option value="no">no</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <br /><br /><br />
+                        <input type="text" name="apply" id="apply" value="apply" hidden />
+                        <input type="submit" value="Applica Filtro" id="acquista" />
+                        <input type="button" value="Pulisci Filtro"
+                               onclick="@("window.location.href='" + @Url.Action("Advanced", "Prodotto", new { clear = "clear" }) + "'");" />
+                    </fieldset>
+                }
+            </div>
+            <br /><br /><br />
+            <div class="tables">
+                @if (isFiltered.Equals("True"))
+                {
+                    @foreach (var s in Model)
+                    {
+                        <div class="first">
+                            <table class="big">
                                 <tr>
-                                    <td colspan="3">
-                                        @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
+                                    <td colspan="4">
+                                        @if (s.Immagine != null)
                                         {
-                                            <fieldset>
-                                                <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                                                <input type="number" name="qta" id="qta" min="0" value="1" />
-                                                <input type="submit" value="Aggiungi al carrello" />
-                                            </fieldset>
+                                            <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                                 width="200" height="200" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/img/noimage.jpg" alt="NO IMAGE" width="200" height="200" />
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Prezzo
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        @if (s.Sconto > 0)
+                                        {
+                                            <p>Sconto</p>
+                                        }
+                                    </td>
+                                    <td>
+                                        Disponibile
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @if (s.Sconto > 0)
+                                        {
+                                            <p style="text-decoration:line-through; text-decoration-color:red;">@s.Prezzo &euro;</p>
+
+                                        }
+                                        else
+                                        {
+                                            <p>@s.Prezzo &euro;</p>
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (s.Sconto > 0)
+                                        {
+                                            <b>@(s.Prezzo - s.Sconto) &euro;</b>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (s.Sconto > 0)
+                                        {
+                                            <i>@s.Sconto &euro;</i>
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (s.Disponibile.Equals("si"))
+                                        {
+                                            <b>&#x2714;</b>
+                                        }
+                                        else
+                                        {
+                                            <b>&#x2718;</b>
                                         }
 
                                     </td>
                                 </tr>
-                            }
-                        </table>
-
-                    </div>
+                                <tr></tr>
+                                @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
+                                {
+                                    <tr>
+                                        <td colspan="3">
+                                            @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
+                                            {
+                                                <fieldset>
+                                                    <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                                    <input type="number" name="qta" id="qta" min="0" value="1" />
+                                                    <input type="submit" value="Aggiungi al carrello" />
+                                                </fieldset>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    }
                 }
-            }
             </div>
         }
-        </div>
-
-        <div id="rightbar">
-            <h2><b>Filtra per...</b></h2><br /><br />
-            @using (Html.BeginForm("Advanced", "Prodotto", FormMethod.Get))
-            {
-                <fieldset>
-                    <table>
-                        <!-- Titolo -->
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td><b>Titolo</b></td>
-                            <td><input type="text" name="titolo" /></td>
-                        </tr>
-                        
-                        <!-- Prezzo -->
-                        <tr>
-                            <td><b>Prezzo</b></td>
-                            <td>
-                                <select name="prezzooperator">
-                                    <option value=""></option>
-                                    <option value="<"><</option>
-                                    <option value="<="><=</option>
-                                    <option value=">">></option>
-                                    <option value=">=">>=</option>
-                                    <option value="=">=</option>
-                                </select>
-                            </td>
-                            <td><input type="number" name="prezzo" id="prezzo" min="0" /></td>
-                        </tr>
-
-                        <!-- Disponibile -->
-                        <tr>
-                            <td><b>Disponibile</b></td>
-                            <td>
-                                <select name="disp">
-                                    <option value=""></option>
-                                    <option value="si">si</option>
-                                    <option value="no">no</option>
-                                </select>
-                            </td>
-                        </tr>
-
-                        <!-- Sconto -->
-                        <tr>
-                            <td><b>Sconto</b></td>
-                            <td>
-                                <select name="sconto">
-                                    <option value=""></option>
-                                    <option value="si">si</option>
-                                    <option value="no">no</option>
-                                </select>
-                            </td>
-                        </tr>
-
-                    </table>
-                    <br /><br /><br />
-                    <input type="text" name ="apply" id="apply" value="apply" hidden />
-                    <input type="submit" value="Applica Filtro" id="acquista" />
-                    <input type="button" value="Pulisci Filtro"
-                           onclick="@("window.location.href='" + @Url.Action("Advanced", "Prodotto", new { clear = "clear" }) + "'");" />
-                </fieldset>
-            }
-
-        </div>
-
-        <div class="footer">
-            <h6>footer</h6>
-        </div>
     </div>
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>
+
