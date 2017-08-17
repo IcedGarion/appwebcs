@@ -20,7 +20,6 @@
     <Content Include="wwwroot\img\noimage.jpg" />
     <Content Include="wwwroot\js\dropdown.js" />
     <Content Include="wwwroot\js\validation\validate.js" />
-    <Content Include="wwwroot\styles\layout.css" />
   </ItemGroup>
   
   <ItemGroup>
