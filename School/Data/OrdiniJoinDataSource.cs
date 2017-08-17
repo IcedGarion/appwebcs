@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace School.Data
+namespace Upo.Data
 {
     public class OrdiniJoinDataSource
     {

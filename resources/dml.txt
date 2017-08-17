@@ -1,8 +1,9 @@
 /* Script SQL per il popolamento delle tabelle
  * IMPORTANTE! 
- * Inserire il path della repository: (per inserimento immagini)
+ * Inserire il path della repository (per inserimento immagini)
  * In tutti i prodotti con immagine
  * Esempio:
+ * Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/water.png', Single_Blob) as image
   */
 /***** inserisce nuovo prodotto  con immagine ******/
 USE [Progetto]

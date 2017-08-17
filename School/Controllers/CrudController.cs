@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using School.Data;
+using Upo.Data;
 using System;
 using System.Threading.Tasks;
 
-namespace School.Controllers
+namespace Upo.Controllers
 {
     public abstract class CrudController<TContext, TId, TEntity> : Controller
         where TContext : DbContext
@@ -25,7 +25,7 @@ namespace School.Controllers
             Logger = logger;
         }
 
-
+        /*
         [HttpGet]
         protected virtual async Task<IActionResult> Read()
         {
@@ -37,6 +37,7 @@ namespace School.Controllers
                 Data = data
             });
         }
+        */
 
         [HttpPost]
         protected virtual async Task<IActionResult> Create(TEntity entity)

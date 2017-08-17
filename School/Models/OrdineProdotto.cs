@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace School.Model
+namespace Upo.Model
 {
     public partial class OrdineProdotto
     {

@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using School.Data;
+using Upo.Data;
 
-namespace School
+namespace Upo
 {
     public class Startup
     {
@@ -30,14 +29,14 @@ namespace School
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<SchoolContext>(options =>
+            services.AddDbContext<UpoECommerceContext>(options =>
                 options.UseSqlServer(connectionString));
 
             /*
             services.AddDbContext<IdentityDbContext>(options =>
                options.UseSqlServer(
                    connectionString,
-                   optionsBuilder => optionsBuilder.MigrationsAssembly("School")
+                   optionsBuilder => optionsBuilder.MigrationsAssembly("UpoECommerce")
                )
            );
 

@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using School.Data;
+using Upo.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using School.Model;
+using Upo.Model;
 using Microsoft.AspNetCore.Http;
 
-namespace School.Controllers
+namespace Upo.Controllers
 {
-    public class OrdineController : CrudController<SchoolContext, int, Ordine>
+    public class OrdineController : CrudController<UpoECommerceContext, int, Ordine>
     {
-        public OrdineController(SchoolContext context, ILogger<OrdineController> logger) : base(context, logger)
+        public OrdineController(UpoECommerceContext context, ILogger<OrdineController> logger) : base(context, logger)
         {
         }
 
@@ -24,7 +24,7 @@ namespace School.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            SchoolContext context = new SchoolContext();
+            UpoECommerceContext context = new UpoECommerceContext();
 
             //Se non si e' loggati redirige alla login, quando si tenta di acquistare
             if(HttpContext.Session.GetInt32("CdUtente") == null)
@@ -40,7 +40,6 @@ namespace School.Controllers
             }
 
             //legge cdUtente
-#warning nullable int
             int utente = 0;
             if (HttpContext.Session.GetInt32("CdUtente") != null)
                 utente = (int)HttpContext.Session.GetInt32("CdUtente");

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace School.Controllers
+namespace Upo.Controllers
 {
     public class PrivateHomeController : Controller
     {

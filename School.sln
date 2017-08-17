@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "School", "School\School.csproj", "{C2CC653E-E354-4D31-B956-9B8511DBA38D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpoECommerce", "School\UpoECommerce.csproj", "{C2CC653E-E354-4D31-B956-9B8511DBA38D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

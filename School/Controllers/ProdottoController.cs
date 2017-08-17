@@ -1,19 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using School.Controllers;
-using School.Data;
+using Upo.Controllers;
+using Upo.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using School.Model;
+using Upo.Model;
 
-namespace School.Controllers
+namespace Upo.Controllers
 {
-    public class ProdottoController : CrudController<SchoolContext, int, Prodotto>
+    public class ProdottoController : CrudController<UpoECommerceContext, int, Prodotto>
     {
-        public ProdottoController(SchoolContext context, ILogger<ProdottoController> logger) : base(context, logger)
+        public ProdottoController(UpoECommerceContext context, ILogger<ProdottoController> logger) : base(context, logger)
         {
         }
 

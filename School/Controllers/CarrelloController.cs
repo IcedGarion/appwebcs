@@ -1,21 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
-using School.Model;
-using School.Data;
+using Upo.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Upo.Data;
 
-namespace School.Controllers
+namespace Upo.Controllers
 {
     public class CarrelloController : Controller
     {
         //mostra lo stato del carrello
         public async Task<IActionResult> Index()
         {
-            SchoolContext context = new SchoolContext();
+            UpoECommerceContext context = new UpoECommerceContext();
 
             //legge codice prodotti in session e li recupera dal db
             var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");

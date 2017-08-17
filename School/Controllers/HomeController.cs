@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using School.Data;
+using Upo.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace School.Controllers
+namespace Upo.Controllers
 {
     public class HomeController : Controller
     {
@@ -14,7 +14,7 @@ namespace School.Controllers
 
         public async Task<IActionResult> Index()
         {
-            SchoolContext context = new SchoolContext();
+            UpoECommerceContext context = new UpoECommerceContext();
 
             //query top 10:
             //prende i prodotti che compaiono in acquisti con data > (data di oggi -3 mesi)

@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using School.Model;
+using Upo.Model;
 
-namespace School.Data
+namespace Upo.Data
 {
-    public partial class SchoolContext : DbContext
+    public partial class UpoECommerceContext : DbContext
     {
         public virtual DbSet<Ordine> Ordine { get; set; }
         public virtual DbSet<OrdineProdotto> OrdineProdotto { get; set; }
