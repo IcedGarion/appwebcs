@@ -53,7 +53,7 @@ namespace School.Controllers
                         select utenti;
 
             //utente appena inserito:
-            Utente New = query.ToList()[0];
+            Utente New = query.First();
 
             //SALVA IN SESSION DATI LOGIN
             HttpContext.Session.SetInt32("CdUtente", New.CdUtente);
@@ -81,7 +81,7 @@ namespace School.Controllers
             if(query.Count() == 1)
             {
                 //unico elemento della lista: l'utente con CdUtente
-                loggato = query.ToList()[0];
+                loggato = query.First();
 
                 //SALVA IN SESSION DATI LOGIN
                 HttpContext.Session.SetInt32("CdUtente", loggato.CdUtente);
@@ -125,7 +125,7 @@ namespace School.Controllers
                         select utenti;
 
             //prende il primo elemento (l'unico) della query
-            ToUpdate = query.ToList()[0];
+            ToUpdate = query.First();
 
             //modifica ruolo solo se diverso!
             if(!ToUpdate.Ruolo.Equals(ruolo))

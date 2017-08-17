@@ -38,7 +38,7 @@ namespace School.Controllers
                         select prodotti;
 
             //prende il primo elemento (l'unico) della query
-            ToUpdate = query.ToList()[0];
+            ToUpdate = query.First();
 
             //modifica tutto (solo se ci sono stati cambiamenti)
             if ((!(ToUpdate.Prezzo == Prezzo)) || (!(ToUpdate.Sconto == Sconto)) || (!(ToUpdate.Disponibile.Equals(disponibile))))

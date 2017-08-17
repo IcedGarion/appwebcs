@@ -164,7 +164,7 @@ namespace School.Controllers
                         select ordini;
 
             //prende il primo elemento (l'unico) della query
-            ToUpdate = query.ToList()[0];
+            ToUpdate = query.First();
 
             //modifica stato solo se diverso!
             if (!ToUpdate.Stato.Equals(stato))
