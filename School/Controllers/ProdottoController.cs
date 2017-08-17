@@ -22,9 +22,10 @@ namespace Upo.Controllers
 
         //solo per admin
         [HttpPost]
-        public async Task<IActionResult> Update(string prodotto, string prezzo, string sconto, string disponibile)
+        public async Task<IActionResult> Update(string previousUrl, string prodotto, string prezzo, string sconto, string disponibile)
         {
             Prodotto ToUpdate;
+            string PreviousURL = previousUrl;
 
             //riceve parametri dal form
             Int32.TryParse(prodotto, out int CdProdotto);
@@ -50,7 +51,7 @@ namespace Upo.Controllers
                 await base.Update(ToUpdate);
             }
 
-            return Redirect("/Prodotto/List");
+            return Redirect(PreviousURL);
         }
 
         //solo per admin: pagina con elenco di tutti i prodotti ma solo ADMIN: pulsanti MODIFICA PRODOTTO
@@ -125,6 +126,7 @@ namespace Upo.Controllers
                         default:
                             break;
                     }
+
                     filtered = true;
                 }
 

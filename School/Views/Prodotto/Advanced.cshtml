@@ -13,25 +13,19 @@
         count = true;
     }
 }
-    <div class="container">
+<div class="container">
     <div class="main">
         <h1>Ricerca avazata</h1>
-        @if (!count)
-        {
-            @if (isFiltered.Equals("False"))
-            {
-                <div id="desc">
-                    <h2>Nessun Ordine!</h2>
-                </div>
-            }
-        }
-        else
+
+        <!--  Solo se model e' pieno, oppure filtro "sbagliato", ripropone il filtro  -->
+        @if (count || (!count && isFiltered.Equals("True")))
         {
             <input type="button" name="filter" value="Fitra" onclick="showDiv()" style="float:left;" />
             <input type="button" name="filter" value="Chiudi" onClick="hide()" style="float:left;display:none;" id="topbarbtn" />
             <div id="topbar" style="display:none;">
 
 
+                <!--  FILTRO  -->
                 @using (Html.BeginForm("Advanced", "Prodotto", FormMethod.Get))
                 {
                     <fieldset>
@@ -93,7 +87,15 @@
                     </fieldset>
                 }
             </div>
-            <br /><br /><br />
+        }
+        @if (!count)
+        {
+            <div id="desc">
+                <h2>Nessun Ordine!</h2>
+            </div>
+        }
+        else
+        {
             <div class="tables">
                 @if (isFiltered.Equals("True"))
                 {
@@ -173,6 +175,7 @@
                                     </td>
                                 </tr>
                                 <tr></tr>
+                                <!-- pulsante aggiungi  -->
                                 @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
                                 {
                                     <tr>
@@ -188,15 +191,50 @@
                                         </td>
                                     </tr>
                                 }
+                                else if ((ruolo != null) && (ruolo.Equals("admin")))
+                                {
+                                    <!-- form modifica per gli admin -->
+
+                                    <tr>
+                                        <td colspan="4">
+                                            @using (Html.BeginForm("Update", "Prodotto", FormMethod.Post))
+                                            {
+                                                <fieldset>
+
+                                                    <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                                    <input type="number" name="prezzo" id="prezzo" min="0" value="@s.Prezzo" />Prezzo<br />
+                                                    <input type="number" name="sconto" id="sconto" min="0" value="@s.Sconto" />Sconto<br />
+                                                    <select name="disponibile" id="disponibile">
+
+                                                        @if (s.Disponibile.Equals("si"))
+                                                        {
+                                                            <option value="si" selected="selected">Disponibile</option>
+                                                            <option value="no">no</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="si">si</option>
+                                                            <option value="no" selected="selected">NON Disponibile</option>
+                                                        }
+                                                    </select>
+                                                    <br />
+                                                    <br />
+                                                    <input type="submit" value="Modifica Prodotto" />
+                                                </fieldset>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                }
                             </table>
                         </div>
                     }
                 }
             </div>
         }
+
     </div>
     <div class="footer">
         <h6>footer</h6>
     </div>
 </div>
-

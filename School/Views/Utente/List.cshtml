@@ -30,93 +30,10 @@
         {
             <h1>Lista Utenti</h1>
 
-            @if (!count)
+            <!--  Solo se model e' pieno, oppure filtro "sbagliato", ripropone il filtro  -->
+            @if (count || (!count && isFiltered.Equals("True")))
             {
-                <div id="desc">
-                    <h2>Nessun Utente!</h2>
-                </div>
-                @if (isFiltered.Equals("True"))
-                {
-            <!-- FILTRI -->
-                    <div id="right">
-                        <h2><b>Filtra per...</b></h2><br /><br />
-
-                        @using (Html.BeginForm("List", "Utente", FormMethod.Get))
-                        {
-                            <fieldset>
-                                <table>
-                                    <!-- Username -->
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Username</b></td>
-                                        <td><input type="text" name="username" /></td>
-                                    </tr>
-                                    <!-- Ruolo -->
-                                    <tr>
-                                        <td><b>Ruolo</b></td>
-                                        <td>
-                                            <select name="ruolo">
-                                                <option value=""></option>
-                                                <option value="user">user</option>
-                                                <option value="admin">admin</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-
-                                </table>
-                                <br /><br /><br />
-                                <input type="submit" value="Applica Filtro" id="acquista" />
-                                <input type="button" value="Pulisci Filtro"
-                                       onclick="@("window.location.href='" + @Url.Action("List", "Utente", new { clear = "clear" }) + "'");" />
-                            </fieldset>
-                        }
-                    </div>
-
-                }
-            }
-            else
-            {
-                <table border="1" id="utenti">
-                    <tr>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Ruolo</th>
-                    </tr>
-
-                    @foreach (var s in Model)   //model parametro view
-                    {
-                        <tr>
-                            <td>@s.Username</td>
-                            <td>@s.Password</td>
-                            <td>@s.Ruolo</td>
-
-                            <td>
-                                @using (Html.BeginForm("Update", "Utente", FormMethod.Post))
-                                {
-                                    <fieldset>
-                                        <input type="text" name="user" id="user" value="@s.CdUtente" hidden />
-                                        <select name="ruolo" id="ruolo">
-                                            <option value="user">user</option>
-                                            <option value="admin">admin</option>
-                                        </select>
-                                        <br />
-                                        <br />
-                                        <input type="submit" value="Modifica Ruolo" />
-                                    </fieldset>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </table>
-            }
-
-            @if (count)
-            {
-            <!-- FILTRI -->
+                <!-- FILTRI -->
                 <div id="right">
                     <h2><b>Filtra per...</b></h2><br /><br />
 
@@ -155,6 +72,48 @@
                         </fieldset>
                     }
                 </div>
+            }
+
+            @if (!count)
+            {
+                <div id="desc">
+                    <h2>Nessun Utente!</h2>
+                </div>
+            }
+            else
+            { 
+                <table border="1" id="utenti">
+                    <tr>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Ruolo</th>
+                    </tr>
+
+                    @foreach (var s in Model)   //model parametro view
+                    {
+                        <tr>
+                            <td>@s.Username</td>
+                            <td>@s.Password</td>
+                            <td>@s.Ruolo</td>
+
+                            <td>
+                                @using (Html.BeginForm("Update", "Utente", FormMethod.Post))
+                                {
+                                    <fieldset>
+                                        <input type="text" name="user" id="user" value="@s.CdUtente" hidden />
+                                        <select name="ruolo" id="ruolo">
+                                            <option value="user">user</option>
+                                            <option value="admin">admin</option>
+                                        </select>
+                                        <br />
+                                        <br />
+                                        <input type="submit" value="Modifica Ruolo" />
+                                    </fieldset>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
             }
         }
     </div>
