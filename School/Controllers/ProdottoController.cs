@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Upo.Controllers;
 using Upo.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
@@ -80,6 +79,7 @@ namespace Upo.Controllers
             return View(await query.ToListAsync());
         }
 
+        //FILTRI
         public async Task<IActionResult> Advanced(string apply, string clear, string titolo, string prezzooperator, string prezzo,
             string sconto, string disp)
         {
@@ -93,64 +93,8 @@ namespace Upo.Controllers
                 filtered = true;
             }
 
-            //se c'e' clear, non fa niente
-            if (clear == null)
-            {
-                if (titolo != null && !titolo.Equals(""))
-                {
-                    Query = Query.Where(prod => prod.Titolo.Contains(titolo));
-                    filtered = true;
-                }
-
-                if (prezzooperator != null && prezzo != null)
-                {
-                    double.TryParse(prezzo, out double Prezzo);
-
-                    switch (prezzooperator)
-                    {
-                        case "<":
-                            Query = Query.Where(prod => prod.Prezzo < Prezzo);
-                            break;
-                        case "<=":
-                            Query = Query.Where(prod => prod.Prezzo <= Prezzo);
-                            break;
-                        case ">":
-                            Query = Query.Where(prod => prod.Prezzo > Prezzo);
-                            break;
-                        case ">=":
-                            Query = Query.Where(prod => prod.Prezzo >= Prezzo);
-                            break;
-                        case "=":
-                            Query = Query.Where(prod => prod.Prezzo == Prezzo);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    filtered = true;
-                }
-
-                if(sconto != null && !sconto.Equals(""))
-                {
-
-                    if (sconto.Equals("si"))
-                    {
-                        Query = Query.Where(prod => prod.Sconto > 0);
-                    }
-                    else
-                    {
-                        Query = Query.Where(prod => prod.Sconto == 0);
-                    }
-
-                    filtered = true;
-                }
-
-                if (disp != null && !disp.Equals(""))
-                {
-                    Query = Query.Where(ordine => ordine.Disponibile.Equals(disp));
-                    filtered = true;
-                }
-            }
+            //FILTRA
+            filtered = Query.FilterProd(clear, titolo, disp, prezzooperator, prezzo, sconto);
             
             TempData["AdvancedFilter"] = filtered.ToString();
 

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Upo.Controllers;
 using Upo.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
@@ -145,25 +144,10 @@ namespace Upo.Controllers
             var Query = from utenti in Context.Utente
                         select utenti;
 
-            bool filtered = false;
-
             //FILTRI
-            if (clear == null)
-            {
-                if(username != null && !username.Equals(""))
-                {
-                    Query = Query.Where(u => u.Username.Contains(username));
-                    filtered = true;
-                }
+            bool filtered = Query.FilterUser(clear, username, ruolo);
 
-                if(ruolo != null && !ruolo.Equals(""))
-                {
-                    Query = Query.Where(u => u.Ruolo.Equals(ruolo));
-                    filtered = true;
-                }
-            }
-
-           TempData["UtenteFilter"] = filtered.ToString();
+            TempData["UtenteFilter"] = filtered.ToString();
             return View(Query.ToList());
         }
 

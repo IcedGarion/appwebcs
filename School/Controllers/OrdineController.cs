@@ -119,9 +119,9 @@ namespace Upo.Controllers
             var ruolo = HttpContext.Session.GetString("Ruolo");
             int CdUtente = (int)tmp;
             var Query = UserQuery(CdUtente);
-            bool filtered = false;
 
-            filtered = Filter(ref Query, clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
+            //FILTRA
+            bool filtered = Query.FilterOrder(clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
 
             TempData["OrdineFilter"] = filtered.ToString();
 
@@ -136,113 +136,16 @@ namespace Upo.Controllers
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
             var Query = AdminQuery();
-            bool filtered = false;
 
-            filtered = Filter(ref Query, clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
+            //FILTRA
+            bool filtered = Query.FilterOrder(clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
 
             TempData["OrdineFilter"] = filtered.ToString();
 
             return View(await Query.ToListAsync());
         }
 
-        private bool Filter(ref IQueryable<OrdiniJoinDataSource> Query, string clear, string start, string end,
-            string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
-        {
-            DateTime.TryParse("1/1/1754", out DateTime MIN);
-            DateTime.TryParse("12/31/9998", out DateTime MAX);
-            bool filtered = false;
-
-            //se c'e' clear, non fa niente
-            if (clear == null)
-            {
-                if (start != null && end != null)
-                {
-                    try
-                    {
-                        DateTime Start = DateTime.Parse(start);
-                        DateTime End = DateTime.Parse(end);
-       
-                        if((Start.CompareTo(MIN) > 0 && Start.CompareTo(MAX) < 0)
-                            && (End.CompareTo(MIN) > 0 && End.CompareTo(MAX) < 0))
-                        {
-                            Query = Query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End);
-                        }
-                    }
-                    catch(Exception)
-                    { }
-
-                    filtered = true;
-                }
-
-                if (titolo != null && !titolo.Equals(""))
-                {
-                    Query = Query.Where(ordine => ordine.Titolo.Contains(titolo));
-                    filtered = true;
-                }
-
-                if (qtaoperator != null && qta != null)
-                {
-                    double.TryParse(qta, out double Qta);
-
-                    switch (qtaoperator)
-                    {
-                        case "<":
-                            Query = Query.Where(ordine => ordine.Quantita < Qta);
-                            break;
-                        case "<=":
-                            Query = Query.Where(ordine => ordine.Quantita <= Qta);
-                            break;
-                        case ">":
-                            Query = Query.Where(ordine => ordine.Quantita > Qta);
-                            break;
-                        case ">=":
-                            Query = Query.Where(ordine => ordine.Quantita >= Qta);
-                            break;
-                        case "=":
-                            Query = Query.Where(ordine => ordine.Quantita == Qta);
-                            break;
-                        default:
-                            break;
-                    }
-                    filtered = true;
-                }
-
-                if (totoperator != null && tot != null)
-                {
-                    double.TryParse(tot, out double Tot);
-
-                    switch (totoperator)
-                    {
-                        case "<":
-                            Query = Query.Where(ordine => ordine.Totale < Tot);
-                            break;
-                        case "<=":
-                            Query = Query.Where(ordine => ordine.Totale <= Tot);
-                            break;
-                        case ">":
-                            Query = Query.Where(ordine => ordine.Totale > Tot);
-                            break;
-                        case ">=":
-                            Query = Query.Where(ordine => ordine.Totale >= Tot);
-                            break;
-                        case "=":
-                            Query = Query.Where(ordine => ordine.Totale == Tot);
-                            break;
-                        default:
-                            break;
-                    }
-                    filtered = true;
-                }
-
-                if (stato != null && !stato.Equals(""))
-                {
-                    Query = Query.Where(ordine => ordine.Stato.Equals(stato));
-                    filtered = true;
-                }
-            }
-
-            return filtered;
-        }
+        
 
         private IQueryable<OrdiniJoinDataSource> AdminQuery()
         {
