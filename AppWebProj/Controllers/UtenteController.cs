@@ -143,9 +143,10 @@ namespace Upo.Controllers
         {
             var Query = from utenti in Context.Utente
                         select utenti;
+            bool filtered = false;
 
             //FILTRI
-            bool filtered = Query.FilterUser(clear, username, ruolo);
+           Query = Query.FilterUser(ref filtered, clear, username, ruolo);
 
             TempData["UtenteFilter"] = filtered.ToString();
             return View(Query.ToList());

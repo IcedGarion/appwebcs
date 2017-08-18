@@ -94,7 +94,7 @@ namespace Upo.Controllers
             }
 
             //FILTRA
-            filtered = Query.FilterProd(clear, titolo, disp, prezzooperator, prezzo, sconto);
+            Query = Query.FilterProd(ref filtered, clear, titolo, disp, prezzooperator, prezzo, sconto);
             
             TempData["AdvancedFilter"] = filtered.ToString();
 

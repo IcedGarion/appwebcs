@@ -15,104 +15,101 @@
         }
         else
         {
-            @foreach (var s in Model)
-            {
-                <table class="big">
-                    <tr>
-                        <td colspan="4">
-                            @if (s.Immagine != null)
-                            {
-                                <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
-                                     width="200" height="200" />
-                            }
-                            else
-                            {
-                                <img src="~/img/noimage.jpg" alt="NO IMAGE" width="200" height="200" />
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Prezzo
-                        </td>
-                        <td></td>
-                        <td>
-                            @if (s.Sconto > 0)
-                            {
-                                <p>Sconto</p>
-                            }
-                        </td>
-                        <td>
-                            Disponibile
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @if (s.Sconto > 0)
-                            {
-                                <p style="text-decoration:line-through; text-decoration-color:red;">@s.Prezzo &euro;</p>
-
-                            }
-                            else
-                            {
-                                <p>@s.Prezzo &euro;</p>
-
-                            }
-
-                        </td>
-
-                        <td>
-                            @if (s.Sconto > 0)
-                            {
-                                <b>@(s.Prezzo - s.Sconto) &euro;</b>
-                            }
-                        </td>
-                        <td>
-                            @if (s.Sconto > 0)
-                            {
-                                <i>@s.Sconto &euro;</i>
-
-                            }
-
-                        </td>
-                        <td>
-                            @if (s.Disponibile.Equals("si"))
-                            {
-                                <b>&#x2714;</b>
-                            }
-                            else
-                            {
-                                <b>&#x2718;</b>
-                            }
-
-
-                        </td>
-                    </tr>
-                    <tr></tr>
-                    
-                    @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
-                    {
+            <div class="tables">
+                @foreach (var s in Model)
+                {
+                    <table class="big">
                         <tr>
                             <td colspan="4">
-                                @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
+                                @if (s.Immagine != null)
                                 {
-                                    <fieldset>
-                                        <input type="text" name="input" id="input" value="@s.CdProdotto" hidden />
-                                        <input type="number" name="qta" id="qta" min="0" value="1" />
-                                        <input type="submit" value="Aggiungi al carrello" />
-                                    </fieldset>
+                                    <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                         width="200" height="200" />
+                                }
+                                else
+                                {
+                                    <img src="~/img/noimage.jpg" alt="NO IMAGE" width="200" height="200" />
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Prezzo
+                            </td>
+                            <td></td>
+                            <td>
+                                @if (s.Sconto > 0)
+                                {
+                                    <p>Sconto</p>
+                                }
+                            </td>
+                            <td>
+                                Disponibile
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @if (s.Sconto > 0)
+                                {
+                                    <p style="text-decoration:line-through; text-decoration-color:red;">@s.Prezzo &euro;</p>
+
+                                }
+                                else
+                                {
+                                    <p>@s.Prezzo &euro;</p>
+
+                                }
+                            </td>
+                            <td>
+                                @if (s.Sconto > 0)
+                                {
+                                    <b>@(s.Prezzo - s.Sconto) &euro;</b>
+                                }
+                            </td>
+                            <td>
+                                @if (s.Sconto > 0)
+                                {
+                                    <i>@s.Sconto &euro;</i>
+
+                                }
+                            </td>
+                            <td>
+                                @if (s.Disponibile.Equals("si"))
+                                {
+                                    <b>&#x2714;</b>
+                                }
+                                else
+                                {
+                                    <b>&#x2718;</b>
                                 }
 
                             </td>
                         </tr>
-                    }
-                </table>
-            }
+                        <tr></tr>
+
+                        @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
+                    {
+                            <tr>
+                                <td colspan="4">
+                                    @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
+                                    {
+                                        <fieldset>
+                                            <input type="text" name="input" id="input" value="@s.CdProdotto" hidden />
+                                            <input type="number" name="qta" id="qta" min="0" value="1" />
+                                            <input type="submit" value="Aggiungi al carrello" />
+                                        </fieldset>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
         }
     </div>
 </div>

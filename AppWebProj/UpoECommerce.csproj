@@ -17,6 +17,8 @@
     <Content Include="wwwroot\img\cart.png" />
     <Content Include="wwwroot\img\favicon.ico" />
     <Content Include="wwwroot\img\noimage.jpg" />
+    <Content Include="wwwroot\js\dropdown.js" />
+    <Content Include="wwwroot\js\validate.js" />
   </ItemGroup>
   
   <ItemGroup>

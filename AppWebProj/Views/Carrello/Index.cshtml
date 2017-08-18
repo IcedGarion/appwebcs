@@ -18,15 +18,15 @@
         }
         else
         {
-            <table class="carrello" >
+            <div class="tables">
+                <table class="carrello">
                     <tr>
                         <th></th>
                         <th>Dati</th>
                         <th>Prezzo</th>
                         <th>Quantita'</th>
-
                     </tr>
-               
+
                     @foreach (var s in Model)
                     {
 
@@ -52,43 +52,41 @@
                                 }
                             </td>
                             <td>
-                                    @s.Quantita
+                                @s.Quantita
                             </td>
                             <td>
-                            @using (Html.BeginForm("Update", "Carrello", FormMethod.Post))
-                            {
-                                <fieldset>
-                                    <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                                    <input type="number" name="qta" id="qta" min="0" value="1" />
-                                    <input type="submit" value="Modifica quantita'" />
-                                </fieldset>
-                            }
-                               </td>
+                                @using (Html.BeginForm("Update", "Carrello", FormMethod.Post))
+                                {
+                                    <fieldset>
+                                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                        <input type="number" name="qta" id="qta" min="0" value="1" />
+                                        <input type="submit" value="Modifica quantita'" />
+                                    </fieldset>
+                                }
+                            </td>
                             <td>
-                            @using (Html.BeginForm("Remove", "Carrello", FormMethod.Post))
-                            {
-                                <fieldset>
-                                    <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                                    <input type="submit" value="Rimuovi dal carrello" />
-                                </fieldset>
-                            }
-                            
+                                @using (Html.BeginForm("Remove", "Carrello", FormMethod.Post))
+                                {
+                                    <fieldset>
+                                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                        <input type="submit" value="Rimuovi dal carrello" />
+                                    </fieldset>
+                                }
+
                             </td>
                         </tr>
                         totale += (s.Prezzo - s.Sconto) * s.Quantita;
 
                     }
-
                 </table>
                 <div class="totale">
                     <h3>TOTALE CARRELLO: @totale</h3>
-
                     <input type="button" value="ACQUISTO" id="acquista"
                            onclick="@("window.location.href='" + @Url.Action("Create", "Ordine") + "'");" />
-
                     <input type="button" value="SVUOTA CARRELLO"
                            onclick="@("window.location.href='" + @Url.Action("Empty", "Carrello") + "'");" />
                 </div>
+            </div>
         }
     </div>
 

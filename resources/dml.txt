@@ -3,13 +3,14 @@
  * Inserire il path della repository (per inserimento immagini)
  * In tutti i prodotti con immagine
  * Esempio:
- * Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/water.png', Single_Blob) as image
+ * Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/AppWebProj/resources/water.png', Single_Blob) as image
   */
-/***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
 
-INSERT INTO [dbo].[Prodotto]
+DECLARE @ROOT VARCHAR(500) = 'C:/Users/windpw/Desktop/scuola/app web/AppWebProj';
+DECLARE @SQL VARCHAR(MAX);
+
+/***** inserisce nuovo prodotto  con immagine ******/
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -17,22 +18,18 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'Acqua'
-           ,'Bottiglia da 50 ml in plastica. Naturale'
+	SELECT ''Acqua''
+           ,''Bottiglia da 50 ml in plastica. Naturale''
            ,1
            ,0
-           ,'si'
-		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/water.png', Single_Blob) as image
-           
-GO
+           ,''si''
+		   , BulkColumn FROM Openrowset( Bulk ''' + @ROOT + '/resources/water.png'', Single_Blob) as image'
+
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -40,22 +37,18 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'Raspberry'
-           ,'Raspberry PI 3'
+	SELECT ''Raspberry''
+           ,''Raspberry PI 3''
            ,33.99
            ,4
-           ,'si'
-		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/raspberry.png', Single_Blob) as image
+           ,''si''
+		   , BulkColumn FROM Openrowset( Bulk ''' + @ROOT + '/resources/raspberry.png'', Single_Blob) as image'
            
-GO
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -63,22 +56,18 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'Abbonamento Netflix'
-           ,'Abbonamento Neflix mensile 4 schermi'
+	SELECT ''Abbonamento Netflix''
+           ,''Abbonamento Neflix mensile 4 schermi''
            ,11.99
            ,0
-           ,'si'
-		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/netflix.png', Single_Blob) as image
+           ,''si''
+		   , BulkColumn FROM Openrowset( Bulk ''' + @ROOT + '/resources/netflix.png'', Single_Blob) as image'
            
-GO
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -86,22 +75,18 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'Chitarra'
-           ,'Fender Stratocaster Colore Nero 6 corde'
+	SELECT ''Chitarra Elettrica''
+           ,''Fender Stratocaster Colore Nero 6 corde''
            ,164.99
            ,0
-           ,'si'
-		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/guitar.png', Single_Blob) as image
+           ,''si''
+		   , BulkColumn FROM Openrowset( Bulk ''' + @ROOT + '/resources/guitar.png'', Single_Blob) as image'
            
-GO
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -109,22 +94,18 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'Fotocamera Digitale'
-           ,'Nikon D5500 + Nikkor 18-140 VR Fotocamera Reflex Digitale, 24,2 Megapixel, LCD Touchscreen regolabile, Wi-Fi incorporato, SD 8GB 200x Premium Lexar'
+	SELECT ''Fotocamera Digitale''
+           ,''Nikon D5500 + Nikkor 18-140 VR Fotocamera Reflex Digitale, 24,2 Megapixel, LCD Touchscreen regolabile, Wi-Fi incorporato, SD 8GB 200x Premium Lexar''
            ,164.99
            ,0
-           ,'si'
+           ,''si''
 		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/Nikon.png', Single_Blob) as image
-           
-GO
+		   FROM Openrowset( Bulk ''' + @ROOT + '/resources/Nikon.png'', Single_Blob) as image'
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -132,22 +113,19 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'GTX 1080'
-           ,'Asus GeForce STRIX-GTX1080-A8G-GAMING Scheda Grafica da Gaming, 8 GB GDDR5X, PCI Express 3.0, Nero'
+	SELECT ''GTX 1080''
+           ,''Asus GeForce STRIX-GTX1080-A8G-GAMING Scheda Grafica da Gaming, 8 GB GDDR5X, PCI Express 3.0, Nero''
            ,759.00
            ,152.00
-           ,'si'
+           ,''si''
 		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/gtx1080.png', Single_Blob) as image
+		   FROM Openrowset( Bulk ''' + @ROOT + '/resources/gtx1080.png'', Single_Blob) as image'
            
-GO
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -155,22 +133,18 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'TP-Link TL-WDN4800 Scheda di Rete Wireless'
-           ,'TP-Link TL-WDN4800 Scheda di Rete Wireless Dualband N 900 Mbps PCIe, 450 Mbps/2.4 Ghz & 450 Mbps/5 Ghz, 3 Antenne Esterne, Crittografia WPA/WPA2, Semplice Configurazione'
+	SELECT ''TP-Link TL-WDN4800 Scheda di Rete Wireless''
+           ,''TP-Link TL-WDN4800 Scheda di Rete Wireless Dualband N 900 Mbps PCIe, 450 Mbps/2.4 Ghz & 450 Mbps/5 Ghz, 3 Antenne Esterne, Crittografia WPA/WPA2, Semplice Configurazione''
            ,37.09
            ,12.00
-           ,'si'
-		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/tplinkwifi.png', Single_Blob) as image
+           ,''si''
+		   , BulkColumn FROM Openrowset( Bulk ''' + @ROOT + '/resources/tplinkwifi.png'', Single_Blob) as image'
            
 GO
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -178,22 +152,19 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'HP X3500 Mouse Wireless, Nero'
-           ,'Sensore ottico e 3 pulsanti, Ricevitore USB wireless a 2,4 GHz. Nella confezione: mouse wireless HP X3500, due batterie AA, software e documentazione, scheda di garanzia '
+	SELECT ''HP X3500 Mouse Wireless, Nero''
+           ,''Sensore ottico e 3 pulsanti, Ricevitore USB wireless a 2,4 GHz. Nella confezione: mouse wireless HP X3500, due batterie AA, software e documentazione, scheda di garanzia ''
            ,12.90
            ,0
-           ,'si'
+           ,''si''
 		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/hpx3500.jpg', Single_Blob) as image
+		   FROM Openrowset( Bulk ''' + @ROOT + '/resources/hpx3500.jpg'', Single_Blob) as image'
            
-GO
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -201,23 +172,20 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'Yankee candle 1093707E'
-           ,'Yankee candle 1093707E Vanilla Cupcake Candele in giara grande, Vetro, Giallo, 9.9x9.8x15.4 cm'
+	SELECT ''Yankee candle 1093707E''
+           ,''Yankee candle 1093707E Vanilla Cupcake Candele in giara grande, Vetro, Giallo, 9.9x9.8x15.4 cm''
            ,17.99
            ,2.02
-           ,'si'
+           ,''si''
 		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/yankeecandle_.jpg', Single_Blob) as image
+		   FROM Openrowset( Bulk ''' + @ROOT + '/resources/yankeecandle_.jpg'', Single_Blob) as image'
            
-GO
+EXEC(@SQL);
 
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -225,22 +193,19 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'Power Bank'
-           ,'20000mAh Caricabatterie Portatile Power Bank Batteria Esterna 3 porte USB'
+	SELECT ''Power Bank''
+           ,''20000mAh Caricabatterie Portatile Power Bank Batteria Esterna 3 porte USB''
            ,19.99
            ,0
-           ,'si'
+           ,''si''
 		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/powerbank.png', Single_Blob) as image
+		   FROM Openrowset( Bulk ''' + @ROOT + '/resources/powerbank.png'', Single_Blob) as image'
            
-GO
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
-USE [Progetto]
-GO
-
-INSERT INTO [dbo].[Prodotto]
+SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ([titolo]
            ,[descrizione]
            ,[prezzo]
@@ -248,18 +213,15 @@ INSERT INTO [dbo].[Prodotto]
            ,[disponibile]
 		   ,[immagine])
 
-	SELECT 'DVD'
-           ,'DVD-R 16x Speed 4,7GB , confezione da 25'
+	SELECT ''DVD''
+           ,''DVD-R 16x Speed 4,7GB , confezione da 25''
            ,52.05
            ,40.58
-           ,'si'
+           ,''si''
 		   , BulkColumn 
-		   FROM Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/School downloaded/resources/dvd.png', Single_Blob) as image
+		   FROM Openrowset( Bulk ''' + @ROOT + '/resources/dvd.png'', Single_Blob) as image'
            
-GO
-
-
-	
+EXEC(@SQL);
 
 
 /****** FINE IMMAGINI  ******/

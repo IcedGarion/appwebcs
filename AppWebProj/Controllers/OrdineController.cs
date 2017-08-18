@@ -119,9 +119,10 @@ namespace Upo.Controllers
             var ruolo = HttpContext.Session.GetString("Ruolo");
             int CdUtente = (int)tmp;
             var Query = UserQuery(CdUtente);
+            bool filtered = false;
 
             //FILTRA
-            bool filtered = Query.FilterOrder(clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
+            Query = Query.FilterOrder(ref filtered, clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
 
             TempData["OrdineFilter"] = filtered.ToString();
 
@@ -136,9 +137,10 @@ namespace Upo.Controllers
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
             var Query = AdminQuery();
+            bool filtered = false;
 
             //FILTRA
-            bool filtered = Query.FilterOrder(clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
+            Query = Query.FilterOrder(ref filtered, clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
 
             TempData["OrdineFilter"] = filtered.ToString();
 
