@@ -155,7 +155,7 @@
                                     </td>
                                     @foreach (var s in group)
                                     {
-                                        <td>@s.Titolo</td>
+                                        <td>@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })</td>
                                         <td>@s.Quantita</td>
                                         @:</tr>
                             }

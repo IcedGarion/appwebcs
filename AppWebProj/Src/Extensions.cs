@@ -80,7 +80,7 @@ namespace Upo
         //Metodo Generico che accetta delegates
         //filtra tutti i nomi: se trova un argomento != null, chiama il corrispondente Func<> definito nella strategy, il quale filtra.
         //Ordini, Utenti e Prodotti chiamano con parametri diversi e con Strategy diverse
-        private static IQueryable<T> Filter<T>(ref IQueryable<T> Query, ref bool filtered, string clear, 
+        private static IQueryable<T> GeneralFilter<T>(ref IQueryable<T> Query, ref bool filtered, string clear, 
             string start, string end, string titolo, string stato,
             string username, string ruolo,
             string titoloProd, string disp, string sconto,
@@ -186,7 +186,7 @@ namespace Upo
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
             //filtra i nomi (contains)
-            Query = Filter(ref Query, ref filtered, clear, start, end, titolo, stato, null, null, null, null, null,
+            Query = GeneralFilter(ref Query, ref filtered, clear, start, end, titolo, stato, null, null, null, null, null,
                 new FilterStrategy<OrdiniJoinDataSource>()
                 {
                     FilterDate = (query, Start, End) => query.Where(ordine => ordine.DtInserimento >= Start && ordine.DtInserimento <= End),
@@ -223,7 +223,7 @@ namespace Upo
         {
             filtered = false;
 
-            Query = Filter(ref Query, ref filtered, clear, null, null, null, null, username, ruolo, null, null, null,
+            Query = GeneralFilter(ref Query, ref filtered, clear, null, null, null, null, username, ruolo, null, null, null,
                 new FilterStrategy<Utente>()
                 {
                     FilterUsername = (query, usrname) => query.Where(utente => utente.Username.Contains(usrname)),
@@ -238,7 +238,7 @@ namespace Upo
         {
             filtered = false;
 
-            Query = Filter(ref Query, ref filtered, clear, null, null, null, null, null, null, titolo, disp, sconto,
+            Query = GeneralFilter(ref Query, ref filtered, clear, null, null, null, null, null, null, titolo, disp, sconto,
                 new FilterStrategy<Prodotto>()
                 {
                     FilterTitoloProd = (query, title) => query.Where(prodotto => prodotto.Titolo.Contains(title)),

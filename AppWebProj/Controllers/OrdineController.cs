@@ -147,7 +147,6 @@ namespace Upo.Controllers
             return View(await Query.ToListAsync());
         }
 
-        
 
         private IQueryable<OrdiniJoinDataSource> AdminQuery()
         {
@@ -161,6 +160,7 @@ namespace Upo.Controllers
                         Stato = ordini.Stato,
                         Username = utenti.Username,
                         Titolo = prodotti.Titolo,
+                        CdProdotto = prodotti.CdProdotto,
                         DtInserimento = ordini.DtInserimento,
                         Quantita = ordineProdotto.Quantita,
                         Totale = ordini.Totale
@@ -183,6 +183,7 @@ namespace Upo.Controllers
                         Stato = ordini.Stato,
                         Username = utenti.Username,
                         Titolo = prodotti.Titolo,
+                        CdProdotto = prodotti.CdProdotto,
                         DtInserimento = ordini.DtInserimento,
                         Quantita = ordineProdotto.Quantita,
                         Totale = ordini.Totale

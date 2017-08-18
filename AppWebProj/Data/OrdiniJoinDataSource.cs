@@ -17,5 +17,7 @@ namespace Upo.Data
         public double Totale { get; set; }
 
         public string Titolo { get; set; }
+
+        public int CdProdotto { get; set; }
     }
 }
