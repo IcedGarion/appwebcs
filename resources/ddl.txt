@@ -1,3 +1,8 @@
+GO
+CREATE DATABASE Progetto;
+GO
+
+
 /****** TABELLA UTENTE ******/
 USE [Progetto]
 GO

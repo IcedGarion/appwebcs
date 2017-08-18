@@ -6,7 +6,7 @@
  * Openrowset( Bulk 'C:/Users/windpw/Desktop/scuola/app web/AppWebProj/resources/water.png', Single_Blob) as image
   */
 
-DECLARE @ROOT VARCHAR(500) = 'C:/Users/windpw/Desktop/scuola/app web/AppWebProj';
+DECLARE @ROOT VARCHAR(500) = 'C:\Users\windpw\Desktop\scuola\app web\appwebcs-master';
 DECLARE @SQL VARCHAR(MAX);
 
 /***** inserisce nuovo prodotto  con immagine ******/
@@ -22,7 +22,7 @@ SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ,''Bottiglia da 50 ml in plastica. Naturale''
            ,1
            ,0
-           ,''si''
+           ,''no''
 		   , BulkColumn FROM Openrowset( Bulk ''' + @ROOT + '/resources/water.png'', Single_Blob) as image'
 
 EXEC(@SQL);
@@ -117,7 +117,7 @@ SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ,''Asus GeForce STRIX-GTX1080-A8G-GAMING Scheda Grafica da Gaming, 8 GB GDDR5X, PCI Express 3.0, Nero''
            ,759.00
            ,152.00
-           ,''si''
+           ,''no''
 		   , BulkColumn 
 		   FROM Openrowset( Bulk ''' + @ROOT + '/resources/gtx1080.png'', Single_Blob) as image'
            
@@ -140,7 +140,7 @@ SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ,''si''
 		   , BulkColumn FROM Openrowset( Bulk ''' + @ROOT + '/resources/tplinkwifi.png'', Single_Blob) as image'
            
-GO
+EXEC(@SQL);
 
 
 /***** inserisce nuovo prodotto  con immagine ******/
@@ -176,7 +176,7 @@ SET @SQL = 'INSERT INTO [dbo].[Prodotto]
            ,''Yankee candle 1093707E Vanilla Cupcake Candele in giara grande, Vetro, Giallo, 9.9x9.8x15.4 cm''
            ,17.99
            ,2.02
-           ,''si''
+           ,''no''
 		   , BulkColumn 
 		   FROM Openrowset( Bulk ''' + @ROOT + '/resources/yankeecandle_.jpg'', Single_Blob) as image'
            
@@ -335,10 +335,3 @@ select Utente.username, Ordine.CD_ORDINE, Ordine.totale, Prodotto.titolo from
 	join Ordine_Prodotto on Ordine.CD_ORDINE = Ordine_Prodotto.CD_ORDINE
 	join prodotto on prodotto.CD_PRODOTTO = Ordine_Prodotto.CD_PRODOTTO
 GO
-
-
-
-
-
-
-

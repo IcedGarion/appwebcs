@@ -43,7 +43,7 @@
                                 }
                             </td>
                             <td>
-                                <b id="tit">@s.Titolo</b>
+                                <b id="tit">@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })</b>
                             </td>
                             <td>
                                 @if (s.Sconto > 0)
