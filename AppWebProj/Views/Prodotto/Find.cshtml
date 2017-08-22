@@ -15,6 +15,7 @@
         }
         else
         {
+            <!-- Tabella dei prodotti che matchano la ricerca (per titolo / descrizione) -->
             <div class="tables">
                 @foreach (var s in Model)
                 {
@@ -34,6 +35,7 @@
                         </tr>
                         <tr>
                             <td colspan="4">
+                                <!--Link al dettaglio prodotto  -->
                                 @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
                             </td>
                         </tr>
@@ -92,8 +94,9 @@
                         </tr>
                         <tr></tr>
 
+                        <!-- Form pulsante aggiungi al carrello per user -->
                         @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
-                    {
+                        {
                             <tr>
                                 <td colspan="4">
                                     @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))

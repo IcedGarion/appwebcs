@@ -19,19 +19,20 @@ namespace Upo.Controllers
 
         protected override Func<Prodotto, int, bool> FilterById => (e, id) => e.CdProdotto == id;
 
-        //solo per admin
+        /*
+         * Modifica informazioni sul prodotto (SOLO ADMIN)
+         */
         [HttpPost]
         public async Task<IActionResult> Update(string previousUrl, string prodotto, string prezzo, string sconto, string disponibile)
         {
             Prodotto ToUpdate;
-            string PreviousURL = previousUrl;
 
-            //riceve parametri dal form
+            //riceve parametri dal form: codice prodotto, nuovo prezzo nuovo sconto, nuova disponibilita'
             Int32.TryParse(prodotto, out int CdProdotto);
             double.TryParse(prezzo, out double Prezzo);
             double.TryParse(sconto, out double Sconto);
 
-            //cerca nel db quel prodotto
+            //cerca nel db il prodotto da modificare
             var query = from prodotti in Context.Prodotto
                         where prodotti.CdProdotto.Equals(CdProdotto)
                         select prodotti;
@@ -39,29 +40,38 @@ namespace Upo.Controllers
             //prende il primo elemento (l'unico) della query
             ToUpdate = query.First();
 
-            //modifica tutto (solo se ci sono stati cambiamenti)
+            //modifica tutte le informazioni (solo se ci sono stati cambiamenti)
+            //i campi del form non possono essere lasciati vuoti e i campi numerici devono contenere numeri, pertanto
+            //si suppone che, a questo punto, i dati inseriti siano validi
             if ((!(ToUpdate.Prezzo == Prezzo)) || (!(ToUpdate.Sconto == Sconto)) || (!(ToUpdate.Disponibile.Equals(disponibile))))
             {
                 ToUpdate.Prezzo = Prezzo;
                 ToUpdate.Sconto = Sconto;
                 ToUpdate.Disponibile = disponibile;
 
-                //salva su db
+                //rende persistenti le modifiche
                 await base.Update(ToUpdate);
             }
 
-            return Redirect(PreviousURL);
+            return Redirect("/Prodotto/List");
         }
 
-        //solo per admin: pagina con elenco di tutti i prodotti ma solo ADMIN: pulsanti MODIFICA PRODOTTO
+        /*
+         * Redirigono nelle pagine di elenco di tutti i prodotti
+         */
+
+        //solo per admin: pagina con i prodotti e pulsanti MODIFICA PRODOTTO
         public async Task<IActionResult> List() => View(await Entities.ToListAsync());
 
-        //pagina con elenco di tutti i prodotti: pulsante aggiungi per USER, no pulsanti per ADMIN
+        //pagina con i prodotti e pulsante aggiungi per USER, no pulsanti per ADMIN
         public async Task<IActionResult> Index() => View(await Entities.ToListAsync());
 
-
+        /*
+         * Seleziona uno specifico prodotto e tutte le sue informazioni (codice prodotto nell'URL)
+         */
         public async Task<IActionResult> Detail(int cdprodotto)
         {
+            //prende il prodotto che ha codice corrispondente al parametro 
             var query = from prodotti in Context.Prodotto
                         where prodotti.CdProdotto.Equals(cdprodotto)
                         select prodotti;
@@ -69,6 +79,9 @@ namespace Upo.Controllers
             return View(await query.ToListAsync());
         }
 
+        /*
+         * Seleziona l'insieme di prodotti il cui titolo o la cui descrizione contiene la stringa in input
+         */
         [HttpPost]
         public async Task<IActionResult> Find(string input)
         {
@@ -79,10 +92,14 @@ namespace Upo.Controllers
             return View(await query.ToListAsync());
         }
 
-        //FILTRI
+        /*
+         * Ricerca avanzata: usa lo stesso filtro di ordini e utenti, applicato ai prodotti.
+         * Filtra, fra tutti i prodotti, quelli che rispecchiano le caratteristiche indicate in input (titolo, prezzo, sconto, disponibilita')
+         */
         public async Task<IActionResult> Advanced(string apply, string clear, string titolo, string prezzooperator, string prezzo,
             string sconto, string disp)
         {
+            //seleziona tutti i prodotti
             var Query = from prodotti in Context.Prodotto
                         select prodotti;
         
@@ -93,7 +110,7 @@ namespace Upo.Controllers
                 filtered = true;
             }
 
-            //FILTRA
+            //FILTRO: custom IQueryable extension method
             Query = Query.FilterProd(ref filtered, clear, titolo, disp, prezzooperator, prezzo, sconto);
             
             TempData["AdvancedFilter"] = filtered.ToString();

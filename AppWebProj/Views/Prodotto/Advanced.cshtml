@@ -95,6 +95,7 @@
         }
         else
         {
+            <!-- Tabella prodotti che matchano il filtro -->
             <div class="tables">
                 @if (isFiltered.Equals("True"))
                 {
@@ -117,6 +118,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4">
+                                        <!-- Link al dettaglio prodotto -->
                                         @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
                                     </td>
                                 </tr>
@@ -174,7 +176,7 @@
                                     </td>
                                 </tr>
                                 <tr></tr>
-                                <!-- pulsante aggiungi  -->
+                                <!-- Form pulsante aggiungi al carrello per user -->
                                 @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
                                 {
                                     <tr>
@@ -192,8 +194,7 @@
                                 }
                                 else if ((ruolo != null) && (ruolo.Equals("admin")))
                                 {
-                                    <!-- form modifica per gli admin -->
-
+                                    <!-- Form modifica prodotto per gli admin -->
                                     <tr>
                                         <td colspan="4">
                                             @using (Html.BeginForm("Update", "Prodotto", FormMethod.Post))

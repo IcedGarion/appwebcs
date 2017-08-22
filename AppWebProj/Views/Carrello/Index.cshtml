@@ -2,91 +2,112 @@
 
 @{
     ViewData["Title"] = "Upo e-Commerce - CARRELLO";
+    var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
     double totale = 0;
 }
 
 <div class="container">
     <div class="main">
 
-        <h1>Carrello</h1>
-
-        @if (Model.Count() == 0)
+        <!-- Controllo ruoli: solo user puo' accedere al carrello-->
+        @if (ruolo == null)
         {
-            <div id="desc">
-                <h2>Carrello Vuoto!</h2>
-            </div>
+            <h1>
+                Non sei loggato!<br /><br />
+                @Html.ActionLink("Login", "Login", "Utente")
+            </h1>
+        }
+        else if (ruolo.Equals("admin"))
+        {
+            <h1>Area riservata agli utenti!</h1>
         }
         else
         {
-            <div class="tables">
-                <table class="carrello">
-                    <tr>
-                        <th></th>
-                        <th>Dati</th>
-                        <th>Prezzo</th>
-                        <th>Quantita'</th>
-                    </tr>
+            <h1>Carrello</h1>
 
-                    @foreach (var s in Model)
+            @if (Model.Count() == 0)
+            {
+                <div id="desc">
+                    <h2>Carrello Vuoto!</h2>
+                </div>
+            }
+            else
+            {
+            <!-- Tabella dei prodotti contenuti nel carrello -->
+                <div class="tables">
+                    <table class="carrello">
+                        <tr>
+                            <th></th>
+                            <th>Dati</th>
+                            <th>Prezzo</th>
+                            <th>Quantita'</th>
+                        </tr>
+
+                        @foreach (var s in Model)
                     {
 
-                        <tr>
-                            <td>
-                                @if (s.Immagine != null)
-                                {
-                                    <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
-                                         width="80" height="80" />
-                                }
-                                else
-                                {
-                                    <img src="~/img/noimage.jpg" alt="NO IMAGE" width="80" height="80" />
-                                }
-                            </td>
-                            <td>
-                                <b id="tit">@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })</b>
-                            </td>
-                            <td>
-                                @if (s.Sconto > 0)
-                                {
-                                    <b>@(s.Prezzo - s.Sconto) &euro;</b>
-                                }
-                            </td>
-                            <td>
-                                @s.Quantita
-                            </td>
-                            <td>
-                                @using (Html.BeginForm("Update", "Carrello", FormMethod.Post))
-                                {
-                                    <fieldset>
-                                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                                        <input type="number" name="qta" id="qta" min="0" value="1" />
-                                        <input type="submit" value="Modifica quantita'" />
-                                    </fieldset>
-                                }
-                            </td>
-                            <td>
-                                @using (Html.BeginForm("Remove", "Carrello", FormMethod.Post))
-                                {
-                                    <fieldset>
-                                        <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
-                                        <input type="submit" value="Rimuovi dal carrello" />
-                                    </fieldset>
-                                }
+                            <tr>
+                                <td>
+                                    @if (s.Immagine != null)
+                                    {
+                                        <img src="data:image;base64,@System.Convert.ToBase64String(s.Immagine)"
+                                             width="80" height="80" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/img/noimage.jpg" alt="NO IMAGE" width="80" height="80" />
+                                    }
+                                </td>
+                                <td>
+                                    <!-- link al dettaglio del prodotto -->
+                                    <b id="tit">@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })</b>
+                                </td>
+                                <td>
+                                    @if (s.Sconto > 0)
+                                    {
+                                        <b>@(s.Prezzo - s.Sconto) &euro;</b>
+                                    }
+                                </td>
+                                <td>
+                                    @s.Quantita
+                                </td>
+                                <td>
+                                    <!-- Form per la modifica della quantita' di un prodotto nel carrello -->
+                                    @using (Html.BeginForm("Update", "Carrello", FormMethod.Post))
+                                    {
+                                        <fieldset>
+                                            <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                            <input type="number" name="qta" id="qta" min="0" value="1" />
+                                            <input type="submit" value="Modifica quantita'" />
+                                        </fieldset>
+                                    }
+                                </td>
+                                <td>
+                                    <!-- Form per la rimozione di un prodotto dal carrello -->
+                                    @using (Html.BeginForm("Remove", "Carrello", FormMethod.Post))
+                                    {
+                                        <fieldset>
+                                            <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
+                                            <input type="submit" value="Rimuovi dal carrello" />
+                                        </fieldset>
+                                    }
 
-                            </td>
-                        </tr>
-                        totale += (s.Prezzo - s.Sconto) * s.Quantita;
+                                </td>
+                            </tr>
+                            totale += (s.Prezzo - s.Sconto) * s.Quantita;
 
-                    }
-                </table>
-                <div class="totale">
-                    <h3>TOTALE CARRELLO: @totale</h3>
-                    <input type="button" value="ACQUISTO" id="acquista"
-                           onclick="@("window.location.href='" + @Url.Action("Create", "Ordine") + "'");" />
-                    <input type="button" value="SVUOTA CARRELLO"
-                           onclick="@("window.location.href='" + @Url.Action("Empty", "Carrello") + "'");" />
+                        }
+                    </table>
+                    <!-- Bottoni per acquisto o svuotamento carrello -->
+                    <div class="totale">
+                        <h3>TOTALE CARRELLO: @totale</h3>
+                        <input type="button" value="ACQUISTO" id="acquista"
+                               onclick="@("window.location.href='" + @Url.Action("Create", "Ordine") + "'");" />
+                        <input type="button" value="SVUOTA CARRELLO"
+                               onclick="@("window.location.href='" + @Url.Action("Empty", "Carrello") + "'");" />
+                    </div>
                 </div>
-            </div>
+            }
         }
     </div>
 

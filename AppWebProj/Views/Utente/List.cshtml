@@ -15,6 +15,7 @@
 <div class="container">
     <div class="main">
 
+        <!-- Controllo ruoli: solo admin puo' accedere alla gestione utenti -->
         @if (ruolo == null)
         {
             <h1>
@@ -39,7 +40,7 @@
                     <div id="topbar" style="display:none;">
                         <h2><b>Filtra per...</b></h2><br /><br />
                         @using (Html.BeginForm("List", "Utente", FormMethod.Get))
-                    {
+                        {
                             <fieldset>
                                 <table>
                                     <!-- Username -->
@@ -88,7 +89,8 @@
                         <th>Ruolo</th>
                     </tr>
 
-                    @foreach (var s in Model)   //model parametro view
+                    <!-- Tabella con elenco di tutti gli utenti registrati -->
+                    @foreach (var s in Model) 
                     {
                         <tr>
                             <td>@s.Username</td>
@@ -96,6 +98,7 @@
                             <td>@s.Ruolo</td>
 
                             <td>
+                                <!-- Form per modificare i ruoli -->
                                 @using (Html.BeginForm("Update", "Utente", FormMethod.Post))
                                 {
                                     <fieldset>

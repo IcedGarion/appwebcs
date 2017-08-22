@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Upo.Data
+﻿namespace Upo.Data
 {
+    /*
+     * Oggetto usato per visualizzare i dati del carrello nelle Views
+     */
     public class CarrelloDataSource
     {
         public int CdProdotto { get; set; }
@@ -14,6 +12,7 @@ namespace Upo.Data
         public string Descrizione { get; set; }
 
         public double Prezzo { get; set; }
+
         public double Sconto { get; set; }
 
         public byte[] Immagine { get; set; }

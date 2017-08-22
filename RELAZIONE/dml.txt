@@ -267,8 +267,8 @@ INSERT INTO [dbo].[Prodotto]
            ,[sconto]
            ,[disponibile])
      VALUES
-           ('laptop'
-           ,'notebook x'
+           ('Notebook ASUS'
+           ,'ASUS K550VX-GO405T 2.8GHz 500GB HDD i7-7700HQ Computer Portatile Notebook 15.6" 1366 x 768Pixel, Acciaio Inossidabile, Grigio '
            ,'500'
            ,'10'
            ,'si')

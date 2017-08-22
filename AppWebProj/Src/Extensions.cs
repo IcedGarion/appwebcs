@@ -10,16 +10,22 @@ namespace Upo
 {
     public static class Extensions
     {
+        //limiti datetime
         private static readonly string MIN_DATE = "1/1/1754";
         private static readonly string MAX_DATE = "12/31/9998";
 
 
-        //serializza e deserializza oggetti in array di byte per salvarli in session
+        /*
+         * Serializza oggetti complessi in array di byte per salvarli in session
+         */
         public static void SetObjectAsJson(this ISession session, string key, object value)
         {
             session.SetString(key, JsonConvert.SerializeObject(value));
         }
 
+        /*
+         * Deserializza gli oggetti in session (byte[]) rimappandoli nell'oggetto originale
+         */
         public static T GetObjectFromJson<T>(this ISession session, string key)
         {
             var value = session.GetString(key);
@@ -29,20 +35,24 @@ namespace Upo
 
         /*
          * FITRI: 
-         * Ordine, Utente e Prodotti devono essere filtrati. Filtrano per nome di un parametro (se != null, filtra le righe che contengono il parametro)
+         * Ordine, Utente e Prodotti devono essere filtrati. Filtrano per nome di un parametro
+         *     (es, titolo = 'tv' -> filtra tutte le righe della tabella che hanno titolo = tv)
          *     e filtrano per operatore: se != null, applica operatore su un certo valore (es.: qtaOp = '<', val = 10 => query.Where(x => x.proprieta' < 10)
          *     (2 metodi diversi FILTRO generici per ottenere il risultato).
+         *     
          * Ognuno dei 3 diversi Oggetti che vogliono filtrare istanziano una FilterStrategy che contiene i delegates che dicono
          *     come filtrare (delle Where), cosi' lo stesso metodo Filter analizza i parametri che si vogliono filtrare
          *     e chiama le funzioni giuste.
          */
 
-        //accetta operatore e valore: a seconda dell'operatore, chiama la funzione giusta nella strategy passandogli il valore
-        //la Func<> della strategy e' un filtro per la query (Where)
-        //riusato 3 volte
+        /*
+         * accetta operatore e valore: a seconda dell'operatore (<, >, =, ...), chiama la funzione giusta nella strategy passandogli il valore
+         * riusato 3 volte
+         */
         private static IQueryable<T> FilterOperator<T>(ref IQueryable<T> Query, ref bool filtered, string clear, string Operator, string Value,
             FilterStrategy<T> Strategy)
         {
+            //"clear" parametro del form per pulire il filtro: non filtra e riman la query originale
             if(clear == null)
             {
                 if (Operator != null && Value != null)
@@ -77,13 +87,15 @@ namespace Upo
             return Query;
         }
 
-        //Metodo Generico che accetta delegates
-        //filtra tutti i nomi: se trova un argomento != null, chiama il corrispondente Func<> definito nella strategy, il quale filtra.
-        //Ordini, Utenti e Prodotti chiamano con parametri diversi e con Strategy diverse
+        /*
+         * Metodo Generico che accetta delegates
+         * filtra tutti i nomi: se trova un argomento != null, chiama il corrispondente Func<> definito nella strategy, il quale filtra.
+         * Ordini, Utenti e Prodotti chiamano con parametri diversi e con Strategy diverse
+         */
         private static IQueryable<T> GeneralFilter<T>(ref IQueryable<T> Query, ref bool filtered, string clear, 
-            string start, string end, string titolo, string stato,
-            string username, string ruolo,
-            string titoloProd, string disp, string sconto,
+            string start, string end, string titolo, string stato,  //ordine
+            string username, string ruolo,                          //utente
+            string titoloProd, string disp, string sconto,          //prodotto
             FilterStrategy<T> Strategy)
         {
             //limiti DateTime
@@ -103,6 +115,7 @@ namespace Upo
                         DateTime Start = DateTime.Parse(start);
                         DateTime End = DateTime.Parse(end);
 
+                        //se la data (start e end) inserita nel form del filtro rientra fra max e min, filtra
                         if ((Start.CompareTo(MIN) > 0 && Start.CompareTo(MAX) < 0)
                             && (End.CompareTo(MIN) > 0 && End.CompareTo(MAX) < 0))
                         {
@@ -181,7 +194,14 @@ namespace Upo
             return Query;
         }
 
-        //FILTRI Specifici
+        /*
+         * FILTRI Specifici: Utente, Ordine e Prodotto chiamano il loro extension method corrispondente,
+         * il quale istanzia le strategy giuste e chiama il metodo filtro generale coi parametri giusti
+         */
+
+         /*
+          * Filtra fra gli ordini: solo admin (/Ordini/List)
+          */
         public static IQueryable<OrdiniJoinDataSource> FilterOrder(this IQueryable<OrdiniJoinDataSource> Query, ref bool filtered, string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
@@ -219,6 +239,9 @@ namespace Upo
             return Query;
         }
 
+        /*
+        * Filtra fra gli utenti: solo admin (/Utenti/List)
+        */
         public static IQueryable<Utente> FilterUser(this IQueryable<Utente> Query, ref bool filtered, string clear, string username, string ruolo)
         {
             filtered = false;
@@ -233,6 +256,9 @@ namespace Upo
             return Query;
         }
 
+        /*
+         * Filtra fra i prodotti (Ricerca avanzata)
+         */
         public static IQueryable<Prodotto> FilterProd(this IQueryable<Prodotto> Query, ref bool filtered, string clear, string titolo, string disp,
             string prezzooperator, string prezzo, string sconto)
         {

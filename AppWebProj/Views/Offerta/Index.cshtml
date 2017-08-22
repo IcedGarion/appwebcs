@@ -1,13 +1,15 @@
-@inject IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<Prodotto>
 
 @{
     ViewData["Title"] = "Upo e-Commerce - PRODOTTI IN OFFERTA";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
 }
-@model IEnumerable<Prodotto>
+
 <div class="container">
     <div class="main">
         <h1>Lista dei prodotti in offerta</h1>
+
+        <!-- Tabella dei podotti in offerta -->
         <div class="tables">
             @foreach (var s in Model)
             {
@@ -27,6 +29,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
+                            <!-- link al dettaglio del prodotto -->
                             @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
                         </td>
                     </tr>
@@ -84,8 +87,11 @@
                         </td>
                     </tr>
                     <tr></tr>
+
+                    <!-- se user (o nessuno) -> pulsanti aggiungi al carrello; se admin -> nessun pulsante
+                         (admin puo' modificare i prodotti in /Prodotto/Advanced)-->
                     @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
-                {
+                    {
                         <tr>
                             <td colspan="4">
 

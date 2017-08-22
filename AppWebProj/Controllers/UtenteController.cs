@@ -20,20 +20,27 @@ namespace Upo.Controllers
 
         protected override Func<Utente, int, bool> FilterById => (e, id) => e.CdUtente == id;
 
-        //la view
+        //GET Utente/Create -> pagina col form di registrazione
+        //POST Utente/Create -> legge il form di registrazione
+
+        /*
+         * Passa alla pagina contenente il form di registrazione
+         */
         [HttpGet]
         public IActionResult Create() => View();
 
-        //il form per creare 
+        /*
+         * Processa le informazioni provenienti dal form di registrazione
+         */
         [HttpPost]
         public async Task<IActionResult> Create(string user, string pass)
         {
-            //controlla se non esiste gia' lo stesso username
+            //controlla che non esista gia' lo stesso username desiderato
             var query = from utenti in Context.Utente
                         where utenti.Username.Equals(user)
                         select utenti;
 
-            //username gia' esistente!
+            //se username e' gia' presente nel db allora rimanda alla view con un messaggio
             if(query.Count() != 0)
             {
                 TempData["LoginMsg"] = "Username inserito esiste gia'! Prova con un altro username";
@@ -41,11 +48,12 @@ namespace Upo.Controllers
                 return View();
             }
 
-
-            //assume password gia' controllate in js
+            //se username non esiste gia':
+            //assume password gia' controllate in javascript (wwwroot/js/valdate.js):
+            //rende persistente il nuovo utente chiamando il metodo Create del CrudController
             await base.Create(new Utente { Username = user, Password = pass, Ruolo = "user" });
 
-            //recupera dal db il CdUtente appena inserito
+            //recupera dal db l'utente con CdUtente appena inserito
             query = from utenti in Context.Utente
                         where utenti.Username.Equals(user)
                         select utenti;
@@ -53,7 +61,7 @@ namespace Upo.Controllers
             //utente appena inserito:
             Utente New = query.First();
 
-            //SALVA IN SESSION DATI LOGIN
+            //SALVA IN SESSION DATI LOGIN dell'utente appena inserito (Effettua la login)
             HttpContext.Session.SetInt32("CdUtente", New.CdUtente);
             HttpContext.Session.SetString("Username", New.Username);
             HttpContext.Session.SetString("Ruolo", New.Ruolo);
@@ -62,15 +70,24 @@ namespace Upo.Controllers
             return Redirect("/Home/Index");
         }
 
+        //GET Utente/Login -> pagina col form di login
+        //POST Utente/Login -> legge il form di login
+
+        /*
+         * Rimanda alla pagina di login
+         */
         [HttpGet]
         public IActionResult Login() => View();
 
-
+        /*
+         * Processa i dati del form di login
+         */
         [HttpPost]
         public IActionResult Login(string user, string pass)
         {
             Utente loggato;
-            //controlla se esiste utente con quella password
+
+            //controlla se esiste utente con quella password nel db, per sicurezza
             var query = from utenti in Context.Utente
                          where utenti.Username.Equals(user) && utenti.Password.Equals(pass)
                          select utenti;
@@ -81,7 +98,7 @@ namespace Upo.Controllers
                 //unico elemento della lista: l'utente con CdUtente
                 loggato = query.First();
 
-                //SALVA IN SESSION DATI LOGIN
+                //SALVA IN SESSION DATI LOGIN (Effettua login)
                 HttpContext.Session.SetInt32("CdUtente", loggato.CdUtente);
                 HttpContext.Session.SetString("Username", loggato.Username);
                 HttpContext.Session.SetString("Ruolo", loggato.Ruolo == null? "none" : loggato.Ruolo);
@@ -91,17 +108,19 @@ namespace Upo.Controllers
             //altrimenti rimanda alla login con messaggio
             else
             {
-
                 TempData["LoginMsg"] = "Username o Password non corretti";
 
                 return Redirect("/Utente/Login");
-            }
-            
+            }   
         }
 
+        /*
+         * Effettua il logout
+         */
         [HttpGet]
         public IActionResult Logout(string user, string pass)
         {
+            //rimuove da session tutti i dati di login
             HttpContext.Session.Remove("CdUtente");
             HttpContext.Session.Remove("Ruolo");
             HttpContext.Session.Remove("LoginMsg");
@@ -110,6 +129,9 @@ namespace Upo.Controllers
             return Redirect("/Home");
         }
 
+        /*
+         * Aggiorna i dati relativi ad un utente (SOLO ADMIN)
+         */
         [HttpPost]
         public async Task<IActionResult> Update(string user, string ruolo)
         {
@@ -117,7 +139,7 @@ namespace Upo.Controllers
             Int32.TryParse(user, out int CdUtente);
             Utente ToUpdate;
 
-            //cerca nel db quell'utente
+            //cerca nel db l'utente con cdUtente corrispondente a quello ricevuto dal form
             var query = from utenti in Context.Utente
                         where utenti.CdUtente.Equals(CdUtente)
                         select utenti;
@@ -125,28 +147,30 @@ namespace Upo.Controllers
             //prende il primo elemento (l'unico) della query
             ToUpdate = query.First();
 
-            //modifica ruolo solo se diverso!
+            //modifica ruolo solo se diverso
             if(!ToUpdate.Ruolo.Equals(ruolo))
             {
                 ToUpdate.Ruolo = ruolo;
 
-                //salva su db
+                //rende le modifiche persistenti chiamando il metodo Update del CrudController
                 await base.Update(ToUpdate);
             }
 
             return Redirect("/Utente/List");
         }
 
-        //passa alla view la lista di tutte le entites del controller (Context.Utente)
-        //Utente/Index: in @Model si trova la lista
+        /*
+         * Espone la lista di tutti gli utenti registrati (SOLO ADMIN), con possibilita' di filtrare
+         */
         public IActionResult List(string clear, string username, string ruolo)
         {
+            //seleziona dal db tutti  gli utenti
             var Query = from utenti in Context.Utente
                         select utenti;
             bool filtered = false;
 
-            //FILTRI
-           Query = Query.FilterUser(ref filtered, clear, username, ruolo);
+            //FILTRO: custom IQueryable extension method
+            Query = Query.FilterUser(ref filtered, clear, username, ruolo);
 
             TempData["UtenteFilter"] = filtered.ToString();
             return View(Query.ToList());

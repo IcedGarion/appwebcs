@@ -1,5 +1,4 @@
 @model IEnumerable<OrdiniJoinDataSource>
-
 @{
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
     ViewBag.Title = "Upo e-Commerce - LISTA ORDINI";
@@ -7,23 +6,24 @@
     var isFiltered = TempData["OrdineFilter"];
 
 }
-
 <div class="container">
     <div class="main">
-    @if (ruolo == null)
-    {
-        <h1>
-            Non sei loggato!<br /><br />
-            @Html.ActionLink("Login", "Login", "Utente")
-        </h1>
-    }
-    else if (ruolo.Equals("admin"))
-    {
-        <h1>Area riservata agli utenti!</h1>
-    }
-    else
-    {
-        <h1>Lista Ordini</h1>
+
+        <!-- Controllo ruoli: solo user puo' accedere agli ordini personali -->
+        @if (ruolo == null)
+        {
+            <h1>
+                Non sei loggato!<br /><br />
+                @Html.ActionLink("Login", "Login", "Utente")
+            </h1>
+        }
+        else if (ruolo.Equals("admin"))
+        {
+            <h1>Area riservata agli utenti!</h1>
+        }
+        else
+        {
+            <h1>Lista Ordini</h1>
 
             <!-- Se il model e' vuoto (nessun ordine oppure filtro "sbagliato")  -->
             @if (!count)
@@ -34,6 +34,7 @@
             }
             else
             {
+                <!-- Tabella elenco ordini -->
                 <table class="ordine">
                     <tr>
                         <th>Codice ordine</th>
@@ -60,8 +61,11 @@
                                 }
                             </td>
                             <td rowspan="@group.Count()">@Ordine.Totale</td>
+
+                            <!-- Elenco prodotti contenuti nell'ordine -->
                             @foreach (var s in group)
                             {
+                                <!-- Link al dettaglio prodotto -->
                                 <td>@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })</td>
                                 <td>@s.Quantita</td>
                                 @:</tr>
@@ -153,9 +157,9 @@
                     </div>
                 </div>
             }
-    }
+        }
     </div>
     <div class="footer">
-         <h6>footer</h6>
+        <h6>footer</h6>
     </div>
 </div>

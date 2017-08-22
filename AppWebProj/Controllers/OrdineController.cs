@@ -21,6 +21,9 @@ namespace Upo.Controllers
 
         protected override Func<Ordine, int, bool> FilterById => (e, id) => e.CdOrdine == id;
 
+        /*
+         * Crea un nuovo ordine (CHECKOUT)
+         */
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -32,28 +35,31 @@ namespace Upo.Controllers
                 return Redirect("/Utente/Login");
             }
 
-            //legge il carrello
+            //legge il carrello da session
             var SessionCart = HttpContext.Session.GetObjectFromJson<List<OrdineProdotto>>("Cart");
             if (SessionCart == null)
             {
+                //se il carrello e' vuoto non si puo' eseguire l'acquisto: rimanda alla pagina del carrello
                 return Redirect("/Carrello/Index");
             }
 
-            //legge cdUtente
+            //legge cdUtente da session
             int utente = 0;
             if (HttpContext.Session.GetInt32("CdUtente") != null)
                 utente = (int)HttpContext.Session.GetInt32("CdUtente");
 
-            //cerca nel db tutti i prodotti da inserire, per calcolare il totale
+            //JOIN dei prodotti in carrello con quelli nel db, per ritrovarne tutte le informazioni (es, per calcolo totale)
             var AddProductsDb = from prodotti in context.Prodotto
                               join carrello in SessionCart on prodotti.CdProdotto equals carrello.CdProdotto
                               select new { Prezzo = prodotti.Prezzo, Sconto = prodotti.Sconto, Quantita = carrello.Quantita };
 
+            //calcola il totale sommando tutti i prezzi scontati dei prodotti nel carrello
             double totale = AddProductsDb.Sum(x => (x.Prezzo - x.Sconto) * x.Quantita);
 
-            //crea elenco ordineProdotto
+            //crea tabella di link fra ordini e prodotti
             List<OrdineProdotto> ordProd = new List<OrdineProdotto>();
 
+            //aggiunge tutti i prodotti da acquistare con relativa quantita'
             foreach (var prod in SessionCart)
             {
                 ordProd.Add(new OrdineProdotto
@@ -63,17 +69,17 @@ namespace Upo.Controllers
                 });
             }
 
-            //crea un nuovo ordine collegato all'utente e all'elenco di prodotti sopra
+            //crea un nuovo ordine collegato all'utente e collega l'elenco di prodotti OrdineProdotto
             Ordine ordine = new Ordine
             {
                 CdUtente = utente,
-                Stato = "Sent",
-                DtInserimento = DateTime.Now,
+                Stato = "Sent",                 //di default un nuovo ordine assume stato "sent"
+                DtInserimento = DateTime.Now,   //inserisce con la data corrente
                 Totale = totale,
                 OrdineProdotto = ordProd
             };
 
-            //salva sul db
+            //rende persistenti le modifiche chiamando il metodo Create del CrudController
             await base.Create(ordine);
 
             //rimuove carrello in session
@@ -82,6 +88,9 @@ namespace Upo.Controllers
             return Redirect("/Ordine/Index");
         }
 
+        /*
+         * Modifica proprieta' di un ordine (ADMIN)
+         */
         [HttpPost]
         public async Task<IActionResult> Update(string ordine, string stato)
         {
@@ -89,7 +98,7 @@ namespace Upo.Controllers
             Int32.TryParse(ordine, out int CdOrdine);
             Ordine ToUpdate;
 
-            //cerca nel db quell'ordine
+            //cerca nel db l'ordine con codice corrispondente a quello passato dal form
             var query = from ordini in Context.Ordine
                         where ordini.CdOrdine.Equals(CdOrdine)
                         select ordini;
@@ -97,12 +106,12 @@ namespace Upo.Controllers
             //prende il primo elemento (l'unico) della query
             ToUpdate = query.First();
 
-            //modifica stato solo se diverso!
+            //modifica stato solo se diverso dal precedente
             if (!ToUpdate.Stato.Equals(stato))
             {
                 ToUpdate.Stato = stato;
 
-                //salva su db
+                //rende persistente chiamando il metodo Update del CrudController
                 await base.Update(ToUpdate);
             }
 
@@ -110,36 +119,41 @@ namespace Upo.Controllers
         }
 
 
-        //FILTRA
+        /*
+         * Espone tutti gli ordini di un utente (SOLO USER). Possibilita' di filtrare gli ordini: 
+         * se chiamato con parametri (HTTP GET con parametri nell'URL) allora usa i parametri per filtrare
+         */
         public async Task<IActionResult> Index(string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
             //prende cdUtente da session
             var tmp = HttpContext.Session.GetInt32("CdUtente");
-            var ruolo = HttpContext.Session.GetString("Ruolo");
             int CdUtente = (int)tmp;
+            //query: tutti gli ordini di un certo utente
             var Query = UserQuery(CdUtente);
             bool filtered = false;
 
-            //FILTRA
+            //FILTRO: custom IQueryable extension method
             Query = Query.FilterOrder(ref filtered, clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
 
+            //view deve sapere se e' stato applicato un filtro o no: salva in Request scope
             TempData["OrdineFilter"] = filtered.ToString();
 
             return View(await Query.ToListAsync());
         }
 
-        /***
-         * GET senza parametri: lista normale; GET con parametro: filtra secondo i parametri
-         ***/
+        /*
+         * Espone tutti gli ordini di tutti gli utenti (SOLO ADMIN). Possibilita' di filtrare, logica di prima
+         */
         [HttpGet]
         public async Task<IActionResult> List(string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
+            //prende tutti gli ordini di tutti gli utenti
             var Query = AdminQuery();
             bool filtered = false;
 
-            //FILTRA
+            //FILTRO: custom IQueryable extension method
             Query = Query.FilterOrder(ref filtered, clear, start, end, titolo, qtaoperator, qta, totoperator, tot, stato);
 
             TempData["OrdineFilter"] = filtered.ToString();
@@ -148,6 +162,10 @@ namespace Upo.Controllers
         }
 
 
+        /*
+         * Usata da List: restituisce tutti gli ordini di tutti gli utenti, in JOIN con i prodotti che contiene
+         *     e username di chi ha acquistato
+         */
         private IQueryable<OrdiniJoinDataSource> AdminQuery()
         {
             var q = from ordini in Context.Ordine
@@ -169,6 +187,10 @@ namespace Upo.Controllers
             return q;
         }
 
+        /*
+         * Usata da Index: restituisce tutti gli ordini effettuati da un utente specifico,
+         *     con anche tutti i prodotti acquistati
+         */
         private IQueryable<OrdiniJoinDataSource> UserQuery(int CdUtente)
         {
             //invece di restituire solo gli ordini, fa una join per aggiungere altre informazioni
@@ -188,8 +210,8 @@ namespace Upo.Controllers
                         Quantita = ordineProdotto.Quantita,
                         Totale = ordini.Totale
                     };
+
             return q;
         }
-
     }
 }

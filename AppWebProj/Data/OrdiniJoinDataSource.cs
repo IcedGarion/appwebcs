@@ -2,6 +2,9 @@
 
 namespace Upo.Data
 {
+    /*
+     * Usato per memorizzare i dati relativi a un ordine, per esporre anche tutti i prodotti che contiene
+     */
     public class OrdiniJoinDataSource
     {
         public string Username { get; set; }

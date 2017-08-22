@@ -6,6 +6,7 @@
 <div class="container">
     <div class="main">
 
+        <!-- Controllo ruoli: solo admin puo' accedere all pagina di modifica dei prodotti -->
         @if (ruolo == null)
         {
             <h1>
@@ -20,10 +21,14 @@
         else
         {
             <h1>Gestione Prodotti</h1>
+
+            <!-- Pulsante per la ricerca avanzata: redirect a /Prodotto/Advanced -->
             <div>
                 <input type="button" name="ricerca" value="Ricerca Avanzata" onclick="@("window.location.href='" + @Url.Action("Advanced", "Prodotto") + "'");" style="float:left;" />
             </div>
             <br /><br />
+
+            <!-- Tabella globale prodotti -->
             <div class="tables" style="padding-top:10px">
                 @foreach (var s in Model)
                 {
@@ -43,6 +48,7 @@
                         </tr>
                         <tr>
                             <td colspan="4">
+                                <!-- Link al dettaglio prodotto -->
                                 @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
                             </td>
                         </tr>
@@ -103,6 +109,8 @@
 
                         <tr>
                             <td colspan="4">
+
+                                <!-- Form di modifica dei dati del prodotto -->
                                 @using (Html.BeginForm("Update", "Prodotto", FormMethod.Post))
                                 {
                                     <fieldset>

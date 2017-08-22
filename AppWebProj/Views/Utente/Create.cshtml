@@ -8,10 +8,10 @@
 <div class="container">
     <div class="main">
 
+        <!-- Controllo ruoli: ci si puo' registrare solo se non si e' gia' loggati -->
         @if (ruolo != null)
         {
             <h1>Sei gi&aacute; registrato!</h1>
-
         }
         else
         {
@@ -23,6 +23,7 @@
             
             </h1>
 
+            <!-- Form registrazione -->
             <div class="form">
                 @using (Html.BeginForm("Create", "Utente", FormMethod.Post, new { @id = "form1" }))
                 {

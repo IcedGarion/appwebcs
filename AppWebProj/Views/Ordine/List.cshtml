@@ -1,5 +1,4 @@
 @model IEnumerable<OrdiniJoinDataSource>
-
 @{
     ViewBag.Title = "Upo e-Commerce - GESTIONE ORDINI";
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
@@ -7,24 +6,26 @@
     var isFiltered = TempData["OrdineFilter"];
 
 }
-
 <div class="container">
     <div class="main">
-    @if (ruolo == null)
-    {
-        <h1>
-            Non sei loggato!<br /><br />
-            @Html.ActionLink("Login", "Login", "Utente")
-        </h1>
-    }
-    else if (ruolo.Equals("user"))
-    {
-        <h1>Area riservata agli amministratori!</h1>
-    }
-    else
-    {
-        <h1>Lista Ordini</h1>
 
+        <!-- Controllo ruoli: solo admin puo' accedere all'elenco di tutti gli ordini -->
+        @if (ruolo == null)
+        {
+            <h1>
+                Non sei loggato!<br /><br />
+                @Html.ActionLink("Login", "Login", "Utente")
+            </h1>
+        }
+        else if (ruolo.Equals("user"))
+        {
+            <h1>Area riservata agli amministratori!</h1>
+        }
+        else
+        {
+            <h1>Lista Ordini</h1>
+
+            <!--  Solo se model e' pieno, oppure filtro "sbagliato", ripropone il filtro  -->
             @if (count || (!count && isFiltered.Equals("True")))
             {
                 <!-- FILTRI -->
@@ -35,7 +36,7 @@
 
                         <h2><b>Filtra per...</b></h2><br /><br />
                         @using (Html.BeginForm("List", "Ordine", FormMethod.Get))
-                    {
+                        {
                             <fieldset>
                                 <table>
                                     <!-- Titolo-->
@@ -110,37 +111,41 @@
                 <br /><br /><br />
 
             }
-    }
-            <!-- Se il model e' vuoto (nessun ordine oppure filtro "sbagliato")  -->
-            @if (!count)
-            {
-                <div id="desc">
-                    <h2>Nessun Ordine!</h2>
-                </div>
-            }
-            else
-            {
-                <div class="tables">
-                    <table class="ordine">
-                        <tr>
-                            <th>Codice ordine</th>
-                            <th>Data</th>
-                            <th>Totale ordine</th>
-                            <th>Stato</th>
-                            <th>Modifica Stato Ordine</th>
-                            <th>Nome prodotto</th>
-                            <th>Quantita'</th>
-                        </tr>
-                        @foreach (var group in Model.GroupBy(item => item.CdOrdine))
-                        {
-                            var Ordine = group.First();
-                            @:<tr>
-                                <td rowspan="@group.Count()">@group.Key </td>
-                                    <td rowspan="@group.Count()">@Ordine.DtInserimento.Day/@Ordine.DtInserimento.Month/@Ordine.DtInserimento.Year</td>
+        }
+        <!-- Se il model e' vuoto (nessun ordine oppure filtro "sbagliato")  -->
+        @if (!count)
+        {
+            <div id="desc">
+                <h2>Nessun Ordine!</h2>
+            </div>
+        }
+        else
+        {
+            <!-- Tabella ordini globali -->
+            <div class="tables">
+                <table class="ordine">
+                    <tr>
+                        <th>Codice ordine</th>
+                        <th>Data</th>
+                        <th>Totale ordine</th>
+                        <th>Stato</th>
+                        <th>Modifica Stato Ordine</th>
+                        <th>Nome prodotto</th>
+                        <th>Quantita'</th>
+                    </tr>
+
+                    @foreach (var group in Model.GroupBy(item => item.CdOrdine))
+                    {
+                        var Ordine = group.First();
+                        @:<tr>
+                            <td rowspan="@group.Count()">@group.Key </td>
+                                <td rowspan="@group.Count()">@Ordine.DtInserimento.Day/@Ordine.DtInserimento.Month/@Ordine.DtInserimento.Year</td>
                                     <td rowspan="@group.Count()">@Ordine.Totale</td>
                                     <td rowspan="@group.Count()">@Ordine.Stato</td>
 
                                     <td rowspan="@group.Count()">
+
+                                        <!-- FORM modifica ordini -->
                                         @using (Html.BeginForm("Update", "Ordine", FormMethod.Post))
                                         {
                                             <fieldset>
@@ -153,24 +158,23 @@
                                             </fieldset>
                                         }
                                     </td>
+
+                                    <!-- Elenco prodotti contenuti nell'ordine -->
                                     @foreach (var s in group)
                                     {
+                                        <!-- Link al dettaglio prodotto -->
                                         <td>@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })</td>
                                         <td>@s.Quantita</td>
                                         @:</tr>
-                            }
-                        }
+                                    }
+                    }
 
-                    </table>
-                </div>
-}
-
-            <!--  Solo se model e' pieno, oppure filtro "sbagliato", ripropone il filtro  -->
-            
-                </div>
-
-                <div class="footer">
-                    <h6>footer</h6>
-                </div>
+                </table>
             </div>
+        }
+    </div>
 
+    <div class="footer">
+        <h6>footer</h6>
+    </div>
+</div>

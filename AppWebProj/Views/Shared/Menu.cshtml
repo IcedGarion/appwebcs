@@ -3,20 +3,15 @@
     var username = HttpContextAccessor.HttpContext.Session.GetString("Username");
 }
 
-<ul id="menu">
-    <!--  CARRELLO  -->
-    @if (ruolo == null)
-    {
-        <li>
-            <a href="@Url.Action("Index","Carrello")"><img src="~/img/cart.png" , alt="Carrello" height="25" width="30" /></a>
-        </li>
-    }
-    else if (ruolo.Equals("user"))
-    {
-        <li>
-            <a href="@Url.Action("Index","Carrello")"><img src="~/img/cart.png" , alt="Carrello" height="25" width="30" /></a>
-        </li>
+<!-- Menu' nella parte superiore -->
 
+<ul id="menu">
+    <!--  Carrello: visualizza l'icona (e link) solo se loggati e user  -->
+    @if ((ruolo == null) || (ruolo != null && ruolo.Equals("user")))
+    {
+        <li>
+            <a href="@Url.Action("Index","Carrello")"><img src="~/img/cart.png" , alt="Carrello" height="25" width="30" /></a>
+        </li>
     }
     <li>
         @Html.ActionLink("Home", "Index", "Home")
@@ -32,6 +27,7 @@
     @if (ruolo != null)
     {
         <li class="dropdown">
+            <!-- Admin ha le 3 pagne di gestione -->
             @if (ruolo.Equals("admin"))
             {
                 @Html.ActionLink(username, "Index", "PrivateHome", new { @class = "dropbtn" })
@@ -44,9 +40,8 @@
             }
             else if (ruolo.Equals("user"))
             {
+                <!-- User ha soltanto Ordini -->
                 @Html.ActionLink(username, "Index", "Ordine", new { @class = "dropbtn" })
-
-                <!-- ruolo user -->
                 <ul class="dropdown-content">
                     <li>@Html.ActionLink("Elenco Ordini", "Index", "Ordine")</li>
                 </ul>

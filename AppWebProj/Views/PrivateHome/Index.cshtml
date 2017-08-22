@@ -6,7 +6,9 @@
 <div class="container">
     <div class="main">
         <h1>Area Amministrazione</h1>
-        <!-- DA TOGLIERE DOPO AUTH -->
+
+        <!-- Controllo ruoli: solo admin puo' accedere ad Area Privata (amministrazione) -->
+        <!-- Area "privata" utente corrisponde soltanto all'elenco ordini -->
         @if (ruolo == null)
         {
             <h1>Non sei loggato!</h1>
@@ -17,6 +19,7 @@
         }
         else
         {
+            <!-- Links alle pagine di gestione  -->
             <div id="greybar"><br /><br /></div>
             <div class="ph">
                 <div id="links">

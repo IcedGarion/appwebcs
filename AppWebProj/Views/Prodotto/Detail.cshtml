@@ -8,6 +8,8 @@
 <div class="container">
     <div class="main">
         <h1>Dettaglio Prodotto</h1>
+
+        <!-- "Tabella" dettaglio prodotto -->
         <div class="tables">
             @foreach (var s in Model)
             {
@@ -27,7 +29,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            @Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })
+                            @s.Titolo
                         </td>
                     </tr>
                     <tr>
@@ -85,8 +87,9 @@
                     </tr>
                     <tr></tr>
 
+                    <!-- Pulsante aggiungi al carrello per user -->
                     @if ((ruolo == null) || ((ruolo != null) && ruolo.Equals("user")))
-                {
+                    {
                         <tr>
                             <td colspan="4">
                                 @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))

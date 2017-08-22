@@ -3,11 +3,14 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Upo.Model;
 
+//CONTEXT E MODELS GENERATI AUTOMATICAMENTE seguendo il tutorial: http://www.learnentityframeworkcore.com/walkthroughs/existing-database
+
 namespace Upo.Data
 {
     public partial class UpoECommerceContext : DbContext
     {
-        //Setup connection string dovrebbe avvenire qua (Startup.ConfigureServices: AddDbContext chiama questo)
+        //PROBLEMA!
+        //Setup connection string dovrebbe avvenire qua (Startup.ConfigureServices: AddDbContext chiama questo costruttore)
         //ma questo costruttore non viene mai chiamato. Connessione risolta in OnConfiguring, piu' in basso
         public UpoECommerceContext(DbContextOptions<UpoECommerceContext> options) : base(options)
         {
@@ -15,12 +18,13 @@ namespace Upo.Data
 
         public UpoECommerceContext() { }
 
+        //le entita'
         public virtual DbSet<Ordine> Ordine { get; set; }
         public virtual DbSet<OrdineProdotto> OrdineProdotto { get; set; }
         public virtual DbSet<Prodotto> Prodotto { get; set; }
         public virtual DbSet<Utente> Utente { get; set; }
 
-        //Connection string viene settata qua: usa le configurations create in Startup (public e static)
+        //Connection string viene settata qua: usa le configurations create in Startup
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = Startup.Configuration.GetConnectionString("DefaultConnection");
