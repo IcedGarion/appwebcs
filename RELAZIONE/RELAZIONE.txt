@@ -6,7 +6,31 @@ ISTRUZIONI:
 
 - Eseguire lo script di creazione del database (ddl.txt)
 
-- Aprire lo script di popolamento delle tabelle ed inserire il PATH della repository:
-	necessario per impostare il percorso delle immagini e quindi per caricarle correttamente sul db
+- Aprire lo script di popolamento delle tabelle (dml.txt) ed inserire il PATH della repository:
+	necessario per impostare il percorso delle immagini e quindi per caricarle correttamente sul db. Poi eseguire anche tutto lo script
 	
 - Aprire la soluzione con Visual Studio ed eseguire il BUILD del progetto, poi lanciare 
+
+
+
+
+DESCRIZIONE MODELLO RELAZIONALE
+Descrizione ER e scelte fatte?
+
+
+
+
+DESCRIZIONE MODELLO A OGGETTI
+Descrizione architettura MVC e in generale navigazione?
+
+
+
+SCELTE IMPLEMENTATIVE
+- Si e' scelto di usare pochi framework (no kendo, no AspNetCore Authentication) per cercare di capire meglio come funzionasse a piu' basso livello (???)
+	e quindi implementando manualmente le cose 
+
+- Carrello interamente in session e non salvato sul db, perche' e' temporaneo e non necessita memorizzazione persistente
+
+- Diverse tecniche di navigazione e richieste http: forms con GET (con parametri nell'url) e POST, action links con GET con e senza parametri;
+	in generale si e' cercato di usare molte tecniche diverse per cercare di imparare il piu' possibile, e non scegliendo necessariamente 
+	la tecnica migliore.
