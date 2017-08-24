@@ -45,8 +45,9 @@ namespace Upo.Controllers
 
             //legge cdUtente da session
             int utente = 0;
-            if (HttpContext.Session.GetInt32("CdUtente") != null)
-                utente = (int)HttpContext.Session.GetInt32("CdUtente");
+            var tmp = HttpContext.Session.GetInt32("CdUtente");
+            if (tmp != null)
+                utente = (int)tmp;
 
             //JOIN dei prodotti in carrello con quelli nel db, per ritrovarne tutte le informazioni (es, per calcolo totale)
             var AddProductsDb = from prodotti in context.Prodotto
@@ -126,9 +127,11 @@ namespace Upo.Controllers
         public async Task<IActionResult> Index(string clear, string start, string end,
             string titolo, string qtaoperator, string qta, string totoperator, string tot, string stato)
         {
+            int CdUtente = 0;
             //prende cdUtente da session
             var tmp = HttpContext.Session.GetInt32("CdUtente");
-            int CdUtente = (int)tmp;
+            if(tmp != null)
+                CdUtente = (int)tmp;
             //query: tutti gli ordini di un certo utente
             var Query = UserQuery(CdUtente);
             bool filtered = false;

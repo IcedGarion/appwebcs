@@ -9,7 +9,7 @@
 <div class="container">
     <div class="main">
 
-        <!-- Controllo ruoli: solo user puo' accedere al carrello-->
+        <!-- Controllo ruoli: solo user o utente non loggato possono accedere al carrello-->
         @if ((ruolo != null) && (ruolo.Equals("admin")))
         {
             <h1>Area riservata agli utenti!</h1>
@@ -59,6 +59,11 @@
                                     @if (s.Sconto > 0)
                                     {
                                         <b>@(s.Prezzo - s.Sconto) &euro;</b>
+                                    }
+                                    else
+                                    {
+                                        <p>@s.Prezzo &euro;</p>
+
                                     }
                                 </td>
                                 <td>

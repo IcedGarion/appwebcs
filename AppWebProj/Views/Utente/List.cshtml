@@ -81,41 +81,41 @@
                 </div>
             }
             else
-            { 
-                <table border="1" id="utenti">
-                    <tr>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Ruolo</th>
-                    </tr>
-
-                    <!-- Tabella con elenco di tutti gli utenti registrati -->
-                    @foreach (var s in Model) 
-                    {
+            {
+                <div class="tables">
+                    <table border="1" id="utenti">
                         <tr>
-                            <td>@s.Username</td>
-                            <td>@s.Password</td>
-                            <td>@s.Ruolo</td>
-
-                            <td>
-                                <!-- Form per modificare i ruoli -->
-                                @using (Html.BeginForm("Update", "Utente", FormMethod.Post))
-                                {
-                                    <fieldset>
-                                        <input type="text" name="user" id="user" value="@s.CdUtente" hidden />
-                                        <select name="ruolo" id="ruolo">
-                                            <option value="user">user</option>
-                                            <option value="admin">admin</option>
-                                        </select>
-                                        <br />
-                                        <br />
-                                        <input type="submit" value="Modifica Ruolo" />
-                                    </fieldset>
-                                }
-                            </td>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Ruolo</th>
                         </tr>
-                    }
-                </table>
+                        <!-- Tabella con elenco di tutti gli utenti registrati -->
+                        @foreach (var s in Model)
+                        {
+                            <tr>
+                                <td>@s.Username</td>
+                                <td>@s.Password</td>
+                                <td>@s.Ruolo</td>
+                                <td>
+                                    <!-- Form per modificare i ruoli -->
+                                    @using (Html.BeginForm("Update", "Utente", FormMethod.Post))
+                                    {
+                                        <fieldset>
+                                            <input type="text" name="user" id="user" value="@s.CdUtente" hidden />
+                                            <select name="ruolo" id="ruolo">
+                                                <option value="user">user</option>
+                                                <option value="admin">admin</option>
+                                            </select>
+                                            <br />
+                                            <br />
+                                            <input type="submit" value="Modifica Ruolo" />
+                                        </fieldset>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
             }
         }
     </div>

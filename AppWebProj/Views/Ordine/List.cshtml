@@ -69,8 +69,8 @@
                                     <!-- Data -->
                                     <tr>
                                         <td><b>Data</b></td>
-                                        <td><input type="text" name="start" id="start" />Data inizio</td>
-                                        <td><input type="text" name="end" id="end" />Data fine</td>
+                                        <td><input type="text" name="start" id="start" /><br />Data inizio</td>
+                                        <td><input type="text" name="end" id="end" /><br />Data fine</td>
                                     </tr>
                                     <!-- Totale -->
                                     <tr>
@@ -111,7 +111,7 @@
                 <br /><br /><br />
 
             }
-        }
+        
         <!-- Se il model e' vuoto (nessun ordine oppure filtro "sbagliato")  -->
         @if (!count)
         {
@@ -126,6 +126,7 @@
                 <table class="ordine">
                     <tr>
                         <th>Codice ordine</th>
+                        <th>Effettuato da...</th>
                         <th>Data</th>
                         <th>Totale ordine</th>
                         <th>Stato</th>
@@ -139,41 +140,40 @@
                         var Ordine = group.First();
                         @:<tr>
                             <td rowspan="@group.Count()">@group.Key </td>
-                                <td rowspan="@group.Count()">@Ordine.DtInserimento.Day/@Ordine.DtInserimento.Month/@Ordine.DtInserimento.Year</td>
-                                    <td rowspan="@group.Count()">@Ordine.Totale</td>
-                                    <td rowspan="@group.Count()">@Ordine.Stato</td>
-
-                                    <td rowspan="@group.Count()">
-
-                                        <!-- FORM modifica ordini -->
-                                        @using (Html.BeginForm("Update", "Ordine", FormMethod.Post))
-                                        {
-                                            <fieldset>
-                                                <input type="text" name="ordine" id="ordine" value="@group.Key" hidden />
-                                                <select name="stato" id="stato">
-                                                    <option value="sent">sent</option>
-                                                    <option value="processed">processed</option>
-                                                </select>
-                                                <input type="submit" value="Modifica" />
-                                            </fieldset>
-                                        }
-                                    </td>
-
-                                    <!-- Elenco prodotti contenuti nell'ordine -->
-                                    @foreach (var s in group)
-                                    {
-                                        <!-- Link al dettaglio prodotto -->
-                                        <td>@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })</td>
-                                        <td>@s.Quantita</td>
-                                        @:</tr>
-                                    }
+                            <td rowspan="@group.Count()">@Ordine.Username</td>
+                            <td rowspan="@group.Count()">@Ordine.DtInserimento.Day/@Ordine.DtInserimento.Month/@Ordine.DtInserimento.Year</td>
+                            <td rowspan="@group.Count()">@Ordine.Totale</td>
+                            <td rowspan="@group.Count()">@Ordine.Stato</td>
+                            <td rowspan="@group.Count()">
+                                <!-- FORM modifica ordini -->
+                                @using (Html.BeginForm("Update", "Ordine", FormMethod.Post))
+                                {
+                                    <fieldset>
+                                        <input type="text" name="ordine" id="ordine" value="@group.Key" hidden />
+                                        <select name="stato" id="stato">
+                                            <option value="sent">sent</option>
+                                            <option value="processed">processed</option>
+                                        </select>
+                                        <input type="submit" value="Modifica" />
+                                    </fieldset>
+                                }
+                            </td>
+                            <!-- Elenco prodotti contenuti nell'ordine -->
+                            @foreach (var s in group)
+                            {
+                                <!-- Link al dettaglio prodotto -->
+                                <td>@Html.ActionLink(s.Titolo, "Detail", "Prodotto", new { s.CdProdotto }, new { @class = "linkprod" })</td>
+                                <td>@s.Quantita</td>
+                                @:</tr>
+                            }
                     }
 
                 </table>
             </div>
         }
+        }
     </div>
-
+        
     <div class="footer">
         <h6>footer</h6>
     </div>

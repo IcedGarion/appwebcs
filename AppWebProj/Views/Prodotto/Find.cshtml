@@ -45,10 +45,7 @@
                             </td>
                             <td></td>
                             <td>
-                                @if (s.Sconto > 0)
-                                {
-                                    <p>Sconto</p>
-                                }
+                                Sconto
                             </td>
                             <td>
                                 Disponibile
@@ -99,14 +96,22 @@
                         {
                             <tr>
                                 <td colspan="4">
+                                    @if (s.Disponibile.Equals("si"))
+                                    {
                                     @using (Html.BeginForm("Add", "Carrello", FormMethod.Post))
                                     {
                                         <fieldset>
-                                            <input type="text" name="input" id="input" value="@s.CdProdotto" hidden />
+                                            <input type="text" name="prodotto" id="prodotto" value="@s.CdProdotto" hidden />
                                             <input type="number" name="qta" id="qta" min="0" value="1" />
                                             <input type="submit" value="Aggiungi al carrello" />
                                         </fieldset>
                                     }
+                                   }
+                                   else
+                                   {
+                                    <b>Il prodotto non &eacute; disponibile!!!</b>
+
+                                   }
                                 </td>
                             </tr>
                         }
