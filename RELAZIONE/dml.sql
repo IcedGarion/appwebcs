@@ -285,7 +285,7 @@ INSERT INTO [dbo].[Ordine]
            ,[totale]
            ,[stato])
      VALUES
-           (2
+           (1
            ,'2017-08-02'
            ,'490'
            ,'processed')
