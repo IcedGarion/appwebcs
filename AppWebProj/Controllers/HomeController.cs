@@ -25,7 +25,7 @@ namespace Upo.Controllers
                          where ordini.DtInserimento > DateTime.Now.AddMonths(-3)
                          orderby ordiniProdotti.Quantita
                          select prodotti)
-                         .GroupBy(p => p.CdProdotto).Select(g => g.First());
+                         .GroupBy(p => p.CdProdotto).Select(g => g.First()).Take(10);
             //raggruppa per codice prodotto e prende solo il primo (per evitare duplicati)
 
             return View(await query.ToListAsync());
