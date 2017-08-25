@@ -74,7 +74,7 @@ namespace Upo.Controllers
             Ordine ordine = new Ordine
             {
                 CdUtente = utente,
-                Stato = "Sent",                 //di default un nuovo ordine assume stato "sent"
+                Stato = "sent",                 //di default un nuovo ordine assume stato "sent"
                 DtInserimento = DateTime.Now,   //inserisce con la data corrente
                 Totale = totale,
                 OrdineProdotto = ordProd

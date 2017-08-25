@@ -1,7 +1,7 @@
 @model IEnumerable<Prodotto>
 
 @{
-    ViewData["Title"] = "Upo e-Commerce - RICERA AVANZATA";
+    ViewData["Title"] = "Upo e-Commerce - RICERCA AVANZATA";
     bool count = false;
     var ruolo = HttpContextAccessor.HttpContext.Session.GetString("Ruolo");
     var isFiltered = TempData["AdvancedFilter"];
@@ -13,7 +13,7 @@
 }
 <div class="container">
     <div class="main">
-        <h1>Ricerca avazata</h1>
+        <h1>Ricerca avanzata</h1>
 
         <!--  Solo se model e' pieno, oppure filtro "sbagliato", ripropone il filtro  -->
         @if (count || (!count && isFiltered.Equals("True")))
@@ -90,7 +90,7 @@
         @if (!count)
         {
             <div id="desc">
-                <h2>Nessun Ordine!</h2>
+                <h2>Nessun Risultato!</h2>
             </div>
         }
         else
@@ -237,9 +237,5 @@
                 }
             </div>
         }
-
-    </div>
-    <div class="footer">
-        <h6>footer</h6>
     </div>
 </div>

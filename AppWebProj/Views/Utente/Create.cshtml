@@ -28,7 +28,7 @@
                 @using (Html.BeginForm("Create", "Utente", FormMethod.Post, new { @id = "form1" }))
                 {
                     <fieldset>
-                        Username
+                        Username o e-mail
                         <br />
                         <input type="text" name="user" id="user" required/>
                         <br />
@@ -44,7 +44,7 @@
                         <br />
                         <br />
                         <br />  
-                        <input type="submit" onclick="return validatePass();" value="Registra"/>
+                        <input type="submit" onclick="return validateUser();" value="Registra"/>
                     </fieldset>
                 }
             </div>

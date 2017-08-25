@@ -238,7 +238,7 @@ INSERT INTO [dbo].[Utente]
            ,[password]
 		   ,[ruolo])
      VALUES
-           ('marcoRossi', '1234', 'user')
+           ('marcoRossi@user.upo', '1234', 'user')
 GO
 
 USE [Progetto]
@@ -249,7 +249,7 @@ INSERT INTO [dbo].[Utente]
            ,[password]
 		   ,[ruolo])
      VALUES
-           ('francoNeri', 'asdf', 'admin')
+           ('francoNeri@admin.upo', 'asdf', 'admin')
 GO
 
 

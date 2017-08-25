@@ -66,6 +66,7 @@
     color: whitesmoke;
     background-color: #404040;
     width: 99%;
+    text-align: center;
 }
 
 ul > li > ul a {
@@ -246,7 +247,7 @@ fieldset {
 }
 
 #desc {
-    width:70%;
+    width:50%;
     float: left;
     margin-left: 100px;
     margin-top: 100px;

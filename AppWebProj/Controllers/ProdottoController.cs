@@ -105,14 +105,14 @@ namespace Upo.Controllers
         
             bool filtered = false;
 
-            if(apply != null)
+            //FILTRO: custom IQueryable extension method
+            Query = Query.FilterProd(ref filtered, clear, titolo, disp, prezzooperator, prezzo, sconto);
+
+            //per sapere se e' la prima volta che si apre a pagina o se si sta applicando un filtro
+            if (apply != null)
             {
                 filtered = true;
             }
-
-            //FILTRO: custom IQueryable extension method
-            Query = Query.FilterProd(ref filtered, clear, titolo, disp, prezzooperator, prezzo, sconto);
-            
             TempData["AdvancedFilter"] = filtered.ToString();
 
             return View(await Query.ToListAsync());

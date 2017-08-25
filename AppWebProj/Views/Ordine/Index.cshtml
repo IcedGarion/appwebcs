@@ -51,7 +51,7 @@
                             <td rowspan="@group.Count()">@group.Key </td>
                             <td rowspan="@group.Count()">@Ordine.DtInserimento.Day/@Ordine.DtInserimento.Month/@Ordine.DtInserimento.Year</td>
                             <td rowspan="@group.Count()">
-                                @if (Ordine.Stato.Equals("Sent"))
+                                @if (Ordine.Stato.Equals("sent"))
                                 {
                                     <p>Inviato</p>
                                 }
@@ -158,8 +158,5 @@
                 </div>
             }
         }
-    </div>
-    <div class="footer">
-        <h6>footer</h6>
     </div>
 </div>
